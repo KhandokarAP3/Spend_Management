@@ -1,0 +1,132 @@
+<div class="mgBt-60">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="content_title">
+                <div class="content_title_left">
+                    <h2>{{pageTitle}} ({{filterValue != '' ? 'Filtered List' : documentLength}})</h2>
+                </div>
+                <div class="content_title_right">
+                    <div class="btn v8 searchSec">
+                        <input type="text" (ngModelChange)="changeFilteredDataStatus($event)" placeholder="Search documents" [(ngModel)]="filterValue" (keydown.enter)="$event.preventDefault();">
+                        <img *ngIf="!filterValue" [src]="'images/search.png' | updateImageURL" alt="Image" class="search_icon">
+                        <span *ngIf="filterValue">
+                      <a class="upload-cross" href="javascript:void(0)" (click)="clearSearch();">
+                          <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+                      </a>
+                    </span>
+                    </div>
+                    <div class="content_title_btn">
+                        <a href="javascript:void(0);" class="btn v2" (click)="exportToCSV()">
+                            <fa-icon class="mr-2" [icon]="['fas', 'upload']"></fa-icon> Export</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div [ngClass]="{transparent: category.showItem === false, actiity_box: category.showItem !== false}" class="repositry-accordion" *ngFor="let category of repoDeliverable | sortFilterPaginateObjects: filterValue: filterDataFn.bind(this): paginationParams; index as i">
+            <div class="activity_header" *ngIf="category.showItem !== false">
+                <div class="col-sm activity_header_left">
+                    <p>Project &nbsp;: <span [title]="category">{{category.Name}}</span></p>
+                </div>
+                <!-- <div class="col-md activity_header_left"> -->
+                <div class="col activity_header_left">
+                    <p>Identifier#: <span>{{category.Identifier}}</span></p>
+                </div>
+                <div class="col-sm activity_header_left">
+                    <p>Start: <span>{{category.CreationDate}}</span></p>
+                </div>
+                <div class="col-sm activity_header_left">
+                    <p>Requested Award Date: <span>{{category.Requested_Award_Date}}</span></p>
+                </div>
+                <div class="col-sm activity_header_left">
+                  <p>PR to Contracts Date: <span>{{category.PR_to_Contracts_Date}}</span></p>
+                </div>
+            </div>
+            <div class="activity_details repo_cards">
+                <ngb-accordion *ngIf="showVisibleActivityCount(category)" [closeOthers]="!filterValue" [destroyOnHide]="false" activeIds="1-header" activeIds="ngb-panel-{{0}}">
+                    <ngb-panel id="ngb-panel-{{i}}">
+                        <ng-template ngbPanelHeader let-opened="opened">
+                            <button ngbPanelToggle class="accordion-toggle-btn btn btn-link">
+                              <div class="card_header_left">
+                              <span class="toggle_arrow"> <img [src]="'images/arrow_up.png' | updateImageURL"  alt="Image"></span>
+                              <h5 class="faq_header">
+                                Name <span *ngIf="category.DocumentData && category.DocumentData.length">({{showVisibleActivityCount(category)}})</span>
+                              </h5>
+                              </div>
+                              <div class="top_card_header_right">
+                              <div class="tt-desc-heading text-center">Document type</div>
+                              <div class="tt-desc-heading text-center">Status</div>
+                              <div class="tt-desc-heading text-center">Format</div>
+                              <div class="tt-dolar-heading text-center">Date Modified</div>
+                              <div class="text-center">Modified by</div>
+                              <div class="text-center">Date Created</div>
+                              <div class="text-center"></div>
+                              </div>
+                          </button>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                            <div class="activity_list_item" *ngFor="let deliverable of category.DocumentData">
+                                <ng-container *ngIf="deliverable.showItem !== false">
+                                    <div class="activity_list_name invoice_list_name repo_name">
+                                        <p>
+                                            <span class="invoices-number">{{deliverable.DocumentTitle}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="invoice_lists_right">
+                                        <div class="activity_list_desc td_content text-center">
+                                            <p>{{deliverable.Category}}</p>
+                                        </div>
+                                      <div class="activity_list_desc td_content text-center">
+                                        <p>{{deliverable.Status}}</p>
+                                      </div>
+                                        <div class="activity_list_desc td_content text-center">
+                                            <p>{{deliverable.DocumentType}}</p>
+                                        </div>
+                                        <div class="activity_list_dollar td_content text-center">
+                                            <p><span>{{deliverable.Modified | date}}</span></p>
+                                        </div>
+                                        <div class="activity_list_date td_content text-center">
+                                            <p><span>{{deliverable.Editor.Title}}</span></p>
+                                        </div>
+                                        <div class="activity_list_status status_content text-center">
+                                            <p>
+                                                <span>{{deliverable.Created | date}}
+                                          <!-- <span style="color: #EB5757;" class="far rejected-icon" *ngIf="row.Status == 'Rejected'">
+                                              <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+                                          </span>
+                                                <span class="far fa-check" *ngIf="row.Status == 'Paid'">
+                                              <fa-icon style="color: #57A127" [icon]="['fas', 'check']"></fa-icon>
+                                          </span> -->
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class="activity_list_info">
+                                            <div class="card_header_right">
+                                                <span class="eye" style="cursor: pointer">
+                                            <a aria-label = "View button" [href]="'https://seventh.sharepoint.us' + deliverable.File.ServerRelativeUrl" download>
+                                              <fa-icon style="color: black" [icon]="['far', 'eye']"></fa-icon>
+                                            </a>
+                                          </span>
+                                                <span class="edit" style="cursor: pointer" aria-label="Edit button" (click)="updateData(deliverable)">
+                                            <fa-icon style="color: black" [icon]="['fas', 'pencil-alt']"></fa-icon>
+                                          </span>
+                                                <span class="delete" style="cursor: pointer" aria-label="Delete button" (click)="deleteData(deliverable,category.contractNo)" *ngIf="deliverable.Editor.Title === loginUserDetails.userDisplayName">
+                                            <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+                                          </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+            </div>
+        </div>
+    </div>
+</div>
+<app-pagination [itemsPerPage]="paginationParams.itemsPerPage" (itemsPerPageChange)="updateItemsPerPage($event)" [currentPageIndex]="paginationParams.currentPage" (currentPageIndexChange)="updateCurrentPageIndex($event)" [collectionSize]="paginationParams.itemCount"></app-pagination>

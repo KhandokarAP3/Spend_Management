@@ -1,0 +1,286 @@
+<div class="row" [class.spinner]="showLoader">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        <form #submissionForm="ngForm" #myform="ngForm" [class.form-submitted]="isFormSubmitted">
+            <div *ngIf="showActivityProgressBar" class="activity-tab-carousel">
+                <!-- <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="">Previous</button>
+                <button class="slick-next slick-arrow" aria-label="Next" type="button" style="">Next</button> -->
+                <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                    <div ngxSlickItem *ngFor="let item of workCategoryArr;" class="slide {{getClassName(item)}}">
+                        <span class="text-cs">{{item}}</span>
+                    </div>
+                </ngx-slick-carousel>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-12">
+                    <div>
+                        <div class="mb-20">
+                            <!-- <h2 class="project-top-heading"><span>{{project.Title}}</span> {{title}}</h2> -->
+                            <h2 class="project-top-heading">{{title}}</h2>
+                        </div>
+                        <div class="row mb-40">
+                            <!--                            <div class="form-group col-md-12 project-title-heading-wrapper text-center">-->
+                            <!--                                <h3 [ngClass]="editableHeaderText === true ? this.project.Title && this.project.Title.length > 255 ? 'titleErr editClickh3' : 'editClickh3' : this.project.Title && this.project.Title.length > 255 ? 'titleErr' : ''" class="editClick-none">{{project.Title}}</h3>-->
+                            <!--                                <input [ngClass]="!editableHeaderText ? this.project.Title && this.project.Title.length > 255 ?  'titleErr editClick-block' : 'editClick-block' : this.project.Title && this.project.Title.length > 255 ? 'titleErr' : ''" placeholder="Enter Project Title"-->
+                            <!--                                    required="true" name="title" #projectTitle (keyup.enter)="disableTextField()" type="text" [(ngModel)]="project.Title">-->
+                            <!--                                <span>-->
+                            <!--                            <a href="javascript:void(0);" aria-label = "Edit or save title" class="btn v1">-->
+                            <!--                              <fa-icon class="" [icon]="['fas', 'pencil-alt']" *ngIf="!editableHeaderText" (click)="editProjectTitle();"></fa-icon>-->
+                            <!--                              <fa-icon class="" [icon]="['far', 'save']" *ngIf="editableHeaderText" (click)="disableTextField()"></fa-icon>-->
+                            <!--                            </a>-->
+                            <!--                          </span>-->
+                            <!--                            </div>-->
+                            <div class="col-md-12 text-center">
+                                <div class="content_title_btn">
+                                    <a href="javascript:void(0);" (click)="createActivity(myform);" class="btn v1" [class.disabled]="isViewMode">
+                                      + Activity
+                                    </a>
+                                    <a href="javascript:void(0);" class="btn v1" (click)="addMultipleActivitiesModal()" [class.disabled]="isViewMode">
+                                     + Multiple Activities
+                                    </a>
+                                    <a href="javascript:void(0);" (click)="openViewActivitiesModal()" class="btn v1">
+                                      View Activities
+                                    </a>
+                                    <a href="javascript:void(0);" (click)="openNotesModal()" class="btn v1" *ngIf="this.project && this.project.ID">
+                                        <fa-icon class="mr-2" [icon]="['fas', 'sticky-note']"></fa-icon>
+                                        Notes
+                                    </a>
+                                    <a href="javascript:void(0);" (click)="openAttachFileModal()" class="btn v1" [class.disabled]="isViewMode">
+                                        <fa-icon class="mr-2" [icon]="['fas', 'paperclip']"></fa-icon>
+                                        Attach
+                                    </a>
+                                    <a href="javascript:void(0);" (click)="openViewAttachmentsModal()" class="btn v1">
+                                      View Attachments
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-40 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-12 text-right">
+                                    <div class="project_detail_btns">
+                                        <button class="btn v4" type="button" (click)="cancel(myform);">Cancel</button>
+                                        <button class="btn v3" type="button" [disabled]="projectTitleAlreadyExists === true" (click)="saveProject(myform);" *ngIf="!isViewMode">{{mode === 'create' ? 'Create' : 'Update'}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="create-edit-project-form bg_wh mb-4" style="padding: 1.5rem 1rem;">
+                            <div [class.disabled]="isViewMode === true">
+
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <p class="input_title required" style="display: inline;">Project Title</p><span *ngIf="projectTitleAlreadyExists && project.Title" style="color: red">&nbsp;This title already exists for another project</span>
+                                            <input class="create-activity-title" aria-label="Project Title" type="text" required="true" name="Title" autocomplete="off" [(ngModel)]="project.Title" (input)="filterFn($event.target.value);">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title required">Project Identifier</p>
+                                            <input class="create-activity-title" aria-label="Project Identifier" type="text" required="true" name="Identifier" [(ngModel)]="project.Identifier" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title">Recommended Contract Type</p>
+                                            <!-- <input aria-label="Project Contract Type" type="text" name="ContractType" [(ngModel)]="project.ContractType" autocomplete="off"> -->
+                                            <ng-select aria-label="Project Contract Type" [searchable]="false" [clearable]="false" required="false" name="ContractType" class="dropdown_select activity_dropdown" [(ngModel)]="project.ContractType">
+                                                <ng-option value="">To Be Determined</ng-option>
+                                                <ng-option *ngFor="let status of commonService.contractType" [value]="status">{{status}}</ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title required">Work Category Status</p>
+                                            <ng-select aria-label="Project Status" [searchable]="false" [clearable]="false" required="true" name="Status" class="dropdown_select activity_dropdown" [(ngModel)]="project.Status" (change)="selectActivityInTimeline(project.Status)">
+                                                <ng-option value="">Select Status</ng-option>
+                                                <ng-option *ngFor="let status of commonService.status" [value]="status">{{status}}</ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <label class="input_title required">Creation Date</label>
+                                            <div class="input-group formDatePicker disabled">
+                                                <small *ngIf="project.CreationDateERROR" class="text-danger">{{project.CreationDateERROR}}</small>
+                                                <input type="text" required="true" placeholder="MM-DD-YYYY" maxlength="10" name="CreationDate" [(ngModel)]="project.CreationDate" class="form-field-border form-control create-activity-title" ngbDatepicker #creationDate="ngbDatepicker" (blur)="checkTypingDateForCalendar('CreationDate')">
+                                                <div class="input-group-append">
+                                                    <button aria-label="Project Creation Date" class="btn btn-outline-secondary calendar" (click)="creationDate.toggle()" type="button"><fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <label class="input_title">PR to Contracts Date</label>
+                                            <div class="input-group formDatePicker">
+                                                <small *ngIf="project.PR_to_Contracts_DateERROR" class="text-danger">{{project.PR_to_Contracts_DateERROR}}</small>
+                                                <input type="text" required="false" placeholder="MM-DD-YYYY" maxlength="10" name="PR_to_Contracts_Date" [max]="project.CreationDate" [(ngModel)]="project.PR_to_Contracts_Date" class="form-field-border form-control create-activity-title" ngbDatepicker
+                                                    #prToContractsDate="ngbDatepicker" (blur)="checkTypingDateForCalendar('PR_to_Contracts_Date', project);compareStartAndEndDatesPR(project,'PR_to_Contracts_Date')" (focus)="endDateFocus(project.PR_to_Contracts_Date)"
+                                                    (ngModelChange)="project.PR_to_Contracts_Date = $event;compareStartAndEndDatesForTogglePR(project, 'PR_to_Contracts_Date')">
+                                                <div class="input-group-append">
+                                                    <button aria-label="Project PR to Contracts Date" class="btn btn-outline-secondary calendar" (click)="endDateAllowPR();endDateFocus(project.PR_to_Contracts_Date);prToContractsDate.toggle()" type="button"><fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <label class="input_title required">Requested Award Date</label>
+                                            <div class="input-group formDatePicker">
+                                                <small *ngIf="project.Requested_Award_DateERROR" class="text-danger">{{project.Requested_Award_DateERROR}}</small>
+                                                <input type="text" required="true" placeholder="MM-DD-YYYY" maxlength="10" name="Requested_Award_Date" [max]="project.CreationDate" [(ngModel)]="project.Requested_Award_Date" class="form-field-border form-control create-activity-title" ngbDatepicker #requestedAwardDate="ngbDatepicker"
+                                                    (blur)="checkTypingDateForCalendar('Requested_Award_Date', project);compareStartAndEndDates(project,'Requested_Award_Date')" (focus)="endDateFocus(project.Requested_Award_Date)" (ngModelChange)="project.Requested_Award_Date = $event;compareStartAndEndDatesForToggle(project, 'Requested_Award_Date')">
+                                                <div class="input-group-append">
+                                                    <button aria-label="Project Requested Award Date" class="btn btn-outline-secondary calendar" (click)="endDateAllow();endDateFocus(project.Requested_Award_Date);requestedAwardDate.toggle()" type="button"><fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-group">
+                                            <p class="input_title required">
+                                                <span>Estimated Value</span>
+                                                <!-- <img class="badge-field-cs mr-2" [src]="'images/badge.png' | updateImageURL" alt="image" /> -->
+                                            </p>
+                                            <app-currency-input [(ngModel)]="project.EstimatedValue" required="true" name="EstimatedValue" class="form-control create-activity-title" style="border: 1px solid #bdbdbd"></app-currency-input>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-group">
+                                            <p class="input_title required">Funding Status</p>
+                                            <ng-select aria-label="Funding Status" [searchable]="false" [clearable]="false" required="true" name="Funding_Status" class="dropdown_select activity_dropdown" [(ngModel)]="project.Funding_Status">
+                                                <ng-option value="">Select Status</ng-option>
+                                                <ng-option *ngFor="let status of commonService.fundingStatus" [value]="status">{{status}}</ng-option>
+                                            </ng-select>
+                                            <span style="float: right">
+                                                <span class="input_title">Expiring Funds?</span>
+                                            <label class="switch ml-4" style="vertical-align: sub">
+                                                  <input type="checkbox" aria-label="Are Funds Expiring?" name="AreFundsExpiring" [(ngModel)]="project.AreFundsExpiring">
+                                                  <span class="slider round_box"></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title required">Program Office</p>
+                                            <input class="create-activity-title" aria-label="Project Program Office" required="true" type="text" name="ProgramOffice" [(ngModel)]="project.ProgramOffice" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title required">POC</p>
+                                            <input class="create-activity-title" aria-label="Project POC" required="true" type="text" name="POC" [(ngModel)]="project.POC" [ngbTypeahead]="commonService.searchPeople" [editable]='false' placeholder="Please search">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title">Sponsor</p>
+                                            <input class="create-activity-title" aria-label="Project sponsor" type="text" name="Sponsor" [(ngModel)]="project.Sponsor" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title">NAICS Code</p>
+                                            <input class="create-activity-title" aria-label="Project NAICS Code" type="text" name="NAICS_Code" [(ngModel)]="project.NAICS_Code" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title">NAICS Description</p>
+                                            <input class="create-activity-title" aria-label="Project NAICS Description" type="text" name="NAICS_Description" [(ngModel)]="project.NAICS_Description" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="form-group">
+                                            <p class="input_title">Product Service Code (PSC)</p>
+                                            <input class="create-activity-title" aria-label="Product Service Code (PSC)" type="text" name="PSC" [(ngModel)]="project.PSC" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <!--                                    <div class="col-lg-4 col-md-4">-->
+                                    <!--                                        <div class="form-group">-->
+                                    <!--                                            <p class="input_title">Contract Vehicle</p>-->
+                                    <!--                                            <input class="create-activity-title" aria-label="Project Contract Vehicle" type="text" name="ContractVehicle" [(ngModel)]="project.ContractVehicle" autocomplete="off">-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                </div>
+
+                                <!--                                <div class="row">-->
+                                <!--                                    <div class="col-lg-4 col-md-4">-->
+                                <!--                                        <div class="form-group">-->
+                                <!--                                            <p class="input_title">Contract Vehicle Tier Rating</p>-->
+                                <!--                                            <input class="create-activity-title" class="create-activity-title" aria-label="Project Contract Vehicle Tier Rating" type="text" name="ContractVehicleTierRating" [(ngModel)]="project.ContractVehicleTierRating" autocomplete="off">-->
+                                <!--                                        </div>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="input_title">Description</label>
+                                            <textarea [pattern]="commonService.textAreaPattern" name="description" #Description="ngModel" placeholder="Enter Description" cols="30" rows="10" [(ngModel)]="project.Description" class="form-field-border form-control create-activity-title"></textarea>
+                                            <div *ngIf="Description.dirty && Description.invalid">
+                                                <small class="form-text text-danger bottom-error-cs" *ngIf="Description.errors?.pattern">
+                                    You have exceeded the maximum character limit for the following field. Maximum limit is 500 characters.
+                                  </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="create-edit-project-form bg_wh mb-4" style="padding: 1.5rem 1rem;">
+                            <div class="row" [ngClass]="isViewMode === true ? 'disabled' : ''">
+                                <app-team [team]="project.Team"></app-team>
+                            </div>
+                        </div>
+                        <!-- <div class="row" [ngClass]="isViewMode === true ? 'disabled' : ''">
+
+                            <div class="col-md-12 col-lg-12 bg_wh mb-4">
+                                <app-team [team]="project.Team"></app-team>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-12">
+                <div class="row">
+                    <div class="col-lg-12 text-right">
+                        <div class="project_detail_btns">
+                            <button class="btn v4" type="button" (click)="cancel(myform);">Cancel</button>
+                            <button class="btn v3" type="button" [disabled]="projectTitleAlreadyExists === true" (click)="saveProject(myform);" *ngIf="!isViewMode">{{mode === 'create' ? 'Create' : 'Update'}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

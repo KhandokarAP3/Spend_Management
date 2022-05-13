@@ -1,0 +1,143 @@
+<div id="contact-modal">
+    <div class="modal-header">
+        <!-- <h4 class="modal-title" style="margin: auto">Contract/BPA/Order Pin</h4> -->
+        <div class="col-lg-12 modal-title-sec">
+            <h3 class="modal-form-title">Request a Ticket</h3>
+        </div>
+        <button aria-label="Close Request a ticket dialog button" type="button" (click)="activeModal.dismiss('Cross click')" style="position: absolute;right: 1rem;top: 1rem;" class="close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <div class="create_activity_form modal-form">
+            <form (ngSubmit)="requestTicket(myform);" #myform="ngForm" [class.form-submitted]="isFormSubmitted">
+                <div class="row">
+                    <!-- <div class="col-lg-12">
+                  <h3 class="modal-form-title">Request a Ticket</h3>
+              </div> -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label class="input_title required" for="fname">First name</label>
+                            <input aria-label="First name" type="text" required="true" name="FirstName" [(ngModel)]="requestTicketObj.FirstName" id="fname" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label class="input_title required" for="lname">Last name</label>
+                            <input aria-label="Last name" type="text" required="true" name="LastName" [(ngModel)]="requestTicketObj.LastName" id="lname" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label class="input_title required" for="email">Department</label>
+                            <input aria-label="Department" type="text" name="Department" required="true" [(ngModel)]="requestTicketObj.Department" id="department" placeholder="">
+                            <!-- <ng-select [searchable]="false" [clearable]="false" required="true" class="dropdown_select mb-15" name="contact_prefrences">
+                    <ng-option value="activity_2">Current Department</ng-option>
+                    <ng-option value="activity_2">Current Department</ng-option>
+                    <ng-option value="activity_2">Current Department</ng-option>
+                    <ng-option value="activity_2">Current Department</ng-option>
+                  </ng-select> -->
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label aria-label="Email Address" class="input_title" [ngClass]="requestTicketObj.ContactPreference == 'email' ? 'required' : ''" for="email">Email Address</label>
+                            <input name="EmailAddress" [required]="requestTicketObj.ContactPreference === 'email' ? 'true' : 'false'" [(ngModel)]="requestTicketObj.EmailAddress" type="text" id="email" placeholder="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <p class="input_title required">Contact Preference</p>
+                            <ng-select aria-label="Contract preference dropdown menu" required="true" [(ngModel)]="requestTicketObj.ContactPreference" (change)="onContactTypeChange($event)" [searchable]="false" [clearable]="false" required="true" class="dropdown_select mb-15" name="ContactPreference">
+                                <ng-option role="option" value="email">Email</ng-option>
+                                <ng-option role="option" value="phone">Phone</ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+<!--                    <div class="col-lg-6 col-md-6">-->
+<!--                        <div class="form-group">-->
+<!--                            <p class="input_title">Pick a date</p>-->
+<!--                            <div class="input-group formDatePicker">-->
+<!--                                <small *ngIf="requestTicketObj.DatePickERROR" class="text-danger">{{requestTicketObj.DatePickERROR}}</small>-->
+<!--                                <input maxlength="10" [(ngModel)]="requestTicketObj.PickDate" (blur)="checkTypingDate('PickDate',requestTicketObj);" (ngModelChange)="checkTypingDate('PickDate',requestTicketObj);" class="form-control no-validation" name="PickDate" placeholder="MM-DD-YYYY"-->
+<!--                                    ngbDatepicker #pickDate="ngbDatepicker">-->
+<!--                                <div class="input-group-append">-->
+<!--                                    <button aria-label="Pick a date calendar button" class="btn btn-outline-secondary calendar" (click)="pickDate.toggle()" type="button">-->
+<!--                        <fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon>-->
+<!--                      </button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label aria-label="Phone number" class="input_title" [ngClass]="requestTicketObj.ContactPreference != 'email' ? 'required' : ''" for="phone">Phone Number</label>
+                            <input name="PhoneNumber" [required]="requestTicketObj.ContactPreference !== 'email' ? 'true' : 'false'" [(ngModel)]="requestTicketObj.PhoneNumber" type="text" id="phone" placeholder="XXX-XXX-XXXX">
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-12">
+                  <div class="form-group">
+                      <label class="input_title" for="desc">Message</label>
+                      <textarea name="desc" [(ngModel)]="requestTicketObj.Message" name="Message" id="desc" cols="30" rows="10"></textarea>
+                  </div>
+              </div> -->
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!-- <p class="input_title">Topic</p> -->
+                                <div class="form-group">
+                                    <label class="input_title" for="topic">Topic</label>
+                                    <input aria-label="Topic input text field" type="text" name="Topic" [(ngModel)]="requestTicketObj.Topic" id="topic" placeholder="">
+                                </div>
+                                <!-- <ng-select [searchable]="false" [(ngModel)]="requestTicketObj.Topic" [clearable]="false" required="true" class="dropdown_select mb-15" name="Topic">
+                          <ng-option value="help">Help</ng-option>
+                          <ng-option value="desk">Desk</ng-option>
+                          <ng-option value="issue">Issue</ng-option>
+                        </ng-select> -->
+                            </div>
+                            <div class="col-lg-12">
+                                <p class="input_title required">Priority</p>
+                                <ng-select aria-label="Priority drop down menu" [searchable]="false" [(ngModel)]="requestTicketObj.Priority" [clearable]="false" required="true" class="dropdown_select mb-15" name="Priority">
+                                    <ng-option role="option" value="High">High</ng-option>
+                                    <ng-option role="option" value="Medium">Medium</ng-option>
+                                    <ng-option role="option" value="Low">Low</ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group dob">
+                            <label aria-label="Problem description" class="input_title" for="desc">Problem Description</label>
+                            <textarea [pattern]="commonService.textAreaPattern" aria-label="textarea" #descriptionTextArea="ngModel" name="ProblemDescription" [(ngModel)]="requestTicketObj.ProblemDescription" id="desc" cols="30" rows="10" class="form-field-border form-control"></textarea>
+                              <div *ngIf="descriptionTextArea.dirty && descriptionTextArea.invalid">
+                                <small class="form-text text-danger bottom-error-cs" *ngIf="descriptionTextArea.errors?.pattern">
+                                  You have exceeded the maximum character limit for the following field. Maximum limit is 500 characters.
+                                </small>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <div class="add-listing__input-file-box">
+                                <input role="button" (change)="onFileChange($event)" class="add-listing__input-file" type="file" name="files_upload" aria-label="Upload file" accept=".xls,.xlsx, .doc, .docx, .pdf, .gif, .jpg, .jpeg">
+                                <div class="add-listing__input-file-wrap">
+                                  <p *ngIf="!fileData"><i class="ion-ios-cloud-upload-outline"></i> Upload File</p>
+                                  <p *ngIf="fileData && fileData.name"><i class="ion-ios-folder-outline"></i> {{fileData.name}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button class="send_btn">Send</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="modal-footer">
+  <button style="width: 100%;" type="button" class="btn btn-outline-dark" (click)="searchProject();">Submit</button>
+</div> -->

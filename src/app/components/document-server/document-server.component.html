@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content_title">
+            <div class="content_title_left" *ngIf="filterValue === ''">
+                <h2>My Documents ({{documents.length}})</h2>
+            </div>
+            <div class="content_title_left" *ngIf="filterValue !== ''">
+                <h2>My Documents (Filtered List)</h2>
+            </div>
+            <div class="content_title_right">
+                <div class="btn v8 searchSec">
+                    <input type="text" placeholder="Search documents" [(ngModel)]="filterValue" (keydown.enter)="$event.preventDefault();">
+                    <img *ngIf="!filterValue" [src]="'images/search.png' | updateImageURL" alt="Image" class="search_icon">
+                    <span *ngIf="filterValue">
+            <a class="upload-cross" href="javascript:void(0)" (click)="clearSearch()">
+                <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+            </a>
+          </span>
+                </div>
+                <!--        [class.disabled]="!this.commonService.canCreateDocuments()"-->
+                <div class="content_title_btn" (click)="createNewDocument();">
+                    <a href="javascript:void(0);" class="btn v1">+ Create Document</a>
+                </div>
+                <div class="content_title_btn">
+                    <a href="javascript:void(0);" class="btn v2" (click)="uploadDocument();">
+                        <fa-icon class="mr-2" [icon]="['fas', 'upload']"></fa-icon> Upload</a>
+                </div>
+                <div class="content_title_btn">
+                    <a href="javascript:void(0);" class="btn v2" (click)="exportToCSV();">
+                        <fa-icon class="mr-2" [icon]="['fas', 'download']"></fa-icon> Export</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="custom_table_header">
+                <div class="col" [ngStyle]="{'textAlign': i===0 ? 'left': 'inherit'}" *ngFor="let column of columnNames; index as i;">
+                    <span class="pointer " (click)="sortTableBy(column.av);">{{column.dv}}
+          <fa-icon *ngIf="sortBy !== column.av"[icon]="['fas', 'sort']"></fa-icon>
+            <fa-icon *ngIf="sortBy === column.av && reverse" [icon]="['fas', 'sort-up']"></fa-icon>
+            <fa-icon *ngIf="sortBy === column.av && !reverse" [icon]="['fas', 'sort-down']"></fa-icon>
+        </span>
+                </div>
+                <div class="col" style="text-align: center;">
+                    Actions
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="custom_table_row" style="margin-top: 6px" *ngFor="let document of documents | sortAndFilterObjectsForActivities: filterValue: filterFn.bind(this)">
+                <div class="custom_table_row" style="margin-top: 6px">
+                    <div class="col" [ngStyle]="column.columnStyle" *ngFor="let column of columnNames">
+                        <span>{{document[column.av]}}</span>
+                    </div>
+                    <div class="col card_header_right">
+                        <div appToggleFocus class="sub_dropdown" style="display: initial">
+                            <fa-icon class="pointer" [icon]="['fas', 'ellipsis-v']"></fa-icon>
+                            <ul class="sub_dropdown_menu" style="width: 140px; opacity: 0; z-index: 67; visibility: hidden; position: absolute; background: white; padding: 0px 10px; border: 1px solid; left: 50%; top: 3px; text-align: left;">
+                                <li style="line-height: 20px;" (click)="editDocument(document)">
+                                    <a href="javascript:void(0);">Edit</a>
+                                </li>
+                                <li style="line-height: 20px;" (click)="viewDocument(document)">
+                                    <a href="javascript:void(0);">View</a>
+                                </li>
+                                <li style="line-height: 20px;" (click)="shareDocument(document);">
+                                    <a href="javascript:void(0);">Share</a>
+                                </li>
+                                <li style="line-height: 20px;">
+                                    <a [href]="'https://seventh.sharepoint.us' + document.File.ServerRelativeUrl" download>Download</a>
+                                </li>
+                                <li style="line-height: 20px;" (click)="deleteCollaborationDocument(document)">
+                                    <a href="javascript:void(0);">Delete</a>
+                                </li>
+                                <li style="line-height: 20px;" (click)="attachDocumentToProject(document, true)">
+                                    <a href="javascript:void(0);">Attach to Project</a>
+                                </li>
+                                <li style="line-height: 20px;" (click)="attachDocumentToProject(document, false)">
+                                    <a href="javascript:void(0);">Attach to activity</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-pagination [itemsPerPage]="paginationParams.itemsPerPage" (itemsPerPageChange)="updateItemsPerPage($event)" [currentPageIndex]="paginationParams.currentPage" (currentPageIndexChange)="updateCurrentPageIndex($event)" [collectionSize]="paginationParams.itemCount"></app-pagination>

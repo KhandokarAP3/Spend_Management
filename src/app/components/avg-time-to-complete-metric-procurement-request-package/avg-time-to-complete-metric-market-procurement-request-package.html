@@ -1,0 +1,8 @@
+<div class="title_wrap" style="display: block; text-align: center">
+  <div class="title">
+    <h2>Average Time to Completion<br>(Procurement Request Package)</h2>
+  </div>
+</div>
+<div class="chart_wrap">
+  <app-bar-chart *ngIf="averageTimeToCompleteMetricArr.length > 0" [data]="averageTimeToCompleteMetricArr" [colorSchemeComp]="colorSchemeComp" [xAxisLabel]="xAxisLabel" [maxXAxisTickLength]="16"></app-bar-chart>
+</div>

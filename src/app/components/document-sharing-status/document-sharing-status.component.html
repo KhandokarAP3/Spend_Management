@@ -1,0 +1,19 @@
+<div class="modal-header attachment-modal-header">
+    <h4 class="modal-title modal-comment" style="margin: auto">Document Approval Status</h4>
+    <button type="button" aria-label="Notes close dialog box icon" style="margin-top: -10px;color: black;" class="close" (click)="cancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body attachment-modal-body table-responsive" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="status-container" [ngClass]="status.status.toLowerCase()" *ngFor="let status of statusList">
+        <span class="grid-element top-element"></span>
+        <span class="grid-element bottom-element"></span>
+        <div class="main-content">
+            <h6>{{(status.approver.length > 29)? (status.approver | slice:0:29)+'...':(status.approver) }}</h6>
+            <ul>
+                <li>{{status.daysBefore}}</li>
+                <li>{{status.status}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

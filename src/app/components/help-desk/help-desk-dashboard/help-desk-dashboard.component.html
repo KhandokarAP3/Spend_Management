@@ -1,0 +1,104 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box_title mb-4">
+            <h2>Support</h2>
+        </div>
+    </div>
+    <div>
+
+    </div>
+    <div class="col-lg-12 sub_title_sec">
+        <div class="box_title help_desk_search_sec mb-3">
+            <br>
+            <h6>Hey there, how can we help?
+            </h6>
+            <div class="search_box_wrap help_item_search v2">
+                <div class="search_box help_desk_search">
+                    <input type="text" [(ngModel)]="filterValue" (keydown.enter)="$event.preventDefault();" style="width: 110%">
+                    <img [src]="'images/search.png' | updateImageURL" alt="Image" class="search_icon">
+                    <span *ngIf="filterValue">
+                    <a class="upload-cross" href="javascript:void(0)" (click)="clearSearch();">
+                        <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+                    </a>
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    <div class="col-lg-12 help_desk_search_sec">-->
+    <!--        <div class="search_box_wrap help_item_search v2">-->
+    <!--            <div class="search_box help_desk_search">-->
+    <!--                <input type="text" [(ngModel)]="filterValue" placeholder="Search user assistance articles." (keydown.enter)="$event.preventDefault();">-->
+    <!--                <img [src]="'images/search.png' | updateImageURL" alt="Image" class="search_icon">-->
+    <!--                <span *ngIf="filterValue">-->
+    <!--                    <a class="upload-cross" href="javascript:void(0)" (click)="clearSearch();">-->
+    <!--                        <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>-->
+    <!--                    </a>-->
+    <!--                </span>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="row">
+            <!-- <div class="col-md-12">
+                <h2 class="help_box_title">Can’t find what you’re looking for?</h2>
+            </div> -->
+            <div class="col-md-12">
+                <div class="help_box_wrap bg_wh pd-top-50 pd-bt-40">
+                    <div class="help_box_item">
+                        <div class="help_icon">
+                            <img [src]="'images/phone-1.svg' | updateImageURL" alt="Image">
+                        </div>
+                        <p>Call Us</p>
+                        <a class="link" href="tel:987897899">987 897 899</a>
+                        <span>Mon - Fri 11:00 PM - 2:00 AM</span>
+                    </div>
+
+                    <div class="help_box_item">
+                        <div class="help_icon">
+                            <img [src]="'images/ticket-1.svg' | updateImageURL" alt="Image">
+                        </div>
+                        <p>Ask the Experts</p>
+                        <a class="send_btn" href="javascript:void(0)" (click)="askExpert()">Request</a>
+                    </div>
+
+                    <div class="help_box_item">
+                        <div class="help_icon">
+                            <img [src]="'images/ticket-1.svg' | updateImageURL" alt="Image">
+                        </div>
+                        <p>Request a Ticket</p>
+                        <a class="send_btn" href="javascript:void(0)" (click)="requestTicket()">Request</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="articles_sec_title">User Assistance Articles</h3>
+            </div>
+            <div class="col-md-12">
+                <div class="article_item_sec">
+                    <div class="article_item" *ngFor="let article of articlesItem | sortFilterPaginate: filterByFields: filterValue: sortBy:reverse:false: paginationParams; index as i">
+                        <div class="article_number">
+                            {{article.serial}}
+                        </div>
+                        <div class="articles">
+                            {{article.Title}}
+                            <p>{{article.Description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <app-pagination [paginationType]="'helpDesk'" [itemsPerPage]="paginationParams.itemsPerPage" (itemsPerPageChange)="updateItemsPerPage($event)" [currentPageIndex]="paginationParams.currentPage" (currentPageIndexChange)="updateCurrentPageIndex($event)"
+                    [collectionSize]="paginationParams.itemCount"></app-pagination>
+            </div>
+        </div>
+    </div>
+</div>

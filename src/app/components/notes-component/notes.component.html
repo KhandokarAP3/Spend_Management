@@ -1,0 +1,45 @@
+<div class="modal-header attachment-modal-header" >
+    <h4 class="modal-title modal-comment" style="margin: auto">Notes/Comments</h4>
+    <h4 class="pointer modal-plus" (click)="addNewNote()" [class.disabled]="data.mode == 'view'">+</h4>
+    <h4 class="pointer modal-comment" (click)="addNewNote()" style="position: absolute;right: 48px" [class.disabled]="data.mode == 'view'">Notes/Comments</h4>
+    <button type="button" aria-label="Notes close dialog box icon" style="margin-top: -10px;color: black;" class="close" (click)="cancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body attachment-modal-body table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th *ngFor="let column of columns" class="pointer" (click)="sortTableBy(column.av);" [ngStyle]="column.thStyle">
+                  <span>{{column.dv}}
+                    <fa-icon *ngIf="sortBy !== column.av" [icon]="['fas', 'sort']"></fa-icon>
+                    <fa-icon *ngIf="sortBy === column.av && reverse" [icon]="['fas', 'sort-up']"></fa-icon>
+                    <fa-icon *ngIf="sortBy === column.av && !reverse" [icon]="['fas', 'sort-down']"></fa-icon>
+                </span>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let note of notes | orderBy : sortBy: reverse: true; index as i;">
+                <ng-container *ngIf="editingNote && editingNote.ID === note.ID;">
+                    <td *ngFor="let column of columns" [ngClass]="{'form-submitted': !column.isReaOnly}">
+                        <p *ngIf="column.av === 'Description' && editingNote[column.av] && editingNote[column.av].length > 255" style="line-height: 1;color: red;margin-bottom: 2px;font-weight: 100;">The description length cannot exceed 255 characters.</p>
+                        <textarea [ngStyle]="column.inputStyle" [(ngModel)]="editingNote[column.av]" [readOnly]="column.isReaOnly" [ngClass]="{'ng-invalid': editingNote['Description'] && editingNote['Description'].length > 255}" style="width: 100% !important; " rows="2"></textarea>
+                    </td>
+                    <td [class.disabled]="data.mode == 'view'">
+                        <fa-icon (click)="cancelEditNote();" class="pointer mr-2" [icon]="['fas', 'times']"></fa-icon>
+                        <fa-icon (click)="saveNote();" [ngClass]="{disabled: editingNote['Description'] && editingNote['Description'].length > 255}" class="pointer mr-2" [icon]="['far', 'save']"></fa-icon>
+                    </td>
+                </ng-container>
+                <ng-container *ngIf="!editingNote || editingNote.ID !== note.ID;">
+                    <td *ngFor="let column of columns">{{note[column.av]}}</td>
+                    <td class="icon-edit" [ngClass]="{disabled: note.Submitter !== currentUser || data.mode == 'view'}">
+                        <fa-icon (click)="editNote(note);" class="pointer mr-2 " [icon]="['fas', 'pencil-alt']"></fa-icon>
+                        <fa-icon (click)="deleteNote(note);" class="pointer mr-2 " [icon]="['fas', 'trash']"></fa-icon>
+                    </td>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+</div>

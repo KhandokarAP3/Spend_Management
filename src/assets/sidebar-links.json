@@ -1,0 +1,38 @@
+{
+  "home": [
+    {
+      "text": "Contract Administration",
+      "link": "#"
+    },
+    {
+      "text": "Contract Management/Oversight",
+      "link": "#"
+    },
+    {
+      "text": "Spend Management",
+      "link": "#"
+    },
+    {
+      "text": "Modifications",
+      "link": "#"
+    },
+    {
+      "text": "Closeout",
+      "link": "#"
+    }
+  ],
+  "projects": [
+    {
+      "text": "Spend Management",
+      "link": "#"
+    },
+    {
+      "text": "Modifications",
+      "link": "#"
+    },
+    {
+      "text": "Closeout",
+      "link": "#"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+<!-- <div class="row">
+    <div class="col-xl-4 col-lg-12">
+        <div class="box_title">
+            <h2>Notifications</h2>
+        </div>
+    </div>
+    <div class="col-xl-8 col-lg-12">
+        <div class="content_title_right">
+            <div class="search_box">
+                <input type="text" placeholder="Search Notification" (keydown.enter)="$event.preventDefault()">
+                <img [src]="'images/search.png' | updateImageURL" alt="Image" class="search_icon">
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="content_title">
+            <div class="content_title_left">
+                <h2>Notifications</h2>
+            </div>
+            <div class="content_title_right">
+                <div class="search_box">
+                    <input type="text" placeholder="Search Notification" (keydown.enter)="$event.preventDefault()">
+                    <img [src]="'images/search.png' | updateImageURL" alt="Image" class="search_icon">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row py-5 align-items-center">
+    <div class="col-md-12">
+        <ul ngbNav #nav="ngbNav" class="nav nav-tabs doc_tabList">
+            <!--      <li class="nav-item" *ngFor="let repo of repoData; index as i;" [ngbNavItem]="i+1"></li>-->
+            <li class="nav-item" [ngbNavItem]="tab" *ngFor="let tab of tabs">
+                <a href="javascript:void(0)" class="nav-link" ngbNavLink>{{tab}}</a>
+                <ng-template ngbNavContent>
+                    <div class="tab-pane" ngbNavContent>
+                        <div class="doc_table notification_table_cs">
+                            <div class="doc_table_header">
+                                <div class="doc_table_header_item">
+                                    <p>Type</p>
+                                </div>
+                                <div class="doc_table_header_item">
+                                    <p>Subject</p>
+                                </div>
+                                <div class="doc_table_header_item">
+                                    <p>Title</p>
+                                </div>
+                                <div class="doc_table_header_item">
+                                    <p>Trigger</p>
+                                </div>
+                                <div class="doc_table_header_item">
+                                    <p>Due Date/Receipt Date</p>
+                                </div>
+                            </div>
+                            <!-- <div class="doc_table_data pointer" (click)="goToSource(notification)" *ngFor="let notification of notifications[tab];"> -->
+                            <div class="doc_table_data pointer" *ngFor="let notification of notifications[tab] | sortAndFilterObjectsForActivities: filterValue: filterFn.bind(this); index as k">
+                                <div>
+                                    <div class="doc_table_data_item">
+                                        <p>{{notification.Types}}</p>
+                                    </div>
+                                    <div class="doc_table_data_item">
+                                        <p>{{notification.Subject}}</p>
+                                    </div>
+                                    <div class="doc_table_data_item" (click)="goToSource(notification, 'edit')">
+                                        <p><a style="text-decoration: underline;">{{notification.ActivityTitle}}</a></p>
+                                    </div>
+                                    <div class="doc_table_data_item">
+                                        <p>{{notification.isCurrentNotification === 'Yes' ? 'Assign To' : notification.trigger_type}}</p>
+                                    </div>
+                                    <div class="doc_table_data_item">
+                                        <p>{{notification.trigger_type === 'Before Scheduled Date' ? (notification.dueDateForShow | date) : (notification.afterReceiptDateForShow | date)}}</p>
+                                    </div>
+                                    <!-- <div class="doc_table_data_item">
+                                          <p>{{notification.Priority}}</p>
+                                        </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-md-12" style="float:right">
+            <app-pagination [itemsPerPage]="paginationParams.itemsPerPage" (itemsPerPageChange)="updateItemsPerPage($event)" [currentPageIndex]="paginationParams.currentPage" (currentPageIndexChange)="updateCurrentPageIndex($event)" [collectionSize]="paginationParams.itemCount"></app-pagination>
+        </div>
+    </div> -->
+</div>
+
+<app-pagination [itemsPerPage]="paginationParams.itemsPerPage" (itemsPerPageChange)="updateItemsPerPage($event)" [currentPageIndex]="paginationParams.currentPage" (currentPageIndexChange)="updateCurrentPageIndex($event)" [collectionSize]="paginationParams.itemCount"></app-pagination>

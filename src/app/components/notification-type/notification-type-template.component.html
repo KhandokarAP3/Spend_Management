@@ -1,0 +1,162 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box_title">
+            <h2>{{title}} Notification</h2>
+        </div>
+    </div>
+</div>
+<form (ngSubmit)="saveNotificationTypeTemplate(myform);" #myform="ngForm" [class.form-submitted]="isFormSubmitted" [class.spinner]="showLoader">
+    <div class="row bg_wh mt-5 no-gutters">
+        <div class="col-md-12">
+            <div class="row" [class.disabled]="isViewOnly">
+
+                <div class='col-lg-12 col-md-12'>
+                    <div class="form-group inline_label_switch inline_switch_left">
+                        <div class="notif_switch" style="padding-left: 0">
+                            <div class="switch_wrap">
+                                <label class="switch v3">
+                        <input aria-label="Notification Status toggle button" type="checkbox" name="isActive" [(ngModel)]="notificationTypeTemplate.isActive">
+                        <span class="slider round_box"></span>
+                      </label>
+                            </div>
+                        </div>
+                        <p class="input_title">Enable/Disable Notification</p>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6 col-md-6">
+                    <div class="form-group">
+                        <label class="input_title required">Notification Category</label>
+                        <ng-select aria-label="Notification Category" name="Category" [searchable]="false" [clearable]="false" required="true" [(ngModel)]="notificationTypeTemplate.Category" class="dropdown_select activity_dropdown v2" [disabled]="mode !== 'create'">
+                            <ng-option *ngFor="let option of notificationTypesTemplateCategory" [value]="option" [disabled]="option === 'Manual'">{{option}}</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                    <div class="form-group">
+                        <label class="input_title required">Notification Type</label>
+                        <input aria-label="Notification Type" type="text" name="Types" required="true" placeholder="" [(ngModel)]="notificationTypeTemplate.Types" [disabled]="mode !== 'create'" />
+                        <!-- <ng-select aria-label="Notification Type" name="Types" [searchable]="false" [clearable]="false" required="true" [(ngModel)]="notificationTypeTemplate.Types" class="dropdown_select activity_dropdown v2" [disabled]="mode !== 'create'">
+                            <ng-option *ngFor="let option of notificationTypes" [value]="option" [disabled]="option === 'Low Funding' || option === 'Burn Rate' || option === 'Contract Period Ending'">{{option}}</ng-option>
+                        </ng-select> -->
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                    <div class="form-group">
+                        <label class="input_title required">Notification Title</label>
+                        <input aria-label="Notification Title" type="text" name="Title" required="true" placeholder="" [(ngModel)]="notificationTypeTemplate.Title" [disabled]="disableAllFields" />
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6" *ngIf="mode === 'create' || mode === 'edit' && !notificationTypeTemplate.EmailTemplateID">
+                    <div class="form-group">
+                        <label class="input_title required">Select/Create Template</label>
+                        <ng-select [disabled]="disableAllFields" aria-label="Select/Create Template" name="TemplateType" [searchable]="false" [clearable]="false" required="true" [(ngModel)]="notificationTypeTemplate.TemplateType" class="dropdown_select activity_dropdown v2"
+                            (change)="templateType($event)">
+                            <ng-option *ngFor="let option of notificationTypesTemplateTypes" [value]="option">{{option}}</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6" *ngIf="notificationTypeTemplate.Types === 'Low Funding'">
+                    <div class="form-group">
+                        <label class="input_title required">% of Obligated funds remaining</label>
+                        <input aria-label="% of Obligated funds remaining" type="number" max="100" name="remainingObligatedFunds" [(ngModel)]="notificationTypeTemplate.remainingObligatedFunds" />
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6" *ngIf="notificationTypeTemplate.Types === 'Contract Period Ending'">
+                    <div class="form-group">
+                        <label class="input_title required">Enter # of Days Before Current Contract Period Ends</label>
+                        <input aria-label="% of Obligated funds remaining" type="number" name="ContractPeriodEndingDays" [(ngModel)]="notificationTypeTemplate.ContractPeriodEndingDays" />
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12">
+                    <div class="notificationTypeSec">
+                        <div class="notification_type_btn">
+                            <a href="javascript:void(0);" (click)="configureAddRecipient()" class="btn v1">
+                              Add Recipients
+                            </a>
+                        </div>
+                        <div class="notification_type_btn" *ngIf="notificationTypeTemplate.Types === 'Recurring'">
+                            <a href="javascript:void(0);" (click)="configureNotificationRecurrence()" class="btn v1">
+                            Configure Notification Recurrence
+                          </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6"></div>
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label class="input_title ">Notification Description</label>
+                        <textarea [disabled]="disableAllFields" aria-label="Notification Description" rows="4" name="NotificationDescription" [(ngModel)]="notificationTypeTemplate.NotificationDescription"></textarea>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12" *ngIf="showEmailTemplate">
+                    <h5 class="custom-heading-grey">{{emailTemplateTitle}}</h5>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label class="input_title required">Template Title</label>
+                                <input [disabled]="disableAllFields" type="text" name="title" aria-label="Template Title" required="true" placeholder="" [(ngModel)]="emailTemplate.Title" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label class="input_title required">Subject</label>
+                                <input [disabled]="disableAllFields" type="text" name="subject" aria-label="Subject" required="true" placeholder="" [(ngModel)]="emailTemplate.Subject" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label class="input_title">Pre-header</label>
+                                <input [disabled]="disableAllFields" type="text" name="pre-header" aria-label="Pre-header" placeholder="" [(ngModel)]="emailTemplate.PreHeader" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6"></div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label class="input_title ">Description</label>
+                                <textarea [disabled]="disableAllFields" rows="4" name="description" aria-label="Description" [(ngModel)]="emailTemplate.Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <label class="input_title required">Message</label>
+                            <!--            <tinymce [(ngModel)]="html" (change)="htmlChanged()" ></tinymce>-->
+                            <editor [disabled]="disableAllFields" name="message" required="true" [(ngModel)]="emailTemplate.Message" [init]="{
+                 base_url: tinyMCEUrl,
+                 suffix: '.min',
+                 height: 500,
+                 menubar: false,
+                 plugins: [
+                   'advlist autolink lists link image charmap print preview anchor',
+                   'searchreplace visualblocks code fullscreen',
+                   'insertdatetime media table paste code help wordcount'
+                 ],
+                 toolbar:
+                   'undo redo | | link image | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+               }"></editor>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+            <div class="col-lg-12 col-md-12">
+                <div class="action_btn text-right">
+                    <button class="btn v4" (click)="cancel(myform);" type="button">Cancel</button>
+                    <button class="btn v3" type="submit" [disabled]="isViewOnly">{{mode === 'edit' ? 'Update' : mode === 'create' ? 'Save' : 'Save'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

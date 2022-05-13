@@ -1,0 +1,141 @@
+<div id="contact-modal">
+    <div class="modal-header">
+        <!-- <h4 class="modal-title" style="margin: auto">Contract/BPA/Order Pin</h4> -->
+        <div class="col-lg-12 modal-title-sec">
+            <h3 class="modal-form-title">Ask the Experts</h3>
+        </div>
+        <button aria-label="Ask the experts close dialog button" type="button" (click)="activeModal.dismiss('Cross click')" style="position: absolute;right: 1rem;top: 1rem;" class="close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <div class="create_activity_form modal-form">
+            <form (ngSubmit)="askExperts(myform);" #myform="ngForm" [class.form-submitted]="isFormSubmitted">
+                <div class="row">
+                    <!-- <div class="col-lg-12">
+                  <h3 class="modal-form-title">Ask the Experts</h3>
+              </div> -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label class="input_title required" for="fname">First name</label>
+                            <input aria-label="First name" name="FirstName" required="true" [(ngModel)]="askExpertsObj.FirstName" type="text" id="fname" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label class="input_title required" for="lname">Last name</label>
+                            <input aria-label="Last name" name="LastName" required="true" [(ngModel)]="askExpertsObj.LastName" type="text" id="lname" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label class="input_title required" for="department">Department</label>
+                            <input aria-label="Department" name="Department" required="true" [(ngModel)]="askExpertsObj.Department" type="text" id="department" placeholder="">
+                            <!-- <p class="input_title required">Department</p>
+                  <ng-select [searchable]="true" [clearable]="false" required="true" class="dropdown_select mb-15" name="contact_prefrences">
+                    <ng-option value="activity_2">Current Department</ng-option>
+                    <ng-option value="activity_2">Current Department</ng-option>
+                    <ng-option value="activity_2">Current Department</ng-option>
+                    <ng-option value="activity_2">Current Department</ng-option>
+                  </ng-select> -->
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label class="input_title" [ngClass]="askExpertsObj.ContactPreference === 'email' ? 'required' : ''" for="email">Email Address</label>
+                            <input aria-label="Email address" name="EmailAddress" [required]="askExpertsObj.ContactPreference === 'email' ? 'true' : 'false'" [(ngModel)]="askExpertsObj.EmailAddress" type="text" id="email" placeholder="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <p class="input_title required">Contact Preference</p>
+                            <ng-select aria-label="Contact preference drop down menu" name="ContactPreference" required="true" [(ngModel)]="askExpertsObj.ContactPreference" (change)="onContactTypeChange($event)" [searchable]="false" [clearable]="false" required="true" class="dropdown_select mb-15">
+                                <ng-option value="email">Email</ng-option>
+                                <ng-option value="phone">Phone</ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label aria-label="Phone number" class="input_title" [ngClass]="askExpertsObj.ContactPreference !== 'email' ? 'required' : ''" for="phone">Phone Number</label>
+                            <input type="text" [required]="askExpertsObj.ContactPreference !== 'email' ? 'true' : 'false'" id="phone" placeholder="XXX-XXX-XXXX" name="PhoneNumber" [(ngModel)]="askExpertsObj.PhoneNumber">
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-12">
+                  <div class="form-group">
+                      <label class="input_title" for="desc">Message</label>
+                      <textarea name="Message" [(ngModel)]="askExpertsObj.Message" id="desc" cols="30" rows="10"></textarea>
+                  </div>
+              </div> -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <p class="input_title">Requested Response Date</p>
+                            <div class="input-group formDatePicker">
+                                <small *ngIf="askExpertsObj.PickDateERROR" class="text-danger">{{askExpertsObj.PickDateERROR}}</small>
+                                <input maxlength="10" [(ngModel)]="askExpertsObj.PickDate" (blur)="checkTypingDate('PickDate',askExpertsObj);" (ngModelChange)="checkTypingDate('PickDate',askExpertsObj);" class="form-control no-validation" name="PickDate" placeholder="MM-DD-YYYY" ngbDatepicker
+                                    #pickDate="ngbDatepicker">
+                                <div class="input-group-append">
+                                    <button aria-label="Pick a date calender button" class="btn btn-outline-secondary calendar" (click)="pickDate.toggle()" type="button">
+                        <fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon>
+                      </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="date_picker activity_datepicker">
+                    <p class="input_title">Pick a date</p>
+                    <div id="datepicker-from_1" class="input-group date" data-date-format="dd/mm/yyyy">
+                      <div class="input-group formDatePicker">
+                        <input class="form-control" name="PickDate" [(ngModel)]="askExpertsObj.PickDate" placeholder="MM-DD-YYYY" ngbDatepicker #pickDate="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="pickDate.toggle()" type="button"><fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon></button>
+                        </div>
+                      </div>
+                      <input type="Date" name="PickDate" [(ngModel)]="askExpertsObj.PickDate" placeholder="MM-DD-YYYY" />
+                    </div>
+                </div> -->
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label class="input_title" for="topic">Topic</label>
+                            <input aria-label="Topicinput" type="text" name="Topic" [(ngModel)]="askExpertsObj.Topic" id="topic" placeholder="">
+                        </div>
+
+                        <!-- <p class="input_title">Topic</p>
+              <ng-select [searchable]="false" [clearable]="false" required="true" class="dropdown_select mb-15" name="Topic" [(ngModel)]="askExpertsObj.Topic">
+                <ng-option value="help">Help</ng-option>
+                <ng-option value="desk">Desk</ng-option>
+                <ng-option value="issue">Issue</ng-option>
+              </ng-select> -->
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="input_title" for="question">Question</label>
+                          <textarea [pattern]="commonService.textAreaPattern" aria-label="textarea" rows="4" cols="50" name="Question" #questionTextArea="ngModel" [(ngModel)]="askExpertsObj.Question" class="form-field-border form-control" id="question"></textarea>
+                          <div *ngIf="questionTextArea.dirty && questionTextArea.invalid">
+                            <small class="form-text text-danger bottom-error-cs" *ngIf="questionTextArea.errors?.pattern">
+                              You have exceeded the maximum character limit for the following field. Maximum limit is 500 characters.
+                            </small>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <div class="add-listing__input-file-box">
+                                <input role="button" aria-label="Upload file button" (change)="onFileChange($event)" class="add-listing__input-file" type="file" name="files_upload" accept=".xls,.xlsx, .doc, .docx, .pdf, .gif, .jpg, .jpeg">
+                                <div class="add-listing__input-file-wrap">
+                                    <p *ngIf="!fileData"><i class="ion-ios-cloud-upload-outline"></i> Upload File</p>
+                                    <p *ngIf="fileData && fileData.name"><i class="ion-ios-folder-outline"></i> {{fileData.name}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <button class="send_btn">Send</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

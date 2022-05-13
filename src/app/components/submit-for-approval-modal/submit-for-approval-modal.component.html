@@ -1,0 +1,36 @@
+<div class="modal-header attachment-modal-header">
+  <!--    <h4 class="modal-title" style="margin: auto">Add a Document</h4>-->
+      <button type="button" aria-label="Add a document close dialog box icon" style="position: absolute;right: 1rem;top: 1rem;" class="close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body attachment-modal-body">
+      <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12">
+              <form name="attachment_modal_form" (ngSubmit)="submitModalForm()" #myform="ngForm">
+  
+                <div class='col-md-12'>
+                  <div class="form-group">
+                    <p class="input_title track-date text-center requestedApprovalDateLabel">Requested Approval Date</p>
+                    <div class="input-group formDatePicker">
+                      <small *ngIf="requestedApprovalDateObj.requestedApprovalDateERROR" class="text-danger">{{requestedApprovalDateObj.requestedApprovalDateERROR}}</small>
+                      <input maxlength="10" [(ngModel)]="requestedApprovalDateObj.requestedApprovalDate" class="form-control no-validation" name="requestedApprovalDate" placeholder="MM-DD-YYYY" (blur)="checkTypingDateForCalendar('requestedApprovalDate',requestedApprovalDateObj)" (ngModelChange)="checkTypingDateForCalendar('requestedApprovalDate',requestedApprovalDateObj);" #requestedApprovalDate="ngModel" ngbDatepicker #RequestedApprovalDate="ngbDatepicker">
+                      <div class="input-group-append">
+                        <button aria-label="Scheduled date calendar button" class="btn btn-outline-secondary calendar" (click)="RequestedApprovalDate.toggle()" type="button">
+                          <fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                  <div class="modal-footer attachment-modal-footer">
+                      <button type="button" style="width: 100%;" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+                      <button style="width: 100%;" class="btn btn-outline-dark footer-submit-btn" [disabled]="!myform.form.valid || requestedApprovalDateObj.requestedApprovalDateERROR" [ngClass]="!myform.form.valid || requestedApprovalDateObj.requestedApprovalDateERROR ? 'footer-submit-btn-disabled' : 'footer-submit-btn'">Submit</button>
+                  </div>
+  
+              </form>
+          </div>
+      </div>
+  </div>

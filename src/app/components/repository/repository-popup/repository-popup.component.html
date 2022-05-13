@@ -1,0 +1,50 @@
+<div id="contact-modal">
+  <div class="modal-header">
+    <!-- <h4 class="modal-title" style="margin: auto">Contract/BPA/Order Pin</h4> -->
+    <div class="col-lg-12 modal-title-sec"><h3 class="modal-form-title">Update Document</h3></div>
+    <button aria-label="Close button for Update Document" type="button" (click)="activeModal.dismiss('Cross click')" style="position: absolute;right: 1rem;top: 1rem;" class="close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="create_activity_form modal-form">
+      <form (ngSubmit)="submitModalForm()">
+          <div class="row">
+              <div class="col-lg-12 col-md-12">
+                  <div class="form-group">
+                      <label class="input_title required" for="fname">Title</label>
+                      <input [(ngModel)]="updateDoc.title" autocomplete="off" required='true' type="text" id="fname" placeholder="" [ngModelOptions]="{standalone: true}">
+                  </div>
+              </div>
+              <div class="col-lg-12 col-md-12" *ngIf="!showActivityDropDown">
+                <label class="mb-0 required">Type</label>
+                <ng-select [searchable]="false" required="true" [clearable]="false" class="dropdown_select activity_dropdown v2" name="type" [(ngModel)]="updateDoc.type" [ngModelOptions]="{standalone: true}">
+                  <ng-option value="Deliverable">Deliverable</ng-option>
+                  <ng-option value="Work Product">Work Product</ng-option>
+                  <ng-option value="Deliverable/Work Product">Deliverable/Work Product</ng-option>
+                </ng-select>
+              </div>
+
+            <div class="col-lg-12 col-md-12" *ngIf="showActivityDropDown">
+                <label class="mb-0 required">Type</label>
+              <ng-select aria-label="Activity Type" [searchable]="false" [clearable]="false" required="true" name="type" class="dropdown_select activity_dropdown" [(ngModel)]="updateDoc.type" [ngModelOptions]="{standalone: true}">
+                <ng-option *ngFor="let item of commonService.typeToWorkCategoryMap | keyvalue" [value]="item.key">{{item.key}}</ng-option>
+              </ng-select>
+              </div>
+              <div class="col-lg-12 col-md-12">
+                <div class="form-group">
+                  <label>Version Comments</label>
+                  <textarea name="Version_Comment" id="desc" cols="30" rows="10" [(ngModel)]="updateDoc.verComments" autocomplete="off" [ngModelOptions]="{standalone: true}"></textarea>
+                </div>
+              </div>
+
+          </div>
+          <div class="row">
+              <div class="col-lg-12 text-center">
+                  <button class="send_btn">Update</button>
+              </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>

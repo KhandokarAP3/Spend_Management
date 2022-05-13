@@ -1,0 +1,183 @@
+<ng-template #actionItemTracking>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="track_option_title">Track Completion and Configure Notifications (Optional)</h4>
+        </div>
+    </div>
+    <hr/>
+    <div class="row" *ngFor="let trackingItem of actionItem && actionItem.TrackingItems; index as j;">
+        <div class="col-sm-12" *ngIf="j>0">
+            <hr/>
+        </div>
+        <div class='col-md-3'>
+            <div class="form-group">
+                <p class="input_title">Scheduled Date</p>
+                <div class="input-group formDatePicker">
+                    <small *ngIf="trackingItem.scheduledDateERROR" class="text-danger">{{trackingItem.scheduledDateERROR}}</small>
+                    <input class="form-control no-validation" name="trackingItem_scheduledDate{{j}}" placeholder="MM-DD-YYYY" (blur)="checkTypingDateForCalendar('scheduledDate', trackingItem)" [(ngModel)]="trackingItem.scheduledDate" (ngModelChange)="checkTypingDateForCalendar('scheduledDate',trackingItem)"
+                        ngbDatepicker #scheduledDate="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="scheduledDate.toggle()" type="button">
+              <fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon>
+            </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-3'>
+            <div class="form-group">
+                <p class="input_title">Actual Receipt Date</p>
+                <div class="input-group formDatePicker">
+                    <small *ngIf="trackingItem.actualReceiptDateERROR" class="text-danger">{{trackingItem.actualReceiptDateERROR}}</small>
+                    <input class="form-control no-validation" name="trackingItem_actualReceiptDate{{j}}" placeholder="MM-DD-YYYY" (blur)="checkTypingDateForCalendar('actualReceiptDate', trackingItem);" [(ngModel)]="trackingItem.actualReceiptDate" (ngModelChange)="checkTypingDateForCalendar('actualReceiptDate',trackingItem)"
+                        ngbDatepicker #actualReceiptDate="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="actualReceiptDate.toggle()" type="button">
+              <fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon>
+            </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-1 mt-4'>
+            <fa-icon *ngIf="j > 0" (click)="deleteTrackingItem(actionItem, j)" class="pointer" [icon]="['fas', 'trash']"></fa-icon>
+        </div>
+        <div class="col-sm-4 track_option_side">
+            <div class="notify-btn">
+                <button type="button" class="btn" (click)="onAddNotification(trackingItem)" [ngClass]="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient ? 'v4' : 'v3'" [disabled]="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient">Schedule Notification</button>
+            </div>
+            <div class="view-sideicon">
+                <div class="side-icons pointer" *ngIf="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient" (click)="onAddNotification(trackingItem, 'view')">
+                    <fa-icon [icon]="['far', 'eye']"></fa-icon>
+                </div>
+                <div class="side-icons pointer" *ngIf="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient" (click)="onAddNotification(trackingItem)">
+                    <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+                </div>
+                <div class="side-icons pointer" *ngIf="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient" (click)="deleteAddNotificationDetails(trackingItem)">
+                    <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <span class="pointer" (click)="addTrackingItem(actionItem);">
+            <fa-icon class="plus-icon" [icon]="['fas', 'plus']"></fa-icon>
+            <h5 class="faq_header">
+                Add Tracking Item
+            </h5>
+        </span>
+            <hr/>
+        </div>
+    </div>
+</ng-template>
+
+<form #actionItemForm="ngForm" [class.form-submitted]="isFormSubmitted" (ngSubmit)="saveActionItemInMainPageData(actionItemForm)">
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+            <div class="content_title">
+                <div class="content_title_left">
+                    <h2>{{title}} Action Item for {{parentPage}}</h2>
+                </div>
+                <div class="content_title_right">
+                    <a href="javascript:void(0);" (click)="openNotesModal()" class="btn v1">
+                        <fa-icon class="mr-2" [icon]="['fas', 'sticky-note']"></fa-icon>
+                        Notes
+                    </a>
+                    <div class="content_title_btn">
+                        <a href="javascript:void(0);" class="btn v1" (click)="validatePageClosure()">
+                  Return to {{parentPage}}
+                </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" [ngClass]="mode === 'view' ? 'disabled' : ''">
+        <div class="col-md-12">
+            <div class="create_activity_form bg_wh mb-4" style="padding: .5rem 1rem;">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <p class="input_title">Activity Type</p>
+                            <input type="text" name="activityType" [(ngModel)]="parentPageData && parentPageData.ActivityType" placeholder="" class="disabled">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <p class="input_title">Project</p>
+                            <input type="text" name="project" [(ngModel)]="parentPageData && parentPageData.ProjectTitle && parentPageData.ProjectTitle" placeholder="" class="disabled">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <p class="input_title required">Title</p>
+                            <input [pattern]="commonService.inputFieldPattern" #titleInput="ngModel" type="text" required="true" name="actionItemTitle" [(ngModel)]="actionItem && actionItem.title" placeholder="" (change)="commonService.isSomethingUnsaved = true;">
+                            <div *ngIf="titleInput.dirty && titleInput.invalid">
+                                <small class="form-text text-danger bottom-error-cs" *ngIf="titleInput.errors?.pattern">
+                                  You have exceeded the maximum character limit for the following field. Maximum limit is 255 characters.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6">
+                        <div class="form-group">
+                            <p class="input_title">Priority</p>
+                            <ng-select [searchable]="false" [clearable]="false" [(ngModel)]="actionItem && actionItem.priority" name="deliverablePriority" class="dropdown_select activity_dropdown v2"  (change)="commonService.isSomethingUnsaved = true;">
+                                <ng-option *ngFor="let priority of commonService.priorities" [value]="priority">{{priority}}</ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="form-group">
+                            <p class="input_title">Assigned to</p>
+                            <input type="text" name="assignedTo" [(ngModel)]="actionItem && actionItem.assignedTo" [ngbTypeahead]="searchPeopleWithinProject" placeholder="Find user to assign" (change)='setAssignedToUser()' [disabled]="!teamsArr.length" (change)="commonService.isSomethingUnsaved = true;"/>
+                        </div>
+                    </div>
+
+                    <!--          <div class="col-lg-3 col-md-3">-->
+                    <!--            <p class="input_title">Status</p>-->
+                    <!--            <ng-select [searchable]="false" [clearable]="false" class="dropdown_select activity_dropdown" name="status" [(ngModel)]="actionItem && actionItem.status">-->
+                    <!--              <ng-option value="">Select Status</ng-option>-->
+                    <!--              <ng-option *ngFor="let status of commonService.status" [value]="status">{{status}}</ng-option>-->
+                    <!--            </ng-select>-->
+                    <!--          </div>-->
+                    <div class="col-sm-12">
+                        <ng-container [ngTemplateOutlet]="actionItemTracking" [ngTemplateOutletContext]="{actionItem:actionItem}"></ng-container>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12">
+                        <div class="form-group">
+                            <p class="input_title">Description</p>
+                            <textarea (change)="commonService.isSomethingUnsaved = true;" [pattern]="commonService.textAreaPattern" #descInput="ngModel" [(ngModel)]="actionItem && actionItem.description" name="actionItemDesc" placeholder="Write description here." class="form-field-border form-control">
+              </textarea>
+                            <div *ngIf="descInput.dirty && descInput.invalid">
+                                <small class="form-text text-danger bottom-error-cs" *ngIf="descInput.errors?.pattern">
+                  You have exceeded the maximum character limit for the following field. Maximum limit is 500 characters.
+                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="full-width">
+        <div class="col-lg-12 text-right">
+            <div class="action_btn">
+                <button class="btn v4" (click)="cancel();" type="button">Cancel</button>
+                <button class="btn v3" type="submit" *ngIf="mode !== 'view'" [class.disabled]="(!commonService.canEditActionItems(actionItem) && !commonService.canCreateActionItems()) || scheduledDateErrorInTrackingItems || actualReceiptDateErrorInTrackingItems">{{mode === 'edit' ? 'Update' : 'Attach to Activity'}}</button>
+            </div>
+        </div>
+    </div>
+
+</form>

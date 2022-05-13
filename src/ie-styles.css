@@ -1,0 +1,15 @@
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  button.calendar, .ngb-dp-arrow>button {
+    min-width: 40px !important;
+    margin: 0px !important;
+  }
+  .fund_progress_bar {
+    display: inline-flex;
+  }
+  .fund_progress_label {
+    margin: auto;
+  }
+  .data_table .chart_wrap {
+    padding-right: 25px !important;
+  }
+}

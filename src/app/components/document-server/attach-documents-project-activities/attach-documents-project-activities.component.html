@@ -1,0 +1,51 @@
+<div class="modal-header attachment-modal-header">
+  <h4 class="modal-title" style="margin: auto">Attach Document with {{this.data.isProject ? 'Project' : 'Activity'}}</h4>
+  <button type="button" aria-label="Create a Document close dialog box icon" style="position: absolute;right: 1rem;top: 1rem;" class="close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body attachment-document-project-activity-modal-body" [ngClass]="{spinner: showLoader}">
+
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+
+      <div class="right-tabs-projects rightattachmentProjects">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" [destroyOnHide]="false" class="nav-tabs mt-0">
+          <li [ngbNavItem]="1" [destroyOnHide]="true">
+            <a ngbNavLink>Active</a>
+            <ng-template ngbNavContent>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>Completed</a>
+            <ng-template ngbNavContent>
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </div>
+
+      <div class="modalProject">
+       <div class="row" *ngFor="let item of data.dataRequiredForAttach | filterAttachDocs:{from: this.data.isProject, activeTab: this.activeTab}">
+        <div class="form-group col-sm-8">
+          <label class="mb-0">{{item.Title}}</label>
+        </div>
+
+        <div class="form-group col-sm-4">
+          <label class="checkProject">
+          <input type="radio" name="selectedItemRadio" class="attach-project-activity-doc" [(ngModel)]="selectedItem" [value]='item'>
+          <span class="checkmarkProject"></span>
+          </label>
+        </div>
+      </div>
+      </div>
+      <div class="modal-footer attachment-modal-footer">
+        <button type="button" style="width: 100%;" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+        <button type="button" style="width: 100%;" class="btn btn-outline-dark footer-submit-btn" [disabled]="!selectedItem" [ngClass]="!selectedItem ? 'footer-submit-btn-disabled' : 'footer-submit-btn'" (click)="submitModalForm()">Attach</button>
+       </div>
+    </div>
+  </div>
+
+</div>

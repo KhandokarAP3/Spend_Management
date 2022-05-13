@@ -1,0 +1,31 @@
+<div class="title_wrap">
+  <div class="title">
+    <h2>Budget Progress</h2>
+  </div>
+</div>
+<div style="text-align: center;"><h4>Estimated Value: {{chartData.estimatedValue | currency:'USD':true}}</h4></div>
+<div class="progressbar_wrap">
+  <div class="progress-tooltip">
+    <div *ngIf="chartData" style="position: relative; cursor: pointer; display: inline-block;width: calc(100% - 140px);padding: 12px 0px;border: 1px solid lightgray;border-left: none;border-right: none;">
+      <div class="fund_progress_bar" [ngStyle]="{width: chartData['Unfunded Requirement'].width+'%', background: chartData['Unfunded Requirement'].color}" (click)="totalUnfundedRequirementsClickHandler()">
+        <span class="fund_progress_label">{{chartData['Unfunded Requirement'].value | currency:'USD':true}}</span>
+      </div>
+      <div class="fund_progress_bar" [ngStyle]="{width: chartData['Budgeted'].width+'%', background: chartData['Budgeted'].color}" (click)="totalBudgetedClickHandler()">
+        <span class="fund_progress_label">{{chartData['Budgeted'].value | currency:'USD':true}}</span>
+      </div>
+      <div class="fund_progress_bar" [ngStyle]="{width: chartData['Reserved'].width+'%', background: chartData['Reserved'].color}" (click)="totalReservedClickHandler()">
+        <span class="fund_progress_label">{{chartData['Reserved'].value | currency:'USD':true}}</span>
+      </div>
+      <div class="fund_progress_bar" [ngStyle]="{width: chartData['Committed'].width+'%', background: chartData['Committed'].color}" (click)="totalCommittedClickHandler()">
+        <span class="fund_progress_label">{{chartData['Committed'].value | currency:'USD':true}}</span>
+      </div>
+      <div class="fund_progress_legends" style="margin-left: 30px">
+        <p><span [ngStyle]="{background: chartData['Unfunded Requirement'].color}"></span>{{chartData['Unfunded Requirement'].name}}</p>
+        <p><span [ngStyle]="{background: chartData['Budgeted'].color}"></span>{{chartData['Budgeted'].name}}</p>
+        <p><span [ngStyle]="{background: chartData['Reserved'].color}"></span>{{chartData['Reserved'].name}}</p>
+        <p><span [ngStyle]="{background: chartData['Committed'].color}"></span>{{chartData['Committed'].name}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>

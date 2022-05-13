@@ -1,0 +1,141 @@
+<div class="modal-header attachment-modal-header">
+    <h4 class="modal-title" style="margin: auto">Add a Document</h4>
+    <button type="button" aria-label="Add a document close dialog box icon" style="position: absolute;right: 1rem;top: 1rem;" class="close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body attachment-modal-body">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+            <form name="attachment_modal_form" (ngSubmit)="submitModalForm()" #myform="ngForm">
+                <div class="form-row">
+                    <div class="form-group col-sm-12">
+                        <div class="row">
+                            <div class="form-group col-sm-5">
+                                <label class="required">Choose one or more files</label>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <!--                <input type="file" required="true" (change)="onFileChange($event)" name="files_upload" [multiple]="fileUploadObj.allowMultiple" accept=".xls,.xlsx, .doc, .docx, .pdf, .gif, .jpg, .jpeg">-->
+                                <input role="button" type="file" aria-label="Choose file button" required="true" (change)="onFileChange($event)" name="files_upload" #fileInput>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-12">
+                        <div class="row">
+                            <div class="form-group col-sm-5">
+                                <label class="required">Title</label>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <input type="text" aria-label="Enter document title" required='true' name="title" [(ngModel)]="fileUploadObj.title" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              <div class="form-row">
+                <div class="form-group col-sm-12">
+                  <div class="row">
+                    <div class="form-group col-sm-5">
+                      <label class="mb-0 required">Document Category</label>
+                    </div>
+
+                    <div class="form-group col-sm-7">
+<!--                      <ng-select placeholder="" aria-label="Document Category" required="true" class="dropdown_select activity_dropdown create-activity-title" name="documentcategory" [(ngModel)]="fileUploadObj.DocumentCategory">-->
+<!--                        <ng-option [value]="category" *ngFor="let category of documentCategoryArr">-->
+<!--                          {{category}}-->
+<!--                        </ng-option>-->
+<!--                      </ng-select>-->
+                      <ul id="menu">
+                        <li class="parent">
+                          <!--                                  <a href="#">Activity Type</a>-->
+                          <button type="button" #activityTypeBtn (click)="categoryDropDown()" required="'true'">{{fileUploadObj.DocumentCategory || 'Select Document Category'}}</button>
+                          <ul id="attachDocDropOptions" style="display: none" class="child">
+                            <li class="parent" *ngFor="let wCat of groupAttachDocNamesByWorkCategory | keyvalue;  let i = index">
+                              <a href="javascript:void(0)">{{wCat.key}}<span class="expand">»</span>
+                              </a>
+                              <ul class="child">
+                                <li *ngFor="let docName of wCat.value;  let j = index">
+                                  <a href="javascript:void(0)" nowrap (click)="selectDocNameFromNestedWorkCategories($event, fileUploadObj)">{{docName.Title}}</a>
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                <div class="form-row" *ngIf="showType">
+                    <div class="form-group col-sm-12">
+                        <div class="row">
+                            <div class="form-group col-sm-5">
+                                <label class="mb-0 required">Activity Type</label>
+                            </div>
+
+                            <div class="form-group col-sm-7">
+                                <ng-select placeholder="" aria-label="Type" aria-labelledby="Type" role="listbox" aria-label="Type dropdown" *ngIf="showType" required="true" class="dropdown_select activity_dropdown v2" name="type" [(ngModel)]="fileUploadObj.type">
+                                    <ng-option role="option" value="{{doc.value}}" *ngFor="let doc of documentTypes">
+                                        {{doc.name}}
+                                    </ng-option>
+                                </ng-select>
+
+                                <input aria-label="Type value" *ngIf="!showType" role="textbox" aria-label="TYPE value" type="text" required='true' name="type" [readonly]="isReadOnly" [(ngModel)]="fileUploadObj.type" autocomplete="off">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+              <div class="form-row">
+                <div class="form-group col-sm-12">
+                  <div class="row">
+                    <div class="form-group col-sm-5">
+                      <label class="mb-0 required">Status</label>
+                    </div>
+
+                    <div class="form-group col-sm-7">
+                      <label class="attachModal-status">
+                        <input type="radio" value="Draft" checked="true" required="true" [(ngModel)]="fileUploadObj.Status" name="Status">
+                        <span class="attach-select">Draft</span>
+                      </label>
+                      <label class="attachModal-status">
+                        <input type="radio" value="In-Review" required="true" [(ngModel)]="fileUploadObj.Status" name="Status">
+                        <span class="attach-select">In-review</span>
+                      </label>
+                      <label class="attachModal-status">
+                        <input type="radio" value="Final" required="true" [(ngModel)]="fileUploadObj.Status" name="Status">
+                        <span class="attach-select">Final</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-12">
+                        <div class="row">
+                            <div class="form-group col-sm-5">
+                                <label>Version Comments</label>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <input type="text" aria-label="Version comments text input" name="Version_Comment" [(ngModel)]="fileUploadObj.verComments" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer attachment-modal-footer">
+                    <button type="button" style="width: 100%;" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+                    <button style="width: 100%;" class="btn btn-outline-dark footer-submit-btn" [disabled]="!myform.form.valid || !fileUploadObj.documents || !fileUploadObj.DocumentCategory" [ngClass]="!myform.form.valid || !fileUploadObj.documents || !fileUploadObj.DocumentCategory ? 'footer-submit-btn-disabled' : 'footer-submit-btn'">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

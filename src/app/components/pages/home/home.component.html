@@ -1,0 +1,70 @@
+<div class="container-fluid px-0">
+  <div class="row mb-4 toplevel-metrics-wrp">
+    <div class="col-md-3" *ngIf="widgetsControl[widgetNames.AVERAGE_TIME_TO_COMPLETION]">
+      <app-time-to-completion-metric></app-time-to-completion-metric>
+    </div>
+    <div class="col-md-3" *ngIf="widgetsControl[widgetNames.NUMBER_OF_ACTIVE_PROJECTS]">
+      <app-active-projects-metric></app-active-projects-metric>
+    </div>
+    <div class="col-md-3" *ngIf="widgetsControl[widgetNames.TOTAL_DOLLAR_AMOUNT_OF_ACTIVE_PROJECTS]">
+      <app-total-dollar-amount-metric></app-total-dollar-amount-metric>
+    </div>
+    <div class="col-md-3" *ngIf="widgetsControl[widgetNames.NUMBER_OF_PROJECTS_WITH_EXPIRING_FUNDS]">
+      <app-projects-with-expiring-funds-metric></app-projects-with-expiring-funds-metric>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="widgetsControl[widgetNames.BUDGET_PROGRESS]">
+    <div class="col-md-12">
+      <app-fund-progress></app-fund-progress>
+    </div>
+  </div>
+
+  <div class="row mb-4" *ngIf="widgetsControl[widgetNames.ACTIVITY_STATUS_DASHBOARD_METRIC]">
+    <div class="col-md-12">
+      <app-drag-drop></app-drag-drop>
+    </div>
+  </div>
+
+  <div class="row d-block homeNewWidget">
+    <div class="col-md-6 mb-4">
+      <app-document-approval-metric></app-document-approval-metric>
+    </div>
+    <div class="col-md-6 mb-4" *ngIf="widgetsControl[widgetNames.PROJECTS_BY_WORK_CATEGORY_METRIC]">
+      <app-projects-by-work-category-metric></app-projects-by-work-category-metric>
+    </div>
+
+    <div class="col-xl-6 col-lg-12 col-md-12 mb-4" *ngIf="widgetsControl[widgetNames.AVERAGE_TIME_TO_COMPLETE_DASHBOARD]">
+      <app-avg-time-to-complete-metric></app-avg-time-to-complete-metric>
+    </div>
+    <div class="col-xl-6 col-lg-12 col-md-12 mb-4" *ngIf="widgetsControl[widgetNames.AVERAGE_TIME_TO_COMPLETE_DASHBOARD]">
+      <app-avg-time-to-complete-metric-market-research></app-avg-time-to-complete-metric-market-research>
+    </div>
+
+    <div class="col-xl-6 col-lg-12 col-md-12 mb-4" *ngIf="widgetsControl[widgetNames.AVERAGE_TIME_TO_COMPLETE_DASHBOARD]">
+      <app-avg-time-to-complete-metric-requirements-development></app-avg-time-to-complete-metric-requirements-development>
+    </div>
+    <div class="col-xl-6 col-lg-12 col-md-12 mb-4" *ngIf="widgetsControl[widgetNames.AVERAGE_TIME_TO_COMPLETE_DASHBOARD]">
+      <app-avg-time-to-complete-metric-procurement-request-package></app-avg-time-to-complete-metric-procurement-request-package>
+    </div>
+
+    <div class="col-xl-6 col-lg-12 col-md-12 mb-4" *ngIf="widgetsControl[widgetNames.PROJECTS_METRIC]">
+      <app-projects-metric></app-projects-metric>
+    </div>
+    <div class="col-xl-6 col-lg-12 col-md-12 mb-4" *ngIf="widgetsControl[widgetNames.WORKLOAD_TRACKING_DASHBOARD_METRIC]">
+      <app-workload-tracking></app-workload-tracking>
+    </div>
+  </div>
+  <!-- <div class="row mb-4">
+    <div class="col-sm-12">
+      <google-chart style="width: 100%;" [width]="'100%'" [options]="options" [type]="'Gantt'" [data]="ganttData1" [columns]="ganttChart1Cols">
+      </google-chart>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-sm-12">
+      <google-chart style="width: 100%;" [width]="'100%'" [options]="options" [type]="'Gantt'" [data]="ganttData2" [columns]="ganttChart2Cols">
+      </google-chart>
+    </div>
+  </div> -->
+</div>

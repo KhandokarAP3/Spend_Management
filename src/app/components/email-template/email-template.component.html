@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box_title">
+            <h2>{{title}} Email Template</h2>
+        </div>
+    </div>
+</div>
+<form (ngSubmit)="saveEmailTemplate(myform);" #myform="ngForm" [class.form-submitted]="isFormSubmitted" [class.spinner]="showLoader">
+    <div class="row bg_wh mt-5 no-gutters">
+        <div class="col-md-12">
+            <div class="row" [class.disabled]="isViewOnly">
+                <div class="col-lg-6 col-md-6">
+                    <div class="form-group">
+                        <label class="input_title required">Title</label>
+                        <input aria-label="Title" type="text" name="title" required="true" placeholder="" [(ngModel)]="emailTemplate.Title" />
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="form-group">
+                        <label class="input_title required">Notification Type</label>
+                        <ng-select aria-label="Notification Type" name="notificationType" [searchable]="false" [clearable]="false" required="true" [(ngModel)]="emailTemplate.NotificationType" class="dropdown_select activity_dropdown v2" [disabled]="mode !== 'create'">
+                            <ng-option role="option" *ngFor="let option of notificationTypes" [value]="option" [disabled]="option === 'Action Required' || option === 'Unassign - Activity'  || option === 'Support Ticket Submittal'  || option === 'Assign To' || option === 'Open a ticket' || option === 'Ask the experts'">{{option}}</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="form-group">
+                        <label class="input_title required">Subject</label>
+                        <input aria-label="Subject" type="text" name="subject" required="true" placeholder="" [(ngModel)]="emailTemplate.Subject" />
+                    </div>
+                </div>
+                <!-- <div class="col-lg-6 col-md-6">
+            <div class="form-group">
+              <label class="input_title required">Recipient(s)</label>
+              <!-- [ngbTypeahead]="commonService.searchPeople"  [pattern]="emailRE"
+              <input type="text" [required]="true" [ngbTypeahead]="commonService.searchPeople" [disabled]="defaultRecipient" name="recipient" placeholder="" [(ngModel)]="emailTemplate.Recipient"  placeholder=""/>
+            </div>
+            <div class="notif_switch" style="padding-left: 0;">
+              <div class="switch_wrap">
+                <label class="switch v3">
+                  <input type="checkbox" name="defaultRecipient" [(ngModel)]="defaultRecipient" (change)="onDefaultRecipientChanged()">
+                  <span class="slider round_box"></span>
+                </label>
+                <span *ngIf="defaultRecipient" class="ml-2" style="font-size: 12px;">Recipient email address(es) will be supplied by the activity or action item.</span>
+              </div>
+            </div>
+          </div> -->
+                <div class="col-lg-6 col-md-6">
+                    <div class="form-group">
+                        <label class="input_title">Pre-header</label>
+                        <input aria-label="Pre-header" type="text" name="pre-header" placeholder="" [(ngModel)]="emailTemplate.PreHeader" />
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6"></div>
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label class="input_title">Description</label>
+                        <textarea aria-label="Description" rows="4" name="description" [(ngModel)]="emailTemplate.Description"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <label class="input_title required">Message</label>
+                    <!--            <tinymce [(ngModel)]="html" (change)="htmlChanged()" ></tinymce>-->
+                    <editor name="message" required="true" [(ngModel)]="emailTemplate.Message" [init]="{
+                 base_url: tinyMCEUrl,
+                 suffix: '.min',
+                 height: 500,
+                 menubar: false,
+                 plugins: [
+                   'advlist autolink lists link image charmap print preview anchor',
+                   'searchreplace visualblocks code fullscreen',
+                   'insertdatetime media table paste code help wordcount'
+                 ],
+                 toolbar:
+                   'undo redo | | link image | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+               }"></editor>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12">
+                <div class="action_btn text-right">
+                    <button class="btn v4" (click)="cancel(myform);" type="button">Cancel</button>
+                    <button class="btn v3" type="submit" [disabled]="isViewOnly">{{mode === 'edit' ? 'Update' : mode === 'create' ? 'Save' : 'Save'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

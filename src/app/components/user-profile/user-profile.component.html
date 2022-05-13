@@ -1,0 +1,255 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content_title">
+            <div class="content_title_left">
+                <h2>Settings</h2>
+            </div>
+
+            <!-- <div class="content_title_right">
+          <div class="content_title_btn">
+            <a href="javascript:void(0);" class="btn v1">
+              <fa-icon class="mr-2" [icon]="['far', 'user']"></fa-icon>
+              User Profile
+            </a>
+          </div>
+        </div> -->
+        </div>
+    </div>
+</div>
+<form (ngSubmit)="saveSettings(myform)" #myform="ngForm">
+    <div class="row">
+        <div class="col-md-12 mgBt-25">
+            <div class="row">
+                <!-- <div class="col-lg-9 col-md-9">
+                    <div class="box_title mb-3">
+                        <h6>Enter one or more Help Desk recepient email addresses (per form)</h6>
+                    </div>
+                </div> -->
+                <div class="col-lg-12 col-md-12">
+                    <div class="box_title mb-3">
+                        <h6>App Notification Display Settings</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <!-- <div class="helpDeskEmailsSec"> -->
+                    <!-- <div class="form-group">
+                <div class="input-icon-left">
+                  <label class="control-label">Contact Us</label>
+                  <input name="Title" [(ngModel)]="profileModel.Title" type="text" class="form-control" placeholder="" />
+                  <fa-icon [icon]="['far', 'envelope']" size="lg"></fa-icon>
+                </div>
+              </div> -->
+                    <!-- <div class="form-group">
+                            <div class="input-icon-left">
+                                <label class="control-label">Request a Ticket</label>
+                                <input name="RequestedTicket" aria-label="Request a Ticket" [(ngModel)]="profileModel.RequestedTicket" type="text" class="form-control" placeholder="" />
+                                <fa-icon [icon]="['far', 'envelope']" size="lg"></fa-icon>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-icon-left">
+                                <label class="control-label">Ask the Experts</label>
+                                <input name="AskTheExpert" aria-label="Ask the Expert" [(ngModel)]="profileModel.AskTheExpert" type="text" class="form-control" placeholder="" />
+                                <fa-icon [icon]="['far', 'envelope']" size="lg"></fa-icon>
+                            </div>
+                        </div> -->
+                    <div class="form-group">
+                        <label class="input_title">Log Retention Policy (# days in the past)</label>
+                        <input name="ExpertsUpcomingDays" aria-label="Log retention policy - number of days in the past" [(ngModel)]="profileModel.ExpertsUpcomingDays" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="input_title">Upcoming (# days in the future)</label>
+                        <input name="ContactUsUpcoming" aria-label="Number of days upcoming text intput box" [(ngModel)]="profileModel.ContactUsUpcoming" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="input_title">Previous (# days in the past)</label>
+                        <input name="RequestedUpcomingDay" aria-label="Number of days previous text intput box" [(ngModel)]="profileModel.RequestedUpcomingDay" type="text" class="form-control" />
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <!-- <div class="col-lg-3 col-md-3">
+                    <div class="form-group">
+                        <label class="input_title">Upcoming (# days in the future)</label>
+                        <input name="ContactUsUpcoming" aria-label="Number of days upcoming text intput box" [(ngModel)]="profileModel.ContactUsUpcoming" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="input_title">Previous (# days in the past)</label>
+                        <input name="RequestedUpcomingDay" aria-label="Number of days previous text intput box" [(ngModel)]="profileModel.RequestedUpcomingDay" type="text" class="form-control" />
+                    </div>
+                </div> -->
+            </div>
+
+            <!-- <div class="row">
+          <div class="col-lg-9 col-md-9">
+            <div class="form-group">
+              <div class="input-icon-left">
+                <label class="control-label">Request a Ticket</label>
+                <input name="RequestedTicket" [(ngModel)]="profileModel.RequestedTicket" type="text" class="form-control" placeholder="" />
+                <fa-icon [icon]="['far', 'envelope']" size="lg"></fa-icon>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3">
+            <div class="form-group">
+              <label class="input_title">Previous (# days in the past)</label>
+              <input name="RequestedUpcomingDay" [(ngModel)]="profileModel.RequestedUpcomingDay" type="text" class="form-control" />
+            </div>
+          </div>
+        </div> -->
+
+            <!-- <div class="row">
+          <div class="col-lg-9 col-md-9">
+            <div class="form-group">
+              <div class="input-icon-left">
+                <label class="control-label">Ask the Experts</label>
+                <input name="AskTheExpert" [(ngModel)]="profileModel.AskTheExpert" type="text" class="form-control" placeholder="" />
+                <fa-icon [icon]="['far', 'envelope']" size="lg"></fa-icon>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3">
+            <div class="form-group">
+              <label class="input_title">Log retention policy (# days in the past)</label>
+              <input [(ngModel)]="profileModel.ExpertsUpcomingDays" type="text" class="form-control" name="ExpertsUpcomingDays" />
+            </div>
+          </div>
+        </div> -->
+
+        </div>
+    </div>
+
+    <div class="row setting-grid-cs">
+        <div class="col-lg-6 col-md-6">
+            <div class="data_table">
+                <div class="title_wrap templateSecTitleWrap">
+                    <div class="title">
+                        <h2>Notification Types</h2>
+                    </div>
+                    <div class="content_title_btn"><a href="javascript:void(0);" (click)="createNotificationType()" class="btn v1">+ Create Notification Type</a></div>
+                </div>
+                <div class="dash_table notificationTypeTemplateTable">
+                    <div class="table_header table_data_wrap">
+                        <div class="tabel_data">
+                            <div class="setting-control-cs">
+                                <div class="table_data_item">
+                                    <p>Category</p>
+                                </div>
+                                <div class="table_data_item">
+                                    <p>Type</p>
+                                </div>
+                                <div class="table_data_item">
+                                    <p>Title</p>
+                                </div>
+                            </div>
+                            <div class="col card_header_right">
+                                <div class="table_header_item">
+                                    <p>Actions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="notificationTypes.length" class="table_data_wrap" tabindex="0">
+                        <div class="tabel_data" *ngFor="let notification of notificationTypes; index as t">
+                            <div class="setting-control-cs">
+                                <div class="table_data_item">
+                                    <p>{{notification.Category}}</p>
+                                </div>
+                                <div class="table_data_item">
+                                    <p>{{notification.Types}}</p>
+                                </div>
+                                <div class="table_data_item">
+                                    <p>{{notification.Title}}</p>
+                                </div>
+                            </div>
+                            <div class="col card_header_right">
+                                <span>
+                  <fa-icon (click)="viewNotificationType(notification)" class="pointer" [icon]="['far', 'eye']"></fa-icon>
+                </span>
+                                <span>
+                  <fa-icon (click)="editNotificationType(notification)" class="pointer" [icon]="['fas', 'pencil-alt']"></fa-icon>
+                </span>
+                                <span *ngIf="notification.Types === 'Recurring' || notification.Types === 'Custom'">
+                  <fa-icon (click)="deleteNotificationType(notification, t)" class="pointer" [icon]="['fas', 'trash']"></fa-icon>
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6">
+            <div class="data_table">
+                <div class="title_wrap templateSecTitleWrap">
+                    <div class="title">
+                        <h2>Email Templates</h2>
+                    </div>
+                    <div class="content_title_btn"><a href="javascript:void(0);" class="btn v1" style="color: white">+ Create Email Templates</a></div>
+                    <!-- <div class="content_title_btn"><a href="javascript:void(0);" (click)="createEmailTemplate()" class="btn v1">+ Create Email Templates</a></div> -->
+                </div>
+                <div class="dash_table emailTemplateTable">
+                    <div class="table_header table_data_wrap">
+                        <div class="tabel_data">
+                            <div class="setting-control-cs">
+                                <div class="table_data_item">
+                                    <p>Type</p>
+                                </div>
+                                <div class="table_data_item">
+                                    <p>Title</p>
+                                </div>
+                            </div>
+                            <div class="col card_header_right">
+                                <div class="table_header_item">
+                                    <p>Actions</p>
+                                </div>
+                            </div>
+                            <!--              <div class="table_header_item">-->
+                            <!--                <p>Type</p>-->
+                            <!--              </div>-->
+                            <!--              <div class="table_header_item">-->
+                            <!--                <p>Title</p>-->
+                            <!--              </div>-->
+                        </div>
+                    </div>
+                    <div *ngIf="templates.length" class="table_data_wrap" tabindex="0">
+                        <div class="tabel_data" *ngFor="let template of templates; index as i">
+                            <div class="setting-control-cs">
+                                <div class="table_data_item">
+                                    <p>{{template.NotificationType}}</p>
+                                </div>
+                                <div class="table_data_item">
+                                    <p>{{template.Title}}</p>
+                                </div>
+                                <!--                <div class="table_data_item">-->
+                                <!--                  <p>{{template.Description}}</p>-->
+                                <!--                </div>-->
+                            </div>
+                            <div class="col card_header_right">
+                                <span>
+                  <fa-icon (click)="viewEmailTemplate(template)" class="pointer" [icon]="['far', 'eye']"></fa-icon>
+                </span>
+                                <span>
+                  <fa-icon (click)="editEmailTemplate(template)" class="pointer" [icon]="['fas', 'pencil-alt']"></fa-icon>
+                </span>
+                                <span *ngIf="this.commonService.canDeleteEmailTemplate(template) || (template.NotificationType === 'Custom' || template.NotificationType === 'Recurring')">
+                  <fa-icon (click)="deleteEmailTemplate(template, i)" class="pointer" [icon]="['fas', 'trash']"></fa-icon>
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 text-right">
+            <div class="action_btn form-group">
+              <button class="btn v4" (click)="cancel()" type="button">Cancel</button>
+              <button type="submit" class="btn v3">Save</button>
+            </div>
+        </div>
+    </div>
+</form>

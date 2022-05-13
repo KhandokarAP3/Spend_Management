@@ -1,0 +1,124 @@
+<!-- <h5 class="form-section-title" style="padding: 1.5rem 1rem;"> -->
+<h5 class="form-section-title" style="padding-left: 1rem; padding-right: 1rem">
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+</svg> Team</h5>
+<!-- <div class="row" style="padding: 1.5rem 1rem;"> -->
+<div class="row" style="padding-left: 1rem; padding-right: 1rem">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="required mb-0">Requirements Owner</label>
+            <input class="create-activity-title" type="text" required="true" name="team.requirementsowner" [(ngModel)]="team && team.requirementsowner" [ngbTypeahead]="commonService.searchPeople" [editable]='false' placeholder="Lookup or enter name" />
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="required mb-0">Contracting Officer</label>
+            <input class="create-activity-title" type="text" required="true" name="team.contractingOfficer" [(ngModel)]="team && team.contractingOfficer" [ngbTypeahead]="commonService.searchPeople" [editable]='false' placeholder="Lookup or enter name" />
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="mb-0">Contracting Officer Representative</label>
+            <input class="create-activity-title" type="text" name="team.contractingOfficerRepresentative" [(ngModel)]="team && team.contractingOfficerRepresentative" [ngbTypeahead]="commonService.searchPeople" [editable]='false' placeholder="Lookup or enter name" />
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="mb-0">Program/Project Manager</label>
+            <input class="create-activity-title" type="text" name="team.projectManager" [(ngModel)]="team && team.projectManager" [ngbTypeahead]="commonService.searchPeople" [editable]='false' placeholder="Lookup or enter name" />
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="mb-0">Contract Specialist</label>
+            <input class="create-activity-title" type="text" name="team.contractSpecialist" [(ngModel)]="team && team.contractSpecialist" [ngbTypeahead]="commonService.searchPeople" [editable]='false' placeholder="Lookup or enter name" />
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="mb-0">Assigned Support Contractor</label>
+            <input class="create-activity-title" type="text" name="team.assignedSupportContractor" [(ngModel)]="team && team.assignedSupportContractor" [ngbTypeahead]="commonService.searchPeople" [editable]='false' placeholder="Lookup or enter name" />
+        </div>
+    </div>
+    <!-- <div class="col-sm-4">
+    <div class="form-group">
+      <label class="mb-0">Other</label>
+      <input type="text"  name="team.other" [(ngModel)]="team && team.other" [ngbTypeahead]="commonService.searchPeople" placeholder="Lookup or enter name" />
+    </div>
+  </div> -->
+    <div class="col-sm-4" *ngFor="let teammate of team && team.teamMates; index as i">
+        <div class="form-group" style="position: relative">
+            <img [src]="'images/close.png' | updateImageURL" (click)="deleteTeamMate(i);" alt="Image" style="right: 15px;position: absolute;bottom: 4px;cursor: pointer;">
+            <label class="mb-0">{{teammate.title}}</label>
+            <input class="create-activity-title" required="true" type="text" name="team.other_{{i}}" [(ngModel)]="teammate.name" [ngbTypeahead]="commonService.searchPeople" [editable]='false' placeholder="Lookup or enter name" />
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <button type="button" class="add_btn pl-0">Add Teammates <fa-icon (click)="addNewTeammates()" class="plus-icon add_btn" [icon]="['fas', 'plus']"></fa-icon></button>
+    </div>
+</div>
+
+
+<!--<div class="row">-->
+<!--    <div class="col-md-12">-->
+<!--        <h5 class="form-section-title mb-4"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
+<!--      <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>-->
+<!--    </svg> Team</h5>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;  <div class="col-md-4 viewclin">&ndash;&gt;-->
+<!--    &lt;!&ndash;    <a href="#">What's this?</a>&ndash;&gt;-->
+<!--    &lt;!&ndash;  </div>&ndash;&gt;-->
+<!--</div>-->
+
+
+<!--<div class="teamMateScroll">-->
+<!--    <div class="row scrollablerow" #teamMateDiv>-->
+<!--        <div class="col-sm-12">-->
+<!--            <div class="form-group">-->
+<!--                <label class="required mb-0">Contracting Officer</label>-->
+<!--                <input type="text" required="true" name="team.contractingOfficer" [(ngModel)]="team.contractingOfficer" [ngbTypeahead]="commonService.searchPeople" placeholder="Lookup or enter name" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-sm-12">-->
+<!--            <div class="form-group">-->
+<!--                <label class="mb-0">Contracting Officer Representative</label>-->
+<!--                <input type="text" name="team.contractingOfficerRepresentative" [(ngModel)]="team.contractingOfficerRepresentative" [ngbTypeahead]="commonService.searchPeople" placeholder="Lookup or enter name" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-sm-12">-->
+<!--            <div class="form-group">-->
+<!--                <label class="mb-0">Program/Project Manager</label>-->
+<!--                <input type="text" name="team.projectManager" [(ngModel)]="team.projectManager" [ngbTypeahead]="commonService.searchPeople" placeholder="Lookup or enter name" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-sm-12">-->
+<!--            <div class="form-group">-->
+<!--                <label class="mb-0">Contract Specialist</label>-->
+<!--                <input type="text" name="team.contractSpecialist" [(ngModel)]="team.contractSpecialist" [ngbTypeahead]="commonService.searchPeople" placeholder="Lookup or enter name" />-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-sm-12" *ngIf="team.teamMates.length > 0">-->
+<!--            <div class="extraTeamMates" *ngFor="let teammate of team.teamMates; index as i">-->
+<!--                <label class="m-0">{{teammate.title}}</label>-->
+<!--                <div>-->
+
+<!--                    <span>{{teammate.name}}</span>-->
+<!--                    <a class="upload-cross" href="javascript:void(0)" (click)="deleteTeamMate(i)" aria-label="Delete Teammate button">-->
+<!--                        <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <br>-->
+<!--    </div>-->
+
+<!--    <div class="row">-->
+<!--        <div class="col-sm-12 mt-19">-->
+<!--            <button type="button" class="add_btn pl-0" aria-label="Add Teammates">Add Teammates <fa-icon (click)="addNewTeammates()" class="plus-icon add_btn" [icon]="['fas', 'plus']"></fa-icon></button>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<br>-->

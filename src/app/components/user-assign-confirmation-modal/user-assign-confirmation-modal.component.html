@@ -1,0 +1,22 @@
+  <div class="modal-header attachment-modal-header">
+    <button type="button" aria-label="Send email close dialog box icon" style="position: absolute;right: 1rem;top: 1rem; z-index: 100;" class="close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body attachment-modal-body pd-top-30 user-assign-modal">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+<!--          <span class="far fa-check-circle topIcon">-->
+<!--            <fa-icon style="color: #57A127" [icon]="['far', 'check-circle']"></fa-icon>-->
+<!--          </span>-->
+          <h6>seventh.sharepoint.us says</h6>
+          <p class='popupMessage'>Are you sure you wish to assign this task to {{this.data.assignedTo}}? Doing so will send an email to this individual information them of assigment.</p>
+          <div class="checkShowMessageSec"><input [(ngModel)]="messageDialog" type="checkbox" name="checkShow" aria-label="Do not show this message checkbox"><span>Do not show this message again.</span></div>
+            <div class="modal-footer attachment-modal-footer ">
+              <button type="button" style="width: 100%;" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+              <button style="width: 100%;" class="btn btn-outline-dark footer-submit-btn" (click)="sendEmail()">Submit</button>
+          </div>
+        </div>
+    </div>
+</div>

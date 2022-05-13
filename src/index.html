@@ -1,0 +1,104 @@
+<!doctype html>
+<html dir="ltr" lang="en-US">
+<head>
+  <!-- Metas -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="" />
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+
+  <title>Acquisition Project AP</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+
+<style>
+  .app__messenger.css-s31cqh {
+    max-height: 200px;
+    max-width: 350px;
+  }
+  .css-s31cqh {
+    border-radius: 0 !important;
+  }
+  .chat-container{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    width: 350px;
+    display: block;
+  }
+  .chat-toggle-button{
+    overflow: hidden;
+    height: 22px;
+    width: 100%;
+    border: 1px solid rgb(234, 234, 234);
+    box-sizing: border-box;
+    border-bottom: none;
+    border-radius: 20px 20px 0px 0px;
+    background: white;
+    cursor: pointer;
+    text-align: center
+  }
+  #titleAreaBox, #TurnOffAnimation, #linkTurnOffAnimation, #TurnOnAccessibility, .s4-notdlg{
+    display: none !important;
+  }
+  #sideNavBox{
+    display: none;
+  }
+  #globalNavBox{
+    display: none;
+  }
+  #s4-titlerow{
+    display: none !important;
+  }
+  #suiteBarTop, #MSOWebPart_Header{
+    display: none !important;
+  }
+  table#layoutsTable tbody tr:nth-child(2) {
+    display: none;
+  }
+</style>
+
+
+<script>
+  (function() {
+    var x = document.getElementsByTagName("STYLE")[0];
+    x.remove();
+  })();
+
+  function createjscssfile(filename, filetype){
+    if (filetype=="js"){ //if filename is a external JavaScript file
+      var fileref=document.createElement('script')
+      fileref.setAttribute("type","text/javascript")
+      fileref.setAttribute("src", filename)
+    }
+    else if (filetype=="css"){ //if filename is an external CSS file
+      var fileref=document.createElement("link")
+      fileref.setAttribute("rel", "stylesheet")
+      fileref.setAttribute("type", "text/css")
+      fileref.setAttribute("href", filename)
+    }
+    return fileref
+  }
+  function replacejscssfile(oldfilename, newfilename, filetype){
+    var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
+    var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+    var allsuspects=document.getElementsByTagName(targetelement)
+    for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+      if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
+        var newelement=createjscssfile(newfilename, filetype)
+        allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
+      }
+    }
+  }
+  replacejscssfile("corev15.css","","css");
+</script>
+</html>

@@ -1,0 +1,54 @@
+<div class="modal-header attachment-modal-header">
+    <h4 class="modal-title" style="margin: auto">Select Email Templates</h4>
+    <button type="button" aria-label="Close button for Select Email Templates dialog" style="position: absolute;right: 1rem;top: 1rem;" class="close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div *ngIf="data.length">
+    <div>
+        <table class="table notification-table-body-fix">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Notification Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="linked-email-template-row" tabindex="0" *ngFor="let emailTemplate of data; index as i" (click)="getSelectedData(emailTemplate)">
+                    <td>
+                        {{emailTemplate.Title}}
+                    </td>
+                    <td>{{ emailTemplate.Subject }}</td>
+                    <td>{{ emailTemplate.NotificationType }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="!data.length">
+        <table class="table table-striped new-table-body-fix">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <Title></Title>
+                    </th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Notification Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align: center">
+                    <td scope="row" colspan="3">No Email templates found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal-footer attachment-modal-footer">
+    <button class="btn btn-outline-dark footer-submit-btn footer-submit-btn-disabled" (click)="submitLinkedData(selectedData)" [disabled]="!isDataSelected">Continue</button>
+    <button type="button" class="btn btn-outline-dark" style="width: 100%;" (click)="cancel()">Cancel</button>
+</div>

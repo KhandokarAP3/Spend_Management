@@ -1,0 +1,127 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content_title">
+            <div class="content_title_left" *ngIf="filterValue === ''">
+                <h2 *ngIf="projects.length > 0">My Projects ({{projects.length}})</h2>
+                <h2 *ngIf="projects.length === 0">My Projects</h2>
+            </div>
+            <div class="content_title_left" *ngIf="filterValue !== ''">
+                <h2>Projects (Filtered List)</h2>
+            </div>
+            <div class="content_title_right">
+                <div class="btn v8 searchSec">
+                    <input type="text" placeholder="Search projects" [(ngModel)]="filterValue" (keydown.enter)="$event.preventDefault();">
+                    <img *ngIf="!filterValue" [src]="'images/search.png' | updateImageURL" alt="Image" class="search_icon">
+                    <span *ngIf="filterValue">
+                        <a class="upload-cross" href="javascript:void(0)" (click)="clearSearch()">
+                            <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+                        </a>
+                      </span>
+                </div>
+                <div class="content_title_btn" (click)="createNewProject();" [class.disabled]="!this.commonService.canCreateProjects()">
+                    <a href="javascript:void(0);" class="btn v1">+ Create Project</a>
+                </div>
+                <div class="content_title_btn">
+                    <a href="javascript:void(0);" class="btn v2" (click)="exportToCSV();">
+                        <fa-icon class="mr-2" [icon]="['fas', 'upload']"></fa-icon> Export</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row py-5">
+    <div class="col-md-6 col-lg-6">
+        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="selectedValue" (change)="selectCategoryFN()">
+            <label *ngIf="showMyProjects" ngbButtonLabel [ngClass]="selectedValue == 'MyProjects' ? 'tabBtnActive':'tabBtn'" class="btn-primary">
+                <input ngbButton type="radio" value="MyProjects"> My Projects (Requirements Owner/CO/CS)
+            </label>
+            <label *ngIf="showTeamProjects" ngbButtonLabel [ngClass]="selectedValue == 'TeamProjects' ? 'tabBtnActive':'tabBtn'" class="btn-primary">
+                <input ngbButton type="radio" value="TeamProjects"> Team Projects
+            </label>
+            <label *ngIf="showAllProjects" ngbButtonLabel [ngClass]="selectedValue == 'AllProjects' ? 'tabBtnActive':'tabBtn'" class="btn-primary">
+                <input ngbButton type="radio" value="AllProjects"> All Projects
+            </label>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6 text-right right-tabs-projects">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" [destroyOnHide]="false" class="nav-tabs mt-0">
+            <li [ngbNavItem]="1" [destroyOnHide]="true">
+                <a ngbNavLink>Active</a>
+                <ng-template ngbNavContent>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="2">
+                <a ngbNavLink>Completed</a>
+                <ng-template ngbNavContent>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="3">
+                <a ngbNavLink>Both</a>
+                <ng-template ngbNavContent let-active>
+                </ng-template>
+            </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+
+</div>
+<div class="row" [class.spinner]="showSpinner">
+    <div class="col-md-12">
+        <div class="custom_table_header">
+            <div class="col" [ngStyle]="{'textAlign': i===0 ? 'left': 'inherit'}" *ngFor="let column of columnNames; index as i;">
+                <span class="pointer " (click)="sortTableBy(column.av);">{{column.dv}}
+                    <fa-icon *ngIf="sortBy !== column.av"[icon]="['fas', 'sort']"></fa-icon>
+                    <fa-icon *ngIf="sortBy === column.av && reverse" [icon]="['fas', 'sort-up']"></fa-icon>
+                    <fa-icon *ngIf="sortBy === column.av && !reverse" [icon]="['fas', 'sort-down']"></fa-icon>
+                </span>
+            </div>
+            <div class="col" style="text-align: center;">
+                Actions
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="custom_table_row" style="margin-top: 6px" *ngFor="let project of projects | sortAndFilterObjectsForActivities: filterValue: filterFn.bind(this)">
+            <div class="custom_table_row" style="margin-top: 6px">
+                <div class="col" style="text-align: left;">
+                    <span>{{project.Identifier}}</span>
+                </div>
+                <div class="col">
+                    <span>{{project.Title}}</span>
+                </div>
+                <div class="col">
+                    <span>{{project.POC}}</span>
+                </div>
+                <div class="col">
+                    <span>{{project.EstimatedValue | currency:'USD':true}}</span>
+                </div>
+                <div class="col" style="width: 208px">
+                    <span>{{project.CreationDate | ap3Date:'mediumDate'}}</span>
+                </div>
+                <div class="col">
+                    <span>{{project.Requested_Award_Date | ap3Date:'mediumDate'}}</span>
+                </div>
+                <div class="col">
+                    <span>{{project.Status}}</span>
+                </div>
+                <div class="col card_header_right">
+                    <span [class.disabled]="!this.commonService.canViewProjects(project)">
+                    <fa-icon (click)="goToProject(project);" class="pointer" [icon]="['far', 'eye']"></fa-icon>
+                  </span>
+                    <span [class.disabled]="!this.commonService.canEditProjects(project)">
+                    <fa-icon (click)="goToProject(project, true);" class="pointer" [icon]="['fas', 'pencil-alt']"></fa-icon>
+                  </span>
+                    <span *ngIf="this.commonService.canDeleteProjects(project)">
+                    <fa-icon [icon]="['fas', 'trash']" class="pointer" (click)="deleteProject(project);"></fa-icon>
+                  </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-pagination [itemsPerPage]="paginationParams.itemsPerPage" (itemsPerPageChange)="updateItemsPerPage($event)" [currentPageIndex]="paginationParams.currentPage" (currentPageIndexChange)="updateCurrentPageIndex($event)" [collectionSize]="paginationParams.itemCount"></app-pagination>

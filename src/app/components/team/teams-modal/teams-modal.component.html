@@ -1,0 +1,58 @@
+<div class="modal-header attachment-modal-header">
+  <h4 class="modal-title" style="margin: auto">Add Resource</h4>
+</div>
+
+<div class="modal-body attachment-modal-body">
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+      <form name="attachment_modal_form" (ngSubmit)="submitTeamForm()" #myform="ngForm">
+        <div class="form-row">
+          <div class="form-group col-sm-12">
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label class="required">Enter Title</label>
+              </div>
+              <div class="form-group col-sm-9">
+                <input type="text" required='true' name="title" class="form-control" [(ngModel)]="teamMateObj.title" autocomplete="off">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-sm-12">
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label class="mb-0 required">Name</label>
+              </div>
+              <div class="form-group col-sm-9">
+                <input type="text" required='true' name="name"  class="form-control light-placeholder" [(ngModel)]="teamMateObj.name" [ngbTypeahead]="commonService.searchPeople" placeholder="Lookup or enter name" autocomplete="off" (blur)="getPeopleEmailAddress()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!--        <div class="form-row">-->
+<!--          <div class="form-group col-sm-12">-->
+<!--            <div class="row">-->
+<!--              <div class="form-group col-sm-3">-->
+<!--                <label class="mb-0 required">Email</label>-->
+<!--              </div>-->
+<!--              <div class="form-group col-sm-9">-->
+<!--                <input type="email" required="true" name="email" class="form-control" [(ngModel)]="teamMateObj.email" pattern="^\S*[@]\S*[.]\S*$" email [disabled]="teamMateObj.name !== '' && teamMateObj.email !== ''" autocomplete="off">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+        <p class="invalidNameErr" *ngIf="invalidName">Please use the dropdown to select a valid name</p>
+        <div class="modal-footer attachment-modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+          <button class="btn btn-outline-dark footer-submit-btn" [disabled]="!myform.form.valid" [ngClass]="!myform.form.valid ? 'footer-submit-btn-disabled' : 'footer-submit-btn'">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

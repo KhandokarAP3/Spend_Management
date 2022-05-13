@@ -1,0 +1,143 @@
+<div class="container-fluid px-0">
+    <div class="row no-gutters align-items-center">
+        <div class="headerNewLeft">
+            <div class="logo_wrap">
+                <div class="menu_bar" (click)="toggleSideBar()">
+                    <img [src]="'images/menu.png' | updateImageURL" alt="Image">
+                </div>
+                <div class="logo">
+                    <a routerLink="/home"><img [src]="'images/combinedLogo_7.png' | updateImageURL" alt="Image"></a>
+                </div>
+            </div>
+        </div>
+        <div class="headerNewRight">
+            <div class="site_nav_wrap">
+                <div class="site-navbar" [ngClass]="{'offcanvas-menu': mobileMenuOpen}">
+                    <nav class="site-navigation">
+                        <ul class="site-menu js-clone-nav d-none d-lg-block">
+                            <li *ngFor="let menuItem of menuItems" [ngClass]="{'has-children': menuItem.children.length > 0}" (click)="navigateToUrl(menuItem.url ? menuItem.url : '')">
+                                <a href="javascript:void(0);">{{menuItem.name}}</a>
+                                <ul class="dropdown" *ngIf="menuItem.children.length > 0">
+                                    <li *ngFor="let child of menuItem.children">
+                                        <a href="javascript:void(0);" [routerLink]="[child.url ? child.url : '/home']">{{child.name}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="d-lg-none sm-right">
+                        <a href="javascript:void(0);" (click)="toggleMobileMenu();" class="mobile-bar js-menu-toggle">
+                            <span class="ion-android-menu"></span>
+                        </a>
+                    </div>
+                    <!--mobile-menu starts -->
+                    <div class="site-mobile-menu">
+                        <div class="site-mobile-menu-header">
+                            <div class="site-mobile-menu-close  js-menu-toggle" (click)="toggleMobileMenu();">
+                                <span class="ion-ios-close-empty"></span> </div>
+                        </div>
+                        <div class="site-mobile-menu-body" appNiceScroll #niceScroll=niceScroll>
+                            <ul class="site-nav-wrap">
+                                <li *ngFor="let menuItem of menuItems; index as i" [ngClass]="{'has-children': menuItem.children.length > 0}">
+                                    <span class="arrow-collapse" appToggleMenu #menu=menu [notifier]="niceScroll.subject" [ngClass]="{collapsed: !menu.showChild}"></span>
+                                    <a href="javascript:void(0);">{{menuItem.name}}</a>
+                                    <ul class="collapse" [ngClass]="{show: menu.showChild}">
+                                        <li *ngFor="let child of menuItem.children">
+                                            <a href="javascript:void(0);">{{child.name}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--mobile-menu ends-->
+                </div>
+                <div class="header_right">
+                    <div class="profile_bar" appToggleFocus>
+                        <a href="javascript:void(0)" (click)="showProfileSec()">
+                            <img [src]="imagePath" alt="Profile image">
+                            <span class="username">Hi, {{firstName}}</span>
+                        </a>
+                        <div class="profile_Sec">
+                            <div class="profile_header_sec">
+                                <h5>Profile</h5>
+                                <a href="javascript:void(0);" class="btn v1" (click)="editUserProfile()"> Edit Profile</a>
+                            </div>
+                            <div class="user_img_sec">
+                                <img [src]="imagePath" />
+                                <h5>{{userInfo.userDisplayName}}</h5>
+                            </div>
+                            <div *ngIf="userData && userData.Bio" class="user_bio_sec_top">
+                                <div class="user_bio_sec">
+                                    <h5>About me</h5>
+                                    <p>{{userData.Bio}}</p>
+                                </div>
+                            </div>
+                            <div class="user_detail_sec">
+                                <h5>About</h5>
+                                <ul class="detail_sec">
+                                    <li class="detail_item">
+                                        <p>Full Name</p>
+                                        <p>{{userInfo.userDisplayName}}</p>
+                                    </li>
+                                    <li class="detail_item">
+                                        <p>Email Address</p>
+                                        <p>{{userInfo.userEmail}}</p>
+                                    </li>
+                                    <li class="detail_item">
+                                        <p>Phone Number</p>
+                                        <p>12345678</p>
+                                    </li>
+                                    <li class="detail_item">
+                                        <p>Department</p>
+                                        <p>Designer</p>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div apptogglefocus class="settings_bar">
+                        <div class="notif_icon">
+                            <fa-icon (click)="goToNotifications();" [icon]="['far', 'bell']" size="lg"></fa-icon>
+                            <span *ngIf="notifications.length>0">{{notifications.length}}</span>
+                        </div>
+                    </div>
+                    <div apptogglefocus class="settings_bar doc_approval_icon" style="vertical-align: middle; " (click)="goToDocApprovalPage()">
+                        <div class="notif_icon">
+                            <fa-icon [icon]="['far', 'file-alt']" size="lg"></fa-icon>
+                            <span *ngIf="approvals.length>0">{{approvals.length}}</span>
+                        </div>
+                    </div>
+                    <div class="settings_bar" appToggleFocus>
+                        <div class="settings_icon">
+                            <fa-icon [icon]="['fas', 'cog']" size="lg"></fa-icon>
+                        </div>
+                        <ul class="settings_dropdown">
+                            <li *ngIf="commonService.allowSettings();">
+                                <a href="javascript:void(0);" (click)="menuItemClicked($event, 'setting.administrationSettings');">Settings</a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" (click)="menuItemClicked($event, 'setting.logout');">Log out</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <div apptogglefocus class="settings_bar">
+                        <div class="settings_icon">
+                            <fa-icon [icon]="['fas', 'cog']" size="lg"></fa-icon>
+                        </div>
+                        <ul class="settings_dropdown">
+                            <li *ngIf="commonService.allowSettings();">
+                                <a href="javascript:void(0);" (click)="menuItemClicked($event, 'setting.administrationSettings');">Settings</a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" (click)="menuItemClicked($event, 'setting.logout');">Log out</a>
+                            </li>
+                        </ul>
+                    </div> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,531 @@
+<!--Tracking Item Template-->
+<ng-template #activityTrackingItem let-activity="activity">
+    <div class="row">
+        <div class="col-sm-12 activity-track">
+            <h4 class="track_option_title">Track Completion and Configure Notifications (Optional)</h4>
+        </div>
+    </div>
+
+    <div class="row" *ngFor="let trackingItem of activity && activity.TrackingItems; index as j;">
+        <div class="col-sm-12" *ngIf="j > 0">
+
+        </div>
+
+        <div class='col-md-3'>
+            <div class="form-group">
+                <p class="input_title track-date">Scheduled Date</p>
+                <div class="input-group formDatePicker">
+                    <small *ngIf="trackingItem.scheduledDateERROR" class="text-danger">{{trackingItem.scheduledDateERROR}}</small>
+                    <input maxlength="10" [(ngModel)]="trackingItem.scheduledDate" class="form-control no-validation" name="trackingItem_scheduledDate{{j}}" placeholder="MM-DD-YYYY" (blur)="checkTypingDateForCalendar('scheduledDate',trackingItem)" (ngModelChange)="checkTypingDateForCalendar('scheduledDate',trackingItem);"
+                        #scheduledDate="ngModel" ngbDatepicker #ScheduleDate="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button aria-label="Scheduled date calendar button" class="btn btn-outline-secondary calendar" (click)="ScheduleDate.toggle()" type="button">
+              <fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon>
+            </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='col-md-3'>
+            <div class="form-group">
+                <p class="input_title track-date">Actual Receipt Date</p>
+                <div class="input-group formDatePicker">
+                    <small *ngIf="trackingItem.actualReceiptDateERROR" class="text-danger">{{trackingItem.actualReceiptDateERROR}}</small>
+                    <input maxlength="10" [(ngModel)]="trackingItem.actualReceiptDate" class="form-control no-validation" name="trackingItem_actualReceiptDate{{j}}" placeholder="MM-DD-YYYY" (blur)="checkTypingDateForCalendar('actualReceiptDate',trackingItem);" (ngModelChange)="checkTypingDateForCalendar('actualReceiptDate',trackingItem);"
+                        #actualReceiptDate="ngModel" ngbDatepicker #ActualReceiptDate="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button aria-label="Actual receipt date calendar button" class="btn btn-outline-secondary calendar" (click)="ActualReceiptDate.toggle()" type="button">
+              <fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon>
+            </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='col-md-1 mt-4 track-bin '>
+            <fa-icon (click)="deleteTrackingItem(activity, j)" class="pointer" [icon]="['fas', 'trash']"></fa-icon>
+        </div>
+
+        <div class="col-sm-5 track_option_side">
+            <div class="notify-btn">
+                <button arial-label="Add notification" type="button" class="btn v3" (click)="onAddNotification(trackingItem)" [ngClass]="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient ? 'v4' : 'v3'" [disabled]="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient">Schedule Notification</button>
+            </div>
+            <div class="view-sideicon">
+                <div class="side-icons pointer" *ngIf="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient" (click)="onAddNotification(trackingItem, 'view')">
+                    <fa-icon [icon]="['far', 'eye']"></fa-icon>
+                </div>
+                <div class="side-icons pointer" *ngIf="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient" (click)="onAddNotification(trackingItem)">
+                    <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+                </div>
+                <div class="side-icons pointer" *ngIf="trackingItem?.category && trackingItem?.numberOfDays && trackingItem?.recipient" (click)="deleteAddNotificationDetails(trackingItem)">
+                    <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 add-tracking">
+            <span class="pointer" (click)="addTrackingItem(activity);">
+            <fa-icon class="plus-icon" [icon]="['fas', 'plus']"></fa-icon>
+            <h5 class="faq_header">
+                Add Tracking Item
+            </h5>
+        </span>
+
+        </div>
+    </div>
+</ng-template>
+<!--Tracking Item Template-->
+
+<form (ngSubmit)="saveActivity(activityForm);" #activityForm="ngForm" [class.form-submitted]="isFormSubmitted">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+            <div class="content_title">
+                <div class="content_title_left">
+                    <h2>{{this.navigation?.extras?.state?.ActivityType && title ? this.navigation?.extras?.state?.ActivityType + ' (' + title +')' : title}}</h2>
+                </div>
+                <div class="content_title_right">
+                    <div class="content_title_btn" *ngIf="projectParams.projectId && !isViewMode">
+                        <a href="javascript:void(0);" (click)="returnToProject()" class="btn v1">Return to Project</a>
+                    </div>
+                    <!-- <div class="content_title_btn">
+                        <a href="javascript:void(0);" (click)="notesFN()" class="btn v1">
+                        Notes
+                        </a>
+                    </div>-->
+                    <div class="content_title_btn" *ngIf="!isViewMode">
+                        <a href="javascript:void(0);" (click)="addActionItemInActivity(activityForm)" class="btn v1">
+                        +Action Item
+                        </a>
+                    </div>
+                    <a href="javascript:void(0);" (click)="openNotesModal()" class="btn v1 ml-2" *ngIf="this.activity && this.activity.ID && !isViewMode">
+                        <fa-icon class="mr-2" [icon]="['fas', 'sticky-note']"></fa-icon>
+                        Notes
+                    </a>
+                    <div class="content_title_btn" *ngIf="!isViewMode">
+                        <a href="javascript:void(0);" (click)="openAttachFileModal()" class="btn v1">
+                            <fa-icon class="mr-2" [icon]="['fas', 'paperclip']"></fa-icon>
+                            Attach
+                        </a>
+                    </div>
+                    <div class="content_title_btn" *ngIf="!isViewMode && isSubmitPRPackage">
+                        <a href="javascript:void(0);" (click)="openSubmitPackageModal()" class="btn v1">
+                            <fa-icon class="mr-2" [icon]="['fas', 'paperclip']"></fa-icon>
+                            Submit PR Package
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showActivityProgressBar" class="activity-tab-carousel">
+        <!-- <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="">Previous</button>
+        <button class="slick-next slick-arrow" aria-label="Next" type="button" style="">Next</button> -->
+        <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+            <div ngxSlickItem *ngFor="let item of workCategoryArr;" class="slide {{getClassName(item)}}">
+                <span class="text-cs">{{item}}</span>
+            </div>
+        </ngx-slick-carousel>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="create_activity_form bg_wh mb-4" style="padding: 1.5rem 1rem;">
+                    <div class="create-activity-heading createActivityNewHeading" style="padding-bottom: 1.5rem; ">
+                        <div class="createActivityNewHeadingInner">
+                            <h4 class="activity-heading"> {{this.navigation?.extras?.state?.ActivityType && title ? this.navigation?.extras?.state?.ActivityType + ' (' + title +')' : title}} </h4>
+                            <div class="action_btn">
+                                <button class="btn v4" (click)="cancel()" type="button">Cancel</button>
+                                <button class="btn v3" type="submit" [class.disabled]="!this.commonService.canEditActivities(activity) || scheduledDateErrorInTrackingItems || actualReceiptDateErrorInTrackingItems" *ngIf="mode === 'edit'">Update</button>
+                                <button class="btn v3" type="submit" [class.disabled]="!this.commonService.canCreateActivities() || scheduledDateErrorInTrackingItems || actualReceiptDateErrorInTrackingItems" *ngIf="mode === 'create'&& !isViewMode">Save</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div [class.disabled]="isViewMode === true">
+
+                        <div class="row padding-15" style="padding-top: 1rem;">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <p class="input_title required">Project Title</p>
+                                    <input aria-label="Project Title" type="text" required="true" aria-label="Project Title" name="Project_Title" class="form-control create-activity-title" [(ngModel)]="activity && activity.ProjectTitle" [ngbTypeahead]="search" [editable]='false' (selectItem)="selectedItem($event, activity)">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <p class="input_title required">Project Identifier</p>
+                                    <span tabindex="0" data-toggle="tooltip" title="This data is automatically displayed by the system once you select the Project Title">
+                                        <input class="create-activity-title" aria-label="Project Identifier" [pattern]="commonService.inputFieldPattern" type="text" #projectIdentifierInput="ngModel" required="true" aria-label="Project Identifier" name="Project_Identifier" style=" color: #919090" [(ngModel)]="activity && activity.Identifier"
+                                        placeholder="" disabled="true">
+                                    </span>
+                                    <div *ngIf="projectIdentifierInput.dirty && projectIdentifierInput.invalid">
+                                        <small class="form-text text-danger bottom-error-cs" *ngIf="projectIdentifierInput.errors?.pattern">
+                    You have exceeded the maximum character limit for the following field. Maximum limit is 255 characters.
+                  </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 create-activity-heading ng-tns-c153-0col-md-6">
+                                <div class="form-group">
+                                    <p class="input_title required">Activity Title</p>
+                                    <input class="create-activity-title" [pattern]="commonService.inputFieldPattern" type="text" #activityTitleInput="ngModel" required="true" aria-label="Activity Title" name="Activity_Title" [(ngModel)]="activity && activity.Title" placeholder="" autocomplete="off">
+                                    <div *ngIf="activityTitleInput.dirty && activityTitleInput.invalid">
+                                        <small class="form-text text-danger bottom-error-cs" *ngIf="activityTitleInput.errors?.pattern">
+                                  You have exceeded the maximum character limit for the following field. Maximum limit is 255 characters.
+                                </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <p class="input_title required">Select Activity Type</p>
+                                <!--                                <ng-select aria-label="Activity Type" [searchable]="false" [clearable]="false" required="true" name="activity_Type" class="dropdown_select activity_dropdown create-activity-title" [(ngModel)]="activity && activity.ActivityType" (change)="setWorkCategory(activity)">-->
+                                <!--                                    <ng-option *ngFor="let item of activityTypesObject | keyvalue" [value]="item.key">{{item.key}}</ng-option>-->
+                                <!--                                </ng-select>-->
+                                <ul id="menu">
+                                    <li class="parent">
+                                        <!--                                  <a href="#">Activity Type</a>-->
+                                        <button type="button"  class="{{isActivityTypeValid?'':'ng-invalid'}}"  #activityTypeBtn (click)="activityDropDown()">{{activity && activity.ActivityType !== '' ? activity && activity.ActivityType : 'Activity Type'}}</button>
+                                        <ul id="activityDropOptions" style="display: none" class="child">
+                                            <li class="parent" *ngFor="let wCat of groupActivitiesByWorkCategory | keyvalue;  let i = index">
+                                                <a href="javascript:void(0)">{{wCat.key}}<span class="expand">»</span>
+                                      </a>
+                                                <ul class="child">
+                                                    <li *ngFor="let activityType of wCat.value;  let j = index">
+                                                        <a href="javascript:void(0)" nowrap (click)="selectActivityFromNestedWorkCategories($event, activity)">{{activityType.Title}}</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row padding-15">
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <p class="input_title required">Work Status Category</p>
+                                    <ng-select aria-label="Work category" [searchable]="false" [clearable]="false" required="true" class="dropdown_select activity_dropdown create-activity-title" [(ngModel)]="activity && activity.WorkCategory" name="ActivityWorkCategory" disabled="true">
+                                        <ng-option *ngFor="let value of activityTypesObject[activity && activity.ActivityType]" [value]="value">{{value}}</ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <p class="input_title required">Priority</p>
+                                    <ng-select aria-label="Priority" [searchable]="false" [clearable]="false" name="activityPriority" required="true" class="dropdown_select activity_dropdown create-activity-title" [(ngModel)]="activity && activity.Priority" disabled="false">
+                                        <ng-option *ngFor="let value of commonService.activityPriority" [value]="value">{{value}}</ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <p class="input_title">Assign To</p>
+                                    <input class="create-activity-title" aria-label="Assign to" type="text" name="activityAssignedTo" [(ngModel)]="activity && activity.AssignedTo" [ngbTypeahead]="searchPeopleWithinProject" placeholder="Type to search" [disabled]="!teamsArr.length" />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <p class="input_title">Status</p>
+                                    <ng-select aria-label="Activity status" [searchable]="false" [clearable]="false" name="activityStatus" class="dropdown_select activity_dropdown create-activity-title" [(ngModel)]="activity && activity.Status">
+                                        <ng-option *ngFor="let status of commonService.activityStatus" [value]="status">{{status}}</ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                        </div>
+                        <div class="container-fluid mt-20" *ngIf="activity && activity.WorkflowObj !== null">
+                            <div class="row padding-15">
+                                <div class="col-md-12 pl-0 pr-0 boxCnt activity-types-left activity-workflow-cs">
+                                    <ng-container *ngFor="let step of steps; index as i">
+                                        <div class="steps-border" *ngIf="step.type === 'inputs'">
+                                            <!-- 1st Step sub-heading-->
+                                            <h4 class="hedingsec heading-box" *ngIf="step.type === 'inputs' && step.title">{{step.title}}</h4>
+                                            <div *ngIf="activity.ActivityType === Process_PR_To_Contracts_Text">
+                                                <div class="row mainboxss-next-steps" #inputsDiv>
+                                                    <div class="col-sm-9 container wrkBox" style="padding-left: 0px">
+                                                        <P class="pra"> {{step.content}} </P>
+                                                    </div>
+                                                    <div class="col-sm-3 raddbox" style="display:flex; justify-content:right;" *ngIf="!step.isDocumentUploaded || step.content === 'Other'">
+                                                        <label class="activity-checkbox-label" style="text-align: right;">{{step.content === 'Requirements Definition Document/Needs Statement' || step.content === 'Independent Government Cost Estimate (IGCE)' || step.content === 'Market Research Report' || step.content === 'Acquisition Plan' || step.content === 'COR Nomination'? 'Required' : ''}}
+                                                            <a href="javascript:void(0);" (click)="openAttachFileModal()" style="margin-left:10px; color: #004990">
+                                                                <fa-icon class="mr-2" [icon]="['fas', 'paperclip']"></fa-icon>
+                                                                Attach
+                                                            </a>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-3 raddbox" style="display:flex; justify-content:right;" *ngIf="step.isDocumentUploaded && step.content !== 'Other'">
+                                                        <fa-icon class="mr-2" [icon]="['fas', 'check']" style="color: green;"></fa-icon>
+                                                        <label class="activity-checkbox-label" style="text-align: right;">{{step.content === 'Requirements Definition Document/Needs Statement' || step.content === 'Independent Government Cost Estimate (IGCE)' || step.content === 'Market Research Report' || step.content === 'Acquisition Plan' || step.content === 'COR Nomination'? 'Required' : ''}}
+
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-lg-12 " style="padding-left: 5px; margin-left: 0;" *ngIf="fileNameDisplayArray">
+                                                        <div *ngFor="let document of fileNameDisplayArray; index as k">
+                                                            <div class="uploaded-item" *ngIf="document.documentCategory ===  step.content">
+                                                                <span class="d-block attach-box">
+                                                                <div class="col-sm-12 container wrkBox">
+                                                                    <span class="create-activity" (click)="downloadFile(document.title)" [title]="document.title ? document.title : document">{{(document.title.length > 40)? (document.title | slice:0:40)+'...':(document.title) }}
+                                                                    </span>
+                                                                <div *ngIf="!isViewMode" class="dropdown attach-drop" style="margin-top: -23px;" (click)="toggleEllipsis(k)" [ngClass]="toggleEllipsisClass[k] === true ? 'open' : ''">
+                                                                    <a class="dropdown-toggle text-light">
+                                                                    </a>
+                                                                    <div class="dropdown-menu mr-3" style="left: 1.5rem;">
+                                                                        <a class="dropdown-item" href="javascript:void(0)" (click)="deleteUploadDocWithoutCPARS(document.title)" [class.disabled]="documentsSubmittedForApproval[document.title]">Delete
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </span>
+                                                        </div>
+                                                        <div class="uploaded-item" *ngIf="document.documentCategory !==  step.content && step.content === 'Other' && document.documentCategory !== 'Requirements Definition Document/Needs Statement' && document.documentCategory !== 'Independent Government Cost Estimate (IGCE)' && document.documentCategory !== 'Market Research Report' && document.documentCategory !== 'Acquisition Plan' && document.documentCategory !== 'COR Nomination'">
+                                                            <span class="d-block attach-box">
+                                                                <div class="col-sm-12 container wrkBox">
+                                                                    <span class="create-activity" (click)="downloadFile(document.title)" [title]="document.title ? document.title : document">{{(document.title.length > 40)? (document.title | slice:0:40)+'...':(document.title) }}
+                                                                    </span>
+                                                            <div *ngIf="!isViewMode" class="dropdown attach-drop" style="margin-top: -23px;" (click)="toggleEllipsis(k)" [ngClass]="toggleEllipsisClass[k] === true ? 'open' : ''">
+                                                                <a class="dropdown-toggle text-light">
+                                                                </a>
+                                                                <div class="dropdown-menu mr-3" style="left: 1.5rem;">
+                                                                    <a class="dropdown-item" href="javascript:void(0)" (click)="deleteUploadDocWithoutCPARS(document.title)" [class.disabled]="documentsSubmittedForApproval[document.title]">Delete
+                                                                            </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div *ngIf="activity.ActivityType !== Process_PR_To_Contracts_Text">
+                                    <div class="row mainboxss-next-steps" #inputsDiv>
+                                        <div class="col-sm-10 container wrkBox">
+                                            <P class="pra"> {{step.content}} </P>
+                                        </div>
+                                        <div class="col-sm-2 raddbox">
+                                            <label class="activity-checkbox-label">{{step.content === 'Potential SB sources.' ? 'Identified' : step.content === 'Commercially-available possible solutions.' ? 'Identified' : step.content === 'Likely available Category Management/ other preferred venues.' ? 'Identified' : 'Completed'}}
+                                                                            <input type="checkbox" class="rdioBttn" (change)="stepCompleted(step, i);" [(ngModel)]="step.completed" value="yes" name="step_input_{{i}}">
+                                                                            <span class="checkmark"></span>
+                                                                        </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 2nd Step sub-heading-->
+                            <h4 class="hedingsec heading-box" *ngIf="step.type === 'task' && step.title">{{step.title}}</h4>
+                            <div class="row mainbox" *ngIf="step.type === 'task'" #taskDiv>
+                                <div class="col-sm-10 jumbotron cntentBoxs" *ngIf="activity.ActivityType === Process_PR_To_Contracts_Text">
+                                    <!-- *ngIf="activity.ActivityType === Process_PR_To_Contracts_Text">-->
+                                    <p class="pra" style="margin-left:8px">
+                                        {{step.content}}
+                                    </p>
+                                </div>
+                                <div class="col-sm-10 jumbotron cntentBoxs" *ngIf="activity.ActivityType !== Process_PR_To_Contracts_Text">
+                                    <p class="pra">
+                                        {{step.content}}
+                                    </p>
+                                </div>
+                                <div class="col-sm-2 radbox" style="display:flex; justify-content:right;" *ngIf="activity.ActivityType === Process_PR_To_Contracts_Text">
+                                    <label class="activity-checkbox-label">{{step.content === 'Potential SB sources.' ? 'Identified' : step.content === 'Commercially-available possible solutions.' ? 'Identified' : step.content === 'Likely available Category Management/ other preferred venues.' ? 'Identified' : 'Completed'}}
+                                                    <input type="checkbox" class="rdioBttn" (change)="stepCompleted(step, i);" [(ngModel)]="step.completed" value="yes" name="step_input_{{i}}">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                </div>
+                                <div class="col-sm-2 radbox" *ngIf="activity.ActivityType !== Process_PR_To_Contracts_Text">
+                                    <label class="activity-checkbox-label">{{step.content === 'Potential SB sources.' ? 'Identified' : step.content === 'Commercially-available possible solutions.' ? 'Identified' : step.content === 'Likely available Category Management/ other preferred venues.' ? 'Identified' : 'Completed'}}
+                                                    <input type="checkbox" class="rdioBttn" (change)="stepCompleted(step, i);" [(ngModel)]="step.completed" value="yes" name="step_input_{{i}}">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                </div>
+                            </div>
+                            <!-- 3rd Step sub-heading-->
+                            <div class="row mainBos" *ngIf="step.type === 'question'">
+                                <div class="col-sm-10 jumbotron cotentBoxs">
+                                    <p class="pra">
+                                        {{step.content}}
+                                    </p>
+                                </div>
+                                <div class="col-sm-2 radibox">
+                                    <input type="radio" class="rdioBtnn" (change)="stepCompleted(step, i);" [(ngModel)]="step.answer" value="yes" name="step_input_{{i}}"> <label class="labHead"> Yes</label>
+                                    <input type="radio" class="rdioBtnn" (change)="stepCompleted(step, i);" [(ngModel)]="step.answer" value="no" name="step_input_{{i}}"> <label class="labHead"> No</label>
+                                </div>
+                            </div>
+                            <!-- 4th Step sub-heading-->
+                            <ng-container *ngIf="step.type === 'final-step'">
+                                <h4 class="hedingsec heading-box" *ngIf="step.type === 'final-step' && step.title">{{step.title}}</h4>
+                                <div class="row mainboxss" #finalStepDiv>
+                                    <div class="col-sm-10 container wrkBox">
+                                        <P class="pra"> {{step.content}}</P>
+                                    </div>
+                                    <div class="col-sm-2 raddbox">
+                                        <label class="activity-checkbox-label">{{step.content === 'Potential SB sources.' ? 'Identified' : step.content === 'Commercially-available possible solutions.' ? 'Identified' : step.content === 'Likely available Category Management/ other preferred venues.' ? 'Identified' : 'Completed'}}
+                                                        <input type="checkbox" class="rdioBttn" (change)="stepCompleted(step, i);" [(ngModel)]="step.completed" value="yes" name="step_input_{{i}}">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <!-- 5th Step sub-heading-->
+                            <ng-container *ngIf="step.type === 'next-step'">
+                                <h4 class="hedingsec heading-box" *ngIf="step.type === 'next-step' && step.title">{{step.title}}</h4>
+                                <div class="row mainboxss-next-steps">
+                                    <div class="col-sm-10 container wrkBox">
+                                        <P class="pra"> {{step.content}}</P>
+                                    </div>
+                                    <div class="col-sm-2 raddbox">
+                                        <label class="activity-checkbox-label">{{step.content === 'Potential SB sources.' ? 'Identified' : step.content === 'Commercially-available possible solutions.' ? 'Identified' : step.content === 'Likely available Category Management/ other preferred venues.' ? 'Identified' : 'Completed'}}
+                                                        <input type="checkbox" class="rdioBttn" (change)="stepCompleted(step, i);" [(ngModel)]="step.completed" value="yes" name="step_input_{{i}}">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            </ng-container>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-12 mt-50">
+                    <ng-container [ngTemplateOutlet]="activityTrackingItem" [ngTemplateOutletContext]="{activity:activity}"></ng-container>
+                </div>
+
+                <div style="pointer-events: all;" class="col-sm-12" *ngIf="activity && activity.ActivityType !== Process_PR_To_Contracts_Text">
+                    <h5>Attachments ({{fileNameDisplayArray ? fileNameDisplayArray.length : 0}})</h5>
+                    <div class="uploaded-item" *ngIf="fileNameDisplayArray">
+                        <span class="d-block attach-box" *ngFor="let document of fileNameDisplayArray; index as k">
+                                <span class="create-activity" (click)="downloadFile(document.title)" [title]="document.title ? document.title : document">{{document.title ? document.title : document}}</span>
+
+                        <div class="col card_header_right newEllipsis" *ngIf="document.canSubmitForApproval && !isViewMode">
+                            <div appToggleFocus class="sub_dropdown" style="display: initial">
+                                <fa-icon class="pointer" [icon]="['fas', 'ellipsis-v']"></fa-icon>
+                                <ul class="sub_dropdown_menu" style="width: 175px; opacity: 0; z-index: 67; visibility: hidden; position: absolute; background: white; padding: 0px 10px; border: 1px solid; left: 20px; top: 3px; text-align: left;">
+                                    <li style="line-height: 20px;" (click)="submitDocumentForPanelApproval(document.title)" [class.disabled]="documentsSubmittedForApproval[document.title]">
+                                        <a href="javascript:void(0);">Submit for panel approval</a>
+                                    </li>
+                                    <li style="line-height: 20px;" (click)="cancelDocumentForApproval(document.title)" [class.disabled]="!documentsSubmittedForApproval[document.title]">
+                                        <a href="javascript:void(0);">Cancel approval</a>
+                                    </li>
+                                    <li style="line-height: 20px;" (click)="deleteUploadDocWithoutCPARS(document.title)" [class.disabled]="documentsSubmittedForApproval[document.title]">
+                                        <a href="javascript:void(0);">Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col card_header_right newEllipsis" *ngIf="!document.canSubmitForApproval && !isViewMode">
+                            <div appToggleFocus class="sub_dropdown" style="display: initial">
+                                <fa-icon class="pointer" [icon]="['fas', 'ellipsis-v']"></fa-icon>
+                                <ul class="sub_dropdown_menu" style="width: 175px; opacity: 0; z-index: 67; visibility: hidden; position: absolute; background: white; padding: 0px 10px; border: 1px solid; left: 20px; top: 3px; text-align: left;">
+                                    <li style="line-height: 20px;" (click)="deleteUploadDocWithoutCPARS(document.title)" [class.disabled]="documentsSubmittedForApproval[document.title]">
+                                        <a href="javascript:void(0);">Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mt-4 col-sm-12">
+                    <h5 *ngIf="actionItems.length">Linked Action Items</h5>
+
+                    <div class="uploaded-item">
+                        <span class="d-block" *ngFor="let actionItem of actionItems; index as j;">
+<!--                          <span (click)="goToActionItem(actionItem,j)">{{actionItem.title}}{{actionItem.dueDate !== "" ? ' - ' + (actionItem.dueDate | date) : '' }}</span>-->
+                        <span (click)="goToActionItem(actionItem,j)">{{actionItem.title}}</span>
+                        <a class="upload-cross" href="javascript:void(0)" *ngIf="!isViewMode" (click)="deleteActionItem(j)">
+                            <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+                        </a>
+                        <a class="upload-cross" href="javascript:void(0)" *ngIf="isViewMode" (click)="goToActionItem(actionItem,j)">
+                            <fa-icon [icon]="['far', 'eye']"></fa-icon>
+                        </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="full-width">
+                <div class="col-lg-12 text-right">
+                    <div class="action_btn">
+                        <button class="btn v4" (click)="cancel()" type="button">Cancel</button>
+                        <button class="btn v3" type="submit" [class.disabled]="!this.commonService.canEditActivities(activity) || scheduledDateErrorInTrackingItems || actualReceiptDateErrorInTrackingItems" *ngIf="mode === 'edit'">Update</button>
+                        <button class="btn v3" type="submit" [class.disabled]="!this.commonService.canCreateActivities() || scheduledDateErrorInTrackingItems || actualReceiptDateErrorInTrackingItems" *ngIf="mode === 'create'&& !isViewMode">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="col-md-12 create-resources ">
+            <h4 class="Heding">Resources</h4>
+
+            <ngb-accordion class="range-accordion" #acc="ngbAccordion" activeIds="ngb-panel-0_0">
+                <ngb-panel id="ngb-panel-0_0">
+                    <ng-template ngbPanelHeader let-opened="opened">
+                        <div class="d-flex justify-content-between" (click)="acc.toggle('ngb-panel-0_0')">
+                            <div class="d-flex" style="font-weight: bold; color: #1c2128;">Helpful Links</div>
+                            <div class="d-flex">
+                                <span *ngIf="opened" class="toggle_arrow"> <img [src]="'images/arrow_up.png' | updateImageURL"  alt="Image"></span>
+                                <span *ngIf="!opened" class="toggle_arrow"> <img [src]="'images/arrow_down.png' | updateImageURL"  alt="Image"></span>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        <div class="container-fluid sideBox">
+                            <a [href]="resources.Link" [title]="resources.Title" target="_blank" class="linkSide" *ngFor="let resources of helpfulLinks">{{resources.Title}}</a>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+
+            <ngb-accordion class="range-accordion" #acc1="ngbAccordion" activeIds="ngb-panel-0_1">
+                <ngb-panel id="ngb-panel-0_1">
+                    <ng-template ngbPanelHeader let-opened="opened">
+                        <div class="d-flex justify-content-between" (click)="acc1.toggle('ngb-panel-0_1')">
+                            <div class="d-flex" style="font-weight: bold; color: #1c2128;">Video Tutorials</div>
+                            <div class="d-flex">
+                                <span *ngIf="opened" class="toggle_arrow"> <img [src]="'images/arrow_up.png' | updateImageURL"  alt="Image"></span>
+                                <span *ngIf="!opened" class="toggle_arrow"> <img [src]="'images/arrow_down.png' | updateImageURL"  alt="Image"></span>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        <div class="container-fluid sideBox">
+                            <a [href]="resources.YoutubeUrl" [title]="resources.Title" target="_blank" class="linkSide" *ngFor="let resources of videoLinks">{{resources.Title}}</a>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+
+            <ngb-accordion class="range-accordion" #acc2="ngbAccordion" activeIds="ngb-panel-0_2">
+                <ngb-panel id="ngb-panel-0_2">
+                    <ng-template ngbPanelHeader let-opened="opened">
+                        <div class="d-flex justify-content-between" (click)="acc2.toggle('ngb-panel-0_2')">
+                            <div class="d-flex" style="font-weight: bold; color: #1c2128;">Document Templates</div>
+                            <div class="d-flex">
+                                <span *ngIf="opened" class="toggle_arrow"> <img [src]="'images/arrow_up.png' | updateImageURL"  alt="Image"></span>
+                                <span *ngIf="!opened" class="toggle_arrow"> <img [src]="'images/arrow_down.png' | updateImageURL"  alt="Image"></span>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        <div class="container-fluid sideBox">
+                            <a [href]="resources.DocPath" [title]="resources.Title" target="_blank" class="linkSide" *ngFor="let resources of documentLinks">{{resources.Title}}</a>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+    </div>
+    </div>
+    </div>
+</form>

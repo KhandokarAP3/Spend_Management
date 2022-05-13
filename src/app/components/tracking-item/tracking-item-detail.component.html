@@ -1,0 +1,151 @@
+<div class="modal-header attachment-modal-header">
+    <h4 class="modal-title" style="margin: auto">Add Notification</h4>
+    <button aria-label="Close Add Notification dialog button" type="button" style="position: absolute;right: 1rem;top: 1rem;" class="close" (click)="cancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body attachment-modal-body">
+    <!--    <div class="row">-->
+    <!--        <div class="col-xl-12 col-lg-12 col-md-12">-->
+    <form name="attachment_modal_form" (ngSubmit)="submitForm(myform)" #myform="ngForm" [class.form-submitted]="isFormSubmitted">
+        <!--                <div class="form-row">-->
+        <!--                    <div class="form-group col-sm-12">-->
+        <!--                        <div class="row">-->
+        <!--                            <div class="form-group col-sm-5">-->
+        <!--                                <label class="mb-0 required">Select Category</label>-->
+        <!--                            </div>-->
+        <!--                            <div class="form-group col-sm-7" *ngIf="!data.fromInvoicePage">-->
+        <!--                                <ng-select [required]="true" [disabled]="trackingItem?.mode === 'view'" [(ngModel)]="trackingItem.category" [searchable]="false" required="true" [clearable]="false" class="dropdown_select activity_dropdown v2" name="type">-->
+        <!--                                    <ng-option [value]="trackingItemConstants.BEFORE_SCHEDULED_DATE">{{trackingItemConstants.BEFORE_SCHEDULED_DATE}}</ng-option>-->
+        <!--                                    <ng-option [value]="trackingItemConstants.AFTER_RECEIPT_DATE">{{trackingItemConstants.AFTER_RECEIPT_DATE}}</ng-option>-->
+        <!--                                </ng-select>-->
+        <!--                            </div>-->
+
+        <!--                            <div class="form-group col-sm-7" *ngIf="data.fromInvoicePage">-->
+        <!--                              <ng-select [required]="true"  [disabled]="trackingItem?.mode === 'view'" [(ngModel)]="trackingItem.category" [searchable]="false" required="true" [clearable]="false" class="dropdown_select activity_dropdown v2" name="type">-->
+        <!--                                <ng-option [value]="trackingItemConstantsForInvoices.BEFORE_SCHEDULED_DATE">{{trackingItemConstantsForInvoices.BEFORE_SCHEDULED_DATE}}</ng-option>-->
+        <!--                                <ng-option [value]="trackingItemConstantsForInvoices.AFTER_RECEIPT_DATE">{{trackingItemConstantsForInvoices.AFTER_RECEIPT_DATE}}</ng-option>-->
+        <!--                              </ng-select>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="form-row">-->
+        <!--                    <div class="form-group col-sm-12">-->
+        <!--                        <div class="row">-->
+        <!--                            <div class="form-group col-sm-5">-->
+        <!--                                <label class="required">Enter # of days</label>-->
+        <!--                            </div>-->
+        <!--                            <div class="form-group col-sm-7">-->
+        <!--                                <input type="number" [required]='true' name="title" [(ngModel)]="trackingItem.numberOfDays" autocomplete="off" [disabled]="trackingItem?.mode === 'view'">-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="form-row">-->
+        <!--                    <div class="form-group col-sm-12">-->
+        <!--                        <div class="row">-->
+        <!--                            <div class="form-group col-sm-5">-->
+        <!--                                <label class="required">Enter Recipients</label>-->
+        <!--                            </div>-->
+        <!--                            <div class="form-group col-sm-7">-->
+        <!--                                <input [ngClass]="{'ng-invalid' : !this.trackingItem.recipient}" [required]="true" name="recipient" placeholder="Lookup or enter name" [value]="trackingItem.recipient || ''" (selectItem)="onRecipientSelected($event);" [ngbTypeahead]="commonService.searchPeopleObj" [inputFormatter]="commonService.selectedValueFormatter" [resultFormatter]="commonService.peopleFormatter" [disabled]="trackingItem?.mode === 'view'">-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+
+        <div class="add-recipients-content schedule-notification">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="heading">
+                                <h5>Recipients</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="selectall-teammates">
+                                <div class="form-group inline_label_switch">
+                                    <p class="input_title">Select All Teammates</p>
+                                    <div class="notif_switch" style="padding-left: 0;">
+                                        <div class="switch_wrap">
+                                            <label class="switch v3">
+                        <input aria-label = "Select All Teammates toggle button" type="checkbox" name="allTeamMates" [(ngModel)]="trackingItem.allTeamMates" (change)="allTeamMatesChangeFN($event);" [disabled]="trackingItem?.mode === 'view'">
+                        <span class="slider round_box"></span>
+                      </label>
+                                        </div>
+                                    </div>
+                                    <div class="error" *ngIf="showAllTeamMatesErr">No teammates have been added to this project</div>
+                                </div>
+                            </div>
+                            <ul class="search-recipients">
+                                <li *ngFor="let name of trackingItem.recipient; index as i">
+                                    <span class="head">{{name}}</span>
+                                    <span class="cross-icon-add-recipient" (click)="deleteRecipient(i, name)" [ngClass]="trackingItem?.mode === 'view' ? 'disabled' : ''">×</span>
+                                </li>
+                            </ul>
+                            <h4>Add Recipients</h4>
+                            <div class="searchbox_recipient">
+                                <label class="required">Name:</label>
+                                <input name="recipient" placeholder="Lookup or enter name" [(ngModel)]="recipientField" (selectItem)="onRecipientSelected($event);" [ngbTypeahead]="commonService.searchPeopleObj" [inputFormatter]="commonService.peopleFormatter" [resultFormatter]="commonService.peopleFormatter" [disabled]="trackingItem?.mode === 'view'" (focusout)="checkRecipientName()">
+                            </div>
+                            <span *ngIf="nameAlreadyExists" style="color: red; font-size: 13px">This Name already exists in Recipient List</span>
+                            <span *ngIf="invalidName" style="color: red; font-size: 13px">Please use the dropdown to select a valid name</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="heading">
+                                <h5>Notification</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 selector-area">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="heading">
+                                <h6 class="required">Select Category</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <ng-select aria-label="Select category" [required]="true" [disabled]="trackingItem?.mode === 'view'" [(ngModel)]="trackingItem.category" [searchable]="false" required="true" [clearable]="false" class="dropdown_select activity_dropdown v2" name="type">
+                                    <ng-option [value]="trackingItemConstants.BEFORE_SCHEDULED_DATE">{{trackingItemConstants.BEFORE_SCHEDULED_DATE}}</ng-option>
+                                    <ng-option [value]="trackingItemConstants.AFTER_RECEIPT_DATE">{{trackingItemConstants.AFTER_RECEIPT_DATE}}</ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="heading">
+                                <h6 class="required">Enter # of days</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input aria-label="Number of days text input box" type="number" [required]='true' name="title" [(ngModel)]="trackingItem.numberOfDays" autocomplete="off" [disabled]="trackingItem?.mode === 'view'" (blur)="checkIfValueIsZero(trackingItem.numberOfDays)">
+                            </div>
+                          <span *ngIf="showInlIneErrorForNoOfDays" class="noOfDaysInlIneErr">No. of days must be greater than 0</span>
+                          <span *ngIf="showInlIneErrorForDecimalNumbers" class="noOfDaysInlIneErr">Please enter whole numbers.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer attachment-modal-footer">
+            <button type="button" style="width: 100%;" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+            <button style="width: 100%;" class="btn btn-outline-dark footer-submit-btn" [disabled]="trackingItem?.mode === 'view' || !trackingItem.recipient.length || showInlIneErrorForNoOfDays || showInlIneErrorForDecimalNumbers">Submit</button>
+        </div>
+    </form>
+</div>
+<!--        </div>-->
+<!--    </div>-->

@@ -1,0 +1,64 @@
+<div class="modal-header attachment-modal-header add-recipients-header " style="margin: 0 0 15px 0">
+    <h4 class="modal-title" style="margin: auto">Add Recipients</h4>
+    <button type="button" aria-label="Close button for Add Recipients dialog box" style="position: absolute;right: 1rem;top: 8px;" class="close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="add-recipients-content">
+    <div class="row">
+        <div class="col-sm-4 tab-column">
+            <ul class="nav nav-tabs tabs-left">
+                <li class="nav-tab-li" [class.active-tab]="activeTabName === 'RECIPIENTS_TAB'">
+                    <a href="javascript:void(0);" class="nav-tab-link" (click)="recipientTab()">Recipients</a>
+                </li>
+                <li class="nav-tab-li" [class.active-tab]="activeTabName === 'ROLES_TAB'">
+                  <a href="javascript:void(0);" class="nav-tab-link" (click)="rolesTab()">Send to roles</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-8">
+            <div class="tab-content">
+                <div class="tab-pane" *ngIf="activeTabName === 'RECIPIENTS_TAB'">
+                    <div class="panel">
+                        <h4>Current Recipients:</h4>
+                        <ul class="search-recipients">
+                            <li *ngFor="let recipient of addRecipientsObj.RecipientsList; index as j">
+                                <span class="head">{{recipient.Title}}</span>
+                                <span class="cross-icon-add-recipient" (click)="deleteRecipient(j)">×</span>
+                            </li>
+                        </ul>
+                        <h4>Add Recipients</h4>
+                        <div class="searchbox_recipient">
+                            <label>Name:</label>
+                            <input name="recipient" placeholder="Lookup or enter name" [(ngModel)]="lookupInputField" (selectItem)="onRecipientSelected($event);" [ngbTypeahead]="commonService.searchPeopleObj" [inputFormatter]="commonService.selectedValueFormatter" [resultFormatter]="commonService.peopleFormatter">
+                        </div>
+                      <span *ngIf="recipientAlreadyExists" style="color: red">This Name already exists in Recipient List</span>
+                    </div>
+                </div>
+                <div class="tab-pane" *ngIf="activeTabName === 'ROLES_TAB'">
+                    <div class="panel">
+                        <h4>Current Roles:</h4>
+                        <ul class="search-recipients">
+                            <li *ngFor="let role of addRecipientsObj.Roles; index as j">
+                                <span class="head">{{role}}</span>
+                                <span class="cross-icon-add-recipient" (click)="removeRole(j)">×</span>
+                            </li>
+                        </ul>
+                        <h5>Select Roles</h5>
+                        <div class="searchbox_recipient">
+                          <ng-select [searchable]="false" [clearable]="false" [(ngModel)]="selectedRoles" (change)="onRoleSelect()" class="dropdown_select activity_dropdown">
+                            <ng-option *ngFor="let role of widgetNames.RolesList" [value]="role">{{role}}</ng-option>
+                          </ng-select>
+                        </div>
+                      <span *ngIf="roleAlreadyExists" style="color: red">This Role already exists in Roles List</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer attachment-modal-footer">
+            <button type="button" style="width: 100%;" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+            <button style="width: 100%;" class="btn btn-outline-dark footer-submit-btn" (click)="submitLinkedData(addRecipientsObj)" [disabled]="addRecipientsObj.RecipientsList.length === 0 && addRecipientsObj.Roles.length === 0">Submit</button>
+        </div>
+    </div>
+</div>

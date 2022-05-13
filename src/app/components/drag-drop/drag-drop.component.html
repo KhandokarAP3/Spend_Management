@@ -1,0 +1,117 @@
+<h5 class="activity-status-board-heading">Activity Status Board</h5>
+<section class="activity-status-board-wrp">
+  <section class="activity-status-board-column">
+    <h5 class="grey-heading-cs">To-do ({{activityCount.todo}})</h5>
+  </section>
+  <section class="activity-status-board-column">
+    <h5 class="grey-heading-cs">In-Progress ({{activityCount.inProgress}})</h5>
+  </section>
+  <section class="activity-status-board-column">
+    <h5 class="grey-heading-cs">Manager-Review ({{activityCount.managerReview}})</h5>
+  </section>
+  <section class="activity-status-board-column">
+    <h5 class="grey-heading-cs">Complete ({{activityCount.complete}})</h5>
+  </section>
+</section>
+<ng-container *ngFor="let project of projects | keyvalue;  let i = index">
+<p class="activity-status-top-text">{{project.value.project.Title}} ({{project.value.activityCount}})</p>
+<section class="activity-status-board-wrp">
+  <section class="activity-status-board-column">
+    <div
+      #list1="cdkDropList"
+      [cdkDropListConnectedTo]="[list2, list3, list4]"
+      cdkDropList
+      [cdkDropListData]="project.value.todo"
+      (cdkDropListDropped)="onItemDrop($event, 'To-do')"
+      class="example-list">
+      <div *ngFor="let activity of project.value.todo;  let j = index" cdkDrag [cdkDragData]="activity" class="example-box-list">
+        <div class="ActivityTypeDropDown">
+          <h4 class="col-heading-cs">{{activity.ActivityType || ''}}</h4>
+          <div class="dropdown attach-drop" (click)="toggleEllipsisToDo(j)" [ngClass]="toggleEllipsisClassToDo[j] === true ? 'open' : ''">
+            <a class="dropdown-toggle text-light"></a>
+            <div class="dropdown-menu mr-3">
+              <a class="dropdown-item" href="javascript:void(0)" (click)="viewActivity(activity)">View Activity</a>
+            </div>
+          </div>
+        </div>
+
+        <a class="col-link-cs" href="javascript:void(0)">{{activity.Title}}</a>
+        <h5 class="col-data-cs">Due Date: {{activity.dueDate}}</h5>
+        <h5 class="col-prio-cs">{{activity.Priority}}</h5>
+      </div>
+    </div>
+  </section>
+  <section class="activity-status-board-column">
+    <div
+      #list2="cdkDropList"
+      [cdkDropListConnectedTo]="[list1, list3, list4]"
+      cdkDropList
+      [cdkDropListData]="project.value.inProgress"
+      (cdkDropListDropped)="onItemDrop($event, 'In-progress')"
+      class="example-list">
+      <div *ngFor="let activity of project.value.inProgress;  let k = index" cdkDrag [cdkDragData]="activity" class="example-box-list">
+        <div class="ActivityTypeDropDown">
+          <h4 class="col-heading-cs">{{activity.ActivityType || ''}}</h4>
+          <div class="dropdown attach-drop" (click)="toggleEllipsisInProgress(k)" [ngClass]="toggleEllipsisClassInProgress[k] === true ? 'open' : ''">
+            <a class="dropdown-toggle text-light"></a>
+            <div class="dropdown-menu mr-3">
+              <a class="dropdown-item" href="javascript:void(0)" (click)="viewActivity(activity)">View Activity</a>
+            </div>
+          </div>
+        </div>
+        <a class="col-link-cs" href="javascript:void(0)">{{activity.Title}}</a>
+        <h5 class="col-data-cs">Due Date: {{activity.dueDate}}</h5>
+        <h5 class="col-prio-cs">{{activity.Priority}}</h5>
+      </div>
+    </div>
+  </section>
+  <section class="activity-status-board-column">
+    <div
+      #list3="cdkDropList"
+      [cdkDropListConnectedTo]="[list1, list2, list4]"
+      cdkDropList
+      [cdkDropListData]="project.value.managerReview"
+      (cdkDropListDropped)="onItemDrop($event, 'Manager Review')"
+      class="example-list">
+      <div *ngFor="let activity of project.value.managerReview;  let l = index" cdkDrag [cdkDragData]="activity" class="example-box-list">
+        <div class="ActivityTypeDropDown">
+          <h4 class="col-heading-cs">{{activity.ActivityType || ''}}</h4>
+          <div class="dropdown attach-drop" (click)="toggleEllipsisManagerReview(l)" [ngClass]="toggleEllipsisClassManagerReview[l] === true ? 'open' : ''">
+            <a class="dropdown-toggle text-light"></a>
+            <div class="dropdown-menu mr-3">
+              <a class="dropdown-item" href="javascript:void(0)" (click)="viewActivity(activity)">View Activity</a>
+            </div>
+          </div>
+        </div>
+        <a class="col-link-cs" href="javascript:void(0)">{{activity.Title}}</a>
+        <h5 class="col-data-cs">Due Date: {{activity.dueDate}}</h5>
+        <h5 class="col-prio-cs">{{activity.Priority}}</h5>
+      </div>
+    </div>
+  </section>
+  <section class="activity-status-board-column">
+    <div
+      #list4="cdkDropList"
+      [cdkDropListConnectedTo]="[list1, list2, list3]"
+      cdkDropList
+      [cdkDropListData]="project.value.complete"
+      (cdkDropListDropped)="onItemDrop($event, 'Completed')"
+      class="example-list">
+      <div *ngFor="let activity of project.value.complete;  let m = index" cdkDrag [cdkDragData]="activity" class="example-box-list">
+        <div class="ActivityTypeDropDown">
+          <h4 class="col-heading-cs">{{activity.ActivityType || ''}}</h4>
+          <div class="dropdown attach-drop" (click)="toggleEllipsisCompleted(m)" [ngClass]="toggleEllipsisClassCompleted[m] === true ? 'open' : ''">
+            <a class="dropdown-toggle text-light"></a>
+            <div class="dropdown-menu mr-3">
+              <a class="dropdown-item" href="javascript:void(0)" (click)="viewActivity(activity)">View Activity</a>
+            </div>
+          </div>
+        </div>
+        <a class="col-link-cs" href="javascript:void(0)">{{activity.Title}}</a>
+        <h5 class="col-data-cs">Due Date: {{activity.dueDate}}</h5>
+        <h5 class="col-prio-cs">{{activity.Priority}}</h5>
+      </div>
+    </div>
+  </section>
+</section>
+</ng-container>

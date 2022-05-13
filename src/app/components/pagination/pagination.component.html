@@ -1,0 +1,14 @@
+<div class="row">
+  <div [ngClass]="paginationType && paginationType === 'helpDesk' ? 'col-md-12 helpDeskPagination' : 'col-md-8 offset-md-4'">
+      <div class="form-row pagination-row pdRt-50">
+          <label *ngIf="paginationType && paginationType !== 'helpDesk'" class="col-form-label">Items per page :</label>
+          <ng-select *ngIf="paginationType && paginationType !== 'helpDesk'" [searchable]="false" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChanged(itemsPerPage);" [clearable]="false" required="true" name="ContractorPerformance" class="dropdown_select activity_dropdown">
+              <ng-option value="10">10</ng-option>
+              <ng-option value="25">25</ng-option>
+              <ng-option value="50">50</ng-option>
+              <ng-option value="100">100</ng-option>
+          </ng-select>
+        <ngb-pagination [collectionSize]="collectionSize" [pageSize]="itemsPerPage" [page]="currentPageIndex" (pageChange)="onCurrentPageIndexChange($event)" aria-label="Default pagination" size="lg"></ngb-pagination>
+      </div>
+  </div>
+</div>

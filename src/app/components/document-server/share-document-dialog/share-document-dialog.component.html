@@ -1,0 +1,59 @@
+<div class="modal-header attachment-modal-header add-recipients-header " style="margin: 0 0 15px 0">
+  <h4 class="modal-title" style="margin: auto">Share Document</h4>
+  <button type="button" aria-label="Close button for Add Recipients dialog box" style="position: absolute;right: 1rem;top: 8px;" class="close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="add-recipients-content"  [ngClass]="{spinner: showLoader}">
+  <form name="share_document_modal_form" (ngSubmit)="submitModalForm()" #myform="ngForm">
+    <div class="row">
+      <div class="col-sm-4" style="border-right: 1px solid #ccc">
+        <h6>Document Title:</h6>
+      </div>
+      <div class="col-sm-8 mb-4">
+        <h6 style="font-weight: 400; margin-bottom: 0">{{shareInfo.Title}}</h6>
+      </div>
+      <div class="col-sm-4" style="border-right: 1px solid #ccc">
+        <h6>Recipients:</h6>
+      </div>
+      <div class="col-sm-8 mb-4">
+        <ul class="search-recipients">
+          <li *ngFor="let recipient of shareInfo.Recipients; index as i">
+            <span class="head">{{recipient.Title}}</span>
+            <span class="cross-icon-add-recipient" (click)="deleteRecipient(i)">×</span>
+          </li>
+        </ul>
+        <h4>Add Recipients</h4>
+        <div class="searchbox_recipient">
+          <label class="required">Name:</label>
+          <input style="width: calc(100% - 75px);" name="recipient" placeholder="Lookup or enter name" [(ngModel)]="lookupInputField" (selectItem)="onRecipientSelected($event);" [ngbTypeahead]="commonService.searchPeopleObj" [inputFormatter]="commonService.selectedValueFormatter" [resultFormatter]="commonService.peopleFormatter">
+        </div>
+        <span *ngIf="recipientAlreadyExists" style="color: red">This Name already exists in Recipient List</span>
+      </div>
+      <div class="col-sm-4" style="border-right: 1px solid #ccc">
+        <h6>Permission Status</h6>
+      </div>
+      <div class="col-sm-8">
+        <div>
+          <label class="attachModal-status" style="width: 33%">
+            <input type="radio" value="View Only" required="true" [(ngModel)]="shareInfo.PermissionType" name="Permission">
+            <span class="attach-select" style="width: 100%">View</span>
+          </label>
+          <label class="attachModal-status" style="width: 33%">
+            <input type="radio" value="Edit" required="true" [(ngModel)]="shareInfo.PermissionType" name="Permission">
+            <span class="attach-select" style="width: 100%">Edit</span>
+          </label>
+<!--          <label class="attachModal-status" style="width: 33%">-->
+<!--            <input type="radio" value="Both" required="true" [(ngModel)]="shareInfo.PermissionType" name="Permission">-->
+<!--            <span class="attach-select" style="width: 100%">Both</span>-->
+<!--          </label>-->
+        </div>
+      </div>
+      <div class="modal-footer attachment-modal-footer">
+        <button type="button" style="width: 100%;" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+        <button type="submit" style="width: 100%;" class="btn btn-outline-dark footer-submit-btn" [disabled]="!myform.form.valid || this.shareInfo.Recipients.length === 0">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>

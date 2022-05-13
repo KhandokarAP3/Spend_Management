@@ -1,0 +1,10 @@
+Modifying the below two things will make it work (tested on both Angular 8 & 9 version).
+
+In browserslist file, change not IE 9-11 -> IE 9-11
+
+In tsconfig.json file, change "target": "es2015" -> "target": "es5"
+
+Mostly, the above changes suffice. If you still get some error (may be due to more complex UI/UX), you can try modify the polyfills.ts file,
+
+Uncomment // import 'classlist.js'; and // import 'web-animations-js';
+Must npm install --save classlist.js web-animations-js

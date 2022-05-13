@@ -1,0 +1,160 @@
+<div class="modal-header attachment-modal-header" style="margin: 0 0 15px 0">
+    <h4 class="modal-title" style="margin: auto">Configure Recurrence</h4>
+    <button type="button" aria-label="Configure Recurrence close button" style="position: absolute;right: 1rem;top: 1rem;" class="close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<form (ngSubmit)="configureNotificationTypeRecurrence(myform);" #myform="ngForm" [class.form-submitted]="isFormSubmitted" [class.spinner]="showLoader">
+    <div class="col-md-12">
+        <div class="row">
+
+            <div class="col-lg-6 col-md-6">
+                <div class="form-group">
+                    <label class="input_title required">Frequency</label>
+                    <ng-select name="frequency" aria-label="Frequency dropdown" [searchable]="false" [clearable]="false" required="true" [(ngModel)]="notificationTypeRecurrenceObj.frequency" class="dropdown_select activity_dropdown v2" (change)="frequencyChangeEvent($event)">
+                        <ng-option *ngFor="let option of notificationTypesRecurrenceFrequency" [value]="option">{{option}}</ng-option>
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6" *ngIf="notificationTypeRecurrenceObj.frequency === 'Daily'">
+                <div class="switch_sec_exclude">
+                    <div class="form-group inline_label_switch">
+                        <p class="input_title" style="margin: 0 0 0 0">Exclude Weekends</p>
+                        <div class="notif_switch mgL-10">
+                            <div class="switch_wrap">
+                                <label class="switch v3">
+                    <input type="checkbox" name="excludeWeekend" aria-label="Exclude weekends toggle button" [(ngModel)]="notificationTypeRecurrenceObj.excludeWeekend">
+                    <span class="slider round_box"></span>
+                  </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6" *ngIf="notificationTypeRecurrenceObj.frequency === 'Weekly'">
+                <div class="form-group specific-field-cs">
+                    <p class="input_title weekly-input-title required">
+                        Recur every
+                        <small *ngIf="!(notificationTypeRecurrenceObj.endDate && notificationTypeRecurrenceObj.noOftimes) && (number?.errors?.max || number?.errors?.min)" class="text-danger" style="width: 100%">Value should be between {{minMaxValueMap[notificationTypeRecurrenceObj.frequency].min}} - {{minMaxValueMap[notificationTypeRecurrenceObj.frequency].max}}</small>
+                        <input #number="ngModel" aria-label="Weekly recurrence numerical input" required="true" type="number" [min]="minMaxValueMap[notificationTypeRecurrenceObj.frequency].min" [max]="minMaxValueMap[notificationTypeRecurrenceObj.frequency].max" name="recurrEveryDay"
+                            placeholder="" [(ngModel)]="notificationTypeRecurrenceObj.recurrEveryDay" style="width: 13%" /> Week(s) on the days below
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12" *ngIf="notificationTypeRecurrenceObj.frequency === 'Weekly'">
+                <label class="required">Select days</label>
+                <div class="weekDays-selector">
+                    <input type="checkbox" class="weekday" name="Mon" id="Mon" [(ngModel)]="notificationTypeRecurrenceObj.Days.Mon" [required]="!notificationTypeRecurrenceObj.Days.Mon && !notificationTypeRecurrenceObj.Days.Tue && !notificationTypeRecurrenceObj.Days.Wed && !notificationTypeRecurrenceObj.Days.Thu && !notificationTypeRecurrenceObj.Days.Fri && !notificationTypeRecurrenceObj.Days.Sat && !notificationTypeRecurrenceObj.Days.Sun"
+                        (change)="selectDaysChangeEvent($event)" />
+                    <label for='Mon'>Mon</label>
+                    <input type="checkbox" class="weekday" name="Tue" id="Tue" [(ngModel)]="notificationTypeRecurrenceObj.Days.Tue" [required]="!notificationTypeRecurrenceObj.Days.Mon && !notificationTypeRecurrenceObj.Days.Tue && !notificationTypeRecurrenceObj.Days.Wed && !notificationTypeRecurrenceObj.Days.Thu && !notificationTypeRecurrenceObj.Days.Fri && !notificationTypeRecurrenceObj.Days.Sat && !notificationTypeRecurrenceObj.Days.Sun"
+                        (change)="selectDaysChangeEvent($event)" />
+                    <label for="Tue">Tue</label>
+                    <input type="checkbox" class="weekday" name="Wed" id="Wed" [(ngModel)]="notificationTypeRecurrenceObj.Days.Wed" [required]="!notificationTypeRecurrenceObj.Days.Mon && !notificationTypeRecurrenceObj.Days.Tue && !notificationTypeRecurrenceObj.Days.Wed && !notificationTypeRecurrenceObj.Days.Thu && !notificationTypeRecurrenceObj.Days.Fri && !notificationTypeRecurrenceObj.Days.Sat && !notificationTypeRecurrenceObj.Days.Sun"
+                        (change)="selectDaysChangeEvent($event)" />
+                    <label for="Wed">Wed</label>
+                    <input type="checkbox" class="weekday" name="Thu" id="Thu" [(ngModel)]="notificationTypeRecurrenceObj.Days.Thu" [required]="!notificationTypeRecurrenceObj.Days.Mon && !notificationTypeRecurrenceObj.Days.Tue && !notificationTypeRecurrenceObj.Days.Wed && !notificationTypeRecurrenceObj.Days.Thu && !notificationTypeRecurrenceObj.Days.Fri && !notificationTypeRecurrenceObj.Days.Sat && !notificationTypeRecurrenceObj.Days.Sun"
+                        (change)="selectDaysChangeEvent($event)" />
+                    <label for="Thu">Thu</label>
+                    <input type="checkbox" class="weekday" name="Fri" id="Fri" [(ngModel)]="notificationTypeRecurrenceObj.Days.Fri" [required]="!notificationTypeRecurrenceObj.Days.Mon && !notificationTypeRecurrenceObj.Days.Tue && !notificationTypeRecurrenceObj.Days.Wed && !notificationTypeRecurrenceObj.Days.Thu && !notificationTypeRecurrenceObj.Days.Fri && !notificationTypeRecurrenceObj.Days.Sat && !notificationTypeRecurrenceObj.Days.Sun"
+                        (change)="selectDaysChangeEvent($event)" />
+                    <label for="Fri">Fri</label>
+                    <input type="checkbox" class="weekday" name="Sat" id="Sat" [(ngModel)]="notificationTypeRecurrenceObj.Days.Sat" [required]="!notificationTypeRecurrenceObj.Days.Mon && !notificationTypeRecurrenceObj.Days.Tue && !notificationTypeRecurrenceObj.Days.Wed && !notificationTypeRecurrenceObj.Days.Thu && !notificationTypeRecurrenceObj.Days.Fri && !notificationTypeRecurrenceObj.Days.Sat && !notificationTypeRecurrenceObj.Days.Sun"
+                        (change)="selectDaysChangeEvent($event)" />
+                    <label for="Sat">Sat</label>
+                    <input type="checkbox" class="weekday" name="Sun" id="Sun" [(ngModel)]="notificationTypeRecurrenceObj.Days.Sun" [required]="!notificationTypeRecurrenceObj.Days.Mon && !notificationTypeRecurrenceObj.Days.Tue && !notificationTypeRecurrenceObj.Days.Wed && !notificationTypeRecurrenceObj.Days.Thu && !notificationTypeRecurrenceObj.Days.Fri && !notificationTypeRecurrenceObj.Days.Sat && !notificationTypeRecurrenceObj.Days.Sun"
+                        (change)="selectDaysChangeEvent($event)" />
+                    <label for="Sun">Sun</label>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6" *ngIf="notificationTypeRecurrenceObj.frequency === 'Monthly'">
+                <div class="form-group specific-field-cs">
+                    <p class="input_title monthly-input-title required">
+                        Notification will repeat on the
+                        <small *ngIf="number?.errors?.max || number?.errors?.min" class="text-danger">Value should be between {{minMaxValueMap[notificationTypeRecurrenceObj.frequency].min}} - {{minMaxValueMap[notificationTypeRecurrenceObj.frequency].max}}</small>
+                        <input type="number" aria-label="Numeric day input notification will repeat every month" #number="ngModel" required="true" [min]="minMaxValueMap[notificationTypeRecurrenceObj.frequency].min" [max]="minMaxValueMap[notificationTypeRecurrenceObj.frequency].max"
+                            name="Days" placeholder="" [(ngModel)]="notificationTypeRecurrenceObj.Days" /> of each month
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12" *ngIf="notificationTypeRecurrenceObj.frequency === 'Yearly'">
+                <div class="form-group specific-field-cs">
+                    <div class="yearly-input-title">
+                        <h6>Select yearly month & day numeric value below:</h6>
+                        <div>
+                            <label class="input_title required">Month</label>
+                            <ng-select aria-label="Month" name="selectedMonth" [required]="notificationTypeRecurrenceObj.frequency === 'Yearly'" [searchable]="false" [clearable]="false" [(ngModel)]="selectedMonth" class="dropdown_select activity_dropdown v2 customDropdownWidth-40">
+                                <ng-option *ngFor="let month of months; let i = index" [value]="i+1">{{month}}</ng-option>
+                            </ng-select>
+                        </div>
+                        <div>
+                            <label class="input_title required">Day</label>
+                            <ng-select aria-label="Day" name="selectedDay" [searchable]="false" [required]="notificationTypeRecurrenceObj.frequency === 'Yearly'" [clearable]="false" [(ngModel)]="selectedDay" class="dropdown_select activity_dropdown v2 customDropdownWidth-40">
+                                <ng-option *ngFor="let day of days; let i = index" [value]="day">{{day}}</ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-15" *ngIf="notificationTypeRecurrenceObj.frequency === 'Daily' || notificationTypeRecurrenceObj.frequency === 'Weekly' || notificationTypeRecurrenceObj.frequency === 'Monthly' || notificationTypeRecurrenceObj.frequency === 'Yearly'">
+            <div class="col-lg-6 col-md-6">
+                <h5>Duration</h5>
+
+                <div class="duration_sec_exclude">
+                    <div class="form-group inline_label_switch">
+                        <p class="input_title" style="margin: 0 0 0 0">No end</p>
+                        <div class="notif_switch mgL-10">
+                            <div class="switch_wrap">
+                                <label class="switch v3">
+                  <input type="checkbox" name="noEnd" aria-label = "No end toggle button" [(ngModel)]="notificationTypeRecurrenceObj.noEnd" (change)="noEndEvent($event);">
+                  <span class="slider round_box"></span>
+                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group unit-input-cs">
+                    <p class="input_title">Until</p>
+                    <div class="input-group formDatePicker" [class.disabled]="notificationTypeRecurrenceObj.noEnd">
+                        <small *ngIf="!notificationTypeRecurrenceObj.noOftimes && !isEndDateAndNoOfDaysBothSet(notificationTypeRecurrenceObj) && notificationTypeRecurrenceObj.endDateERROR" class="text-danger" style="width: 160%">{{notificationTypeRecurrenceObj.endDateERROR}}</small>
+                        <input maxlength="10" [(ngModel)]="notificationTypeRecurrenceObj.endDate" class="form-control no-validation" name="endDate" placeholder="MM-DD-YYYY" [required]="!notificationTypeRecurrenceObj.noEnd && !notificationTypeRecurrenceObj.noOftimes" (blur)="checkTypingDateForCalendar('endDate',notificationTypeRecurrenceObj)"
+                            (ngModelChange)="checkTypingDateForCalendar('endDate',notificationTypeRecurrenceObj);" #endDate="ngModel" ngbDatepicker #EndDate="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button aria-label="Select specific date in the future calendar" class="btn btn-outline-secondary calendar" (click)="EndDate.toggle()" type="button">
+                <fa-icon [icon]="['fas', 'calendar-alt']"></fa-icon>
+              </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group specific-field-cs" style="position: relative" [class.disabled]="notificationTypeRecurrenceObj.noEnd">
+                    <small *ngIf="!isEndDateAndNoOfDaysBothSet(notificationTypeRecurrenceObj) && (number?.errors?.max || number?.errors?.min)" class="text-danger">Value should be in range {{minMaxValueMap[notificationTypeRecurrenceObj.frequency].min}} - {{minMaxValueMap[notificationTypeRecurrenceObj.frequency].max}}</small>
+                    <label class="input_title">Specific # of times</label>
+                    <!--          <small *ngIf="!(notificationTypeRecurrenceObj.endDate && notificationTypeRecurrenceObj.noOftimes) && (number?.errors?.max || number?.errors?.min)" class="text-danger" style="width: 160%">Value should be between {{minMaxValueMap[notificationTypeRecurrenceObj.frequency].min}} - {{minMaxValueMap[notificationTypeRecurrenceObj.frequency].max}}</small>-->
+                    <input #number="ngModel" type="number" aria-label="Specific number of times numeric input field" [min]="minMaxValueMap[notificationTypeRecurrenceObj.frequency].min" [max]="minMaxValueMap[notificationTypeRecurrenceObj.frequency].max" name="noOftimes" [required]="!notificationTypeRecurrenceObj.noEnd && !notificationTypeRecurrenceObj.endDate"
+                        placeholder="" [(ngModel)]="notificationTypeRecurrenceObj.noOftimes" (ngModelChange)="noOftimesChange($event)" />
+                </div>
+
+
+            </div>
+        </div>
+        <div class="error-cs" *ngIf="isEndDateAndNoOfDaysBothSet(notificationTypeRecurrenceObj)">
+            Please select only one duration period
+        </div>
+    </div>
+
+    <div class="modal-footer attachment-modal-footer">
+        <button type="button" class="btn btn-outline-dark" style="width: 100%;" (click)="cancel()">Cancel</button>
+        <button class="btn btn-outline-dark footer-submit-btn footer-submit-btn-disabled" type="submit" [disabled]="myform.invalid">Submit</button>
+    </div>
+
+</form>

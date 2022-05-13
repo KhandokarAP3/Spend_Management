@@ -1,0 +1,159 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content_title">
+            <div class="content_title_left">
+                <h2>My Activities ({{filterValue !== '' ? 'Filtered List' : totalActivitiesCount}})</h2>
+            </div>
+            <div class="content_title_right">
+                <div class="btn v8 searchSec">
+                    <input type="text" placeholder="Search activities" [(ngModel)]="filterValue" (keydown.enter)="$event.preventDefault()">
+                    <img *ngIf="!filterValue" [src]="'images/search.png' | updateImageURL" alt="Image" class="search_icon">
+                    <span *ngIf="filterValue">
+                        <a class="upload-cross" href="javascript:void(0)" (click)="clearSearch()">
+                            <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+                        </a>
+                      </span>
+                </div>
+                <div class="content_title_btn" (click)="createNewActivity();" [class.disabled]="!commonService.canCreateActivities()">
+                    <a href="javascript:void(0);" class="btn v1">+ Create Activity</a>
+                </div>
+                <div class="content_title_btn">
+                    <a href="javascript:void(0);" class="btn v2" (click)="exportToCSV()">
+                        <fa-icon class="mr-2" [icon]="['fas', 'upload']"></fa-icon> Export</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row py-5">
+    <div class="col-md-6 col-lg-6">
+        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="selectedTab" (change)="filterDataFn.bind(this)(projects, filterValue);">
+            <label ngbButtonLabel *ngIf="showMyActivitiesTab || allTabHidden" [ngClass]="selectedTab === tabs.MyActivities ? 'tabBtnActive':'tabBtn'" class="btn-primary">
+              <input ngbButton type="radio" [value]="tabs.MyActivities"> My Activities
+            </label>
+            <label ngbButtonLabel *ngIf="showTeamActivitiesTab || allTabHidden" [ngClass]="selectedTab === tabs.TeamActivities ? 'tabBtnActive':'tabBtn'" class="btn-primary">
+              <input ngbButton type="radio" [value]="tabs.TeamActivities"> Team Activities
+            </label>
+            <label ngbButtonLabel *ngIf="showAllActivities || allTabHidden" [ngClass]="selectedTab === tabs.AllActivities ? 'tabBtnActive':'tabBtn'" class="btn-primary">
+              <input ngbButton type="radio" [value]="tabs.AllActivities"> All Activities
+            </label>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-6 text-right right-tabs-projects" style="padding-left: 0px">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" [destroyOnHide]="false" class="nav-tabs mt-0">
+            <li [ngbNavItem]="1" [destroyOnHide]="true">
+                <a ngbNavLink>To-do</a>
+                <ng-template ngbNavContent>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="2">
+                <a ngbNavLink>In-progress</a>
+                <ng-template ngbNavContent>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="3">
+                <a ngbNavLink>Manager Review</a>
+                <ng-template ngbNavContent let-active>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="4">
+                <a ngbNavLink>Completed</a>
+                <ng-template ngbNavContent let-active>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="5">
+                <a ngbNavLink>All</a>
+                <ng-template ngbNavContent let-active>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+</div>
+<div class="row" *ngFor="let project of projects | sortAndFilterObjectsForActivities: filterValue: filterDataFn.bind(this); index as i">
+    <div class="col-md-12" *ngIf="project.showProject !== false">
+        <div class="actiity_box">
+            <div class="activity_header">
+                <div class="col activity_header_left">
+                    <p>Project Identifier: <span [title]="project.Identifier">{{project.Identifier}}</span></p>
+                </div>
+                <div class="col activity_header_left">
+                    <p>Title: <span [title]="project.Title">{{project.Title}}</span></p>
+                </div>
+                <div class="col activity_header_left">
+                    <p>Creation Date: <span>{{project.CreationDate | ap3Date:'mediumDate'}}</span></p>
+                </div>
+                <div class="col activity_header_left">
+                    <p>Requested Award Date: <span>{{project.Requested_Award_Date | ap3Date:'mediumDate'}}</span></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="activity_custom_table_row activity-new-table-row" style="margin-top: 6px" *ngFor="let activity of (project.activities | keyvalue); index as j">
+                        <ngb-accordion #acc="ngbAccordion" *ngIf="filterItemCountTracker[project.Title][activity.key]" [closeOthers]="!filterValue" [destroyOnHide]="true" [activeIds]="j === 0 ? 'ngb-panel-0_0' : ''">
+                            <ngb-panel [id]="'ngb-panel-'+i+'_'+j">
+                                <ng-template aria-hidden="true" ngbPanelHeader let-opened="opened">
+                                    <div (click)="acc.toggle('ngb-panel-'+i+'_'+j)" class="accordion-toggle-btn btn activity-accodion">
+                                        <div class="card_header_left">
+                                            <span *ngIf="!opened" class="toggle_arrow"> <img [src]="'images/arrow_up.png' | updateImageURL"  alt="Image"></span>
+                                            <span *ngIf="opened" class="toggle_arrow"> <img [src]="'images/arrow_down.png' | updateImageURL"  alt="Image"></span>
+                                            <h5 class="faq_header" *ngIf="!opened">
+                                                {{activity.key}} <span>({{filterItemCountTracker[project.Title][activity.key]}})</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="top_card_header_right activity_top_header_right" *ngIf="opened">
+                                        <div class="tt-desc-heading">
+                                            <span class="pointer" (click)="sortInfoObj[activity.key+'SortBy'] = 'Title'; sortInfoObj[activity.key+'sortReverse'] = ! sortInfoObj[activity.key+'sortReverse']">Title
+                                                <fa-icon *ngIf="sortInfoObj[activity.key+'SortBy'] !== 'Title'"[icon]="['fas', 'sort']"></fa-icon>
+                                                <fa-icon *ngIf="sortInfoObj[activity.key+'sortReverse'] === true" [icon]="['fas', 'sort-up']"></fa-icon>
+                                                <fa-icon *ngIf="sortInfoObj[activity.key+'sortReverse'] === false" [icon]="['fas', 'sort-down']"></fa-icon>
+                                            </span>
+                                        </div>
+                                        <div class="date-col-activity">Scheduled Date</div>
+                                        <div class="text-center">Actions</div>
+                                    </div>
+                                </ng-template>
+                                <ng-template aria-hidden="true" ngbPanelContent>
+                                    <div class="activity_list_item activity-accs" *ngFor="let row of activity.value | orderBy :sortInfoObj[activity.key+'SortBy']: sortInfoObj[activity.key+'sortReverse']: true" [class.hidden]="row.showActivity === false">
+                                        <div class="activity_list_name invoice_list_name new-activity_list_name" *ngIf="row.showActivity !== false">
+                                            <div class="activity_custom_table_row" style="margin-top: 6px">
+                                                <div class="activity_list_name invoice_list_name">
+                                                    <p>
+                                                        <span class="activity-bold">{{row.ActivityType}}</span>
+                                                        <span class="activity-title-name">{{row.Title}}</span>
+                                                    </p>
+                                                </div>
+                                                <div class="invoice_lists_right">
+                                                    <div class="col date-activity" *ngIf="row.TrackingItems.length">
+                                                      <p *ngFor="let item of row.TrackingItems; index as k">{{item.scheduledDate}}</p>
+                                                    </div>
+                                                  <div class="col date-activity" *ngIf="!row.TrackingItems || !row.TrackingItems.length">
+                                                    <p></p>
+                                                  </div>
+                                                    <div class="col card_header_right">
+                                                        <span [class.disabled]="!this.commonService.canViewActivities(row)">
+                                            <fa-icon (click)="goToActivity(row);" class="pointer" [icon]="['far', 'eye']"></fa-icon>
+                                        </span>
+                                                        <span [class.disabled]="!this.commonService.canEditActivities(row)">
+                                            <fa-icon (click)="goToActivity(row, true);" class="pointer" [icon]="['fas', 'pencil-alt']"></fa-icon>
+                                        </span>
+                                                        <span [class.disabled]="!this.commonService.canDeleteActivities(row)">
+                                            <fa-icon (click)="deleteActivity(row, project, activity.key)" class="pointer" [icon]="['fas', 'trash']"></fa-icon>
+                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                        </ngb-accordion>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-pagination [itemsPerPage]="paginationParams.itemsPerPage" (itemsPerPageChange)="updateItemsPerPage($event)" [currentPageIndex]="paginationParams.currentPage" (currentPageIndexChange)="updateCurrentPageIndex($event)" [collectionSize]="paginationParams.itemCount"></app-pagination>

@@ -1,0 +1,11 @@
+<div class="chat-toggle-button" (click)="toggleChat()" style="background: #F6B513;">
+  <div *ngIf="showChat">
+    Hide Chat
+    <!--        <fa-icon [icon]="['fas', 'caret-down']"></fa-icon> Hide Chat <fa-icon [icon]="['fas', 'caret-down']"></fa-icon>-->
+  </div>
+  <div *ngIf="!showChat" style="background: #F6B513;">
+    Show Chat
+    <!--        <fa-icon [icon]="['fas', 'caret-up']"></fa-icon> Show Chat <fa-icon [icon]="['fas', 'caret-up']"></fa-icon>-->
+  </div>
+</div>
+<div id="cometchat" [hidden]="!showChat"></div>
