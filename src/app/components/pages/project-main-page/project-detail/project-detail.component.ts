@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
-import { PageComponentParent } from '../../../../PageComponentParent';
+import { PageComponentParentComponent } from '../../../../page-component-parent.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../../../services/common.service';
 import { RESTAPIService } from '../../../../services/REST-API.service';
@@ -18,7 +18,7 @@ import { MyFilterPipe } from 'src/app/pipes/pipes';
   selector: 'app-project-detail',
   templateUrl: './project-detail.component.html'
 })
-export class ProjectDetailComponent extends PageComponentParent implements OnDestroy, OnInit, AfterViewInit {
+export class ProjectDetailComponent extends PageComponentParentComponent implements OnDestroy, OnInit, AfterViewInit {
   activityIds: string[] = [];
   actionitemIds: string[] = [];
   isFormSubmitted = false;

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Acquisition-Package-API": {
+    "Spend_Management": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,12 +13,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/Acquisition-Package-API",
+            "deployUrl": "https://seventh.sharepoint.us/sites/EnlightenedSolutionsDev/AP/TestInstanceKhandokar/",
+            "outputPath": "dist/Spend_Management",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -32,8 +32,6 @@
               "src/assets/ionicons/ionicons.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              "node_modules/owl.carousel/dist/assets/owl.carousel.min.css",
-              "node_modules/owl.carousel/dist/assets/owl.theme.default.min.css",
               "node_modules/slick-carousel/slick/slick.scss",
               "node_modules/slick-carousel/slick/slick-theme.scss",
               "src/style.css",
@@ -45,13 +43,18 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/tinymce/tinymce.min.js",
-              "node_modules/owl.carousel/dist/owl.carousel.min.js",
               "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/jspdf/dist/jspdf.umd.min.js",
               "node_modules/jspdf/dist/jspdf.umd.min.js",
               "src/assets/js/jquery.nicescroll.js",
               "src/assets/js/cometchatwidget.js"
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -82,23 +85,24 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Acquisition-Package-API:build"
+            "browserTarget": "Spend_Management:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Acquisition-Package-API:build:production"
+              "browserTarget": "Spend_Management:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Acquisition-Package-API:build"
+            "browserTarget": "Spend_Management:build"
           }
         },
         "test": {
@@ -135,18 +139,18 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Acquisition-Package-API:serve"
+            "devServerTarget": "Spend_Management:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "Acquisition-Package-API:serve:production"
+              "devServerTarget": "Spend_Management:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "Acquisition-Package-API",
+  "defaultProject": "Spend_Management",
   "cli": {
     "analytics": false
   }

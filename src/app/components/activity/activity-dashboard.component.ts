@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PageComponentParent } from '../../PageComponentParent';
+import { PageComponentParentComponent } from '../../page-component-parent.component';
 import { RESTAPIService } from '../../services/REST-API.service';
 import { forkJoin, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,7 @@ declare const _spPageContextInfo: any;
   selector: 'app-activity-dashboard',
   templateUrl: './activity-dashboard.component.html'
 })
-export class ActivityDashboardComponent extends PageComponentParent {
+export class ActivityDashboardComponent extends PageComponentParentComponent {
   tabs: any = {
     MyActivities: 'MyActivities',
     TeamActivities: 'TeamActivities',

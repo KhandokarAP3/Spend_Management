@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { RESTAPIService } from '../../services/REST-API.service';
 import { CommonService } from '../../services/common.service';
-import { PageComponentParent } from '../../PageComponentParent';
+import { PageComponentParentComponent } from '../../page-component-parent.component';
 import { forkJoin, merge, Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -50,7 +50,7 @@ declare const $;
   ]
 })
 
-export class CreateActivityComponent extends PageComponentParent implements OnDestroy, OnInit {
+export class CreateActivityComponent extends PageComponentParentComponent implements OnDestroy, OnInit {
   actionItem = null;
   actionItems = [];
   documentsSubmittedForApproval: any = {};

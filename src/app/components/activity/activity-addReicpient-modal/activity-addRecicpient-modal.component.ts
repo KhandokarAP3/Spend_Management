@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnDestroy, ElementRef, ViewChild, ChangeDetectorRef, OnInit} from '@angular/core';
-import {PageComponentParent} from '../../../PageComponentParent';
+import {PageComponentParentComponent} from '../../../page-component-parent.component';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
 import {CommonService} from '../../../services/common.service';
@@ -12,7 +12,7 @@ import {RESTAPIService} from '../../../services/REST-API.service';
 })
 
 // export class ActivityAddReceipientModalComponent implements OnInit {
-export class ActivityAddReceipientModalComponent extends PageComponentParent implements OnDestroy, OnInit, AfterViewInit{
+export class ActivityAddReceipientModalComponent extends PageComponentParentComponent implements OnDestroy, OnInit, AfterViewInit{
   data: any;
   isFormSubmitted = false;
   recipientTabShow = true;

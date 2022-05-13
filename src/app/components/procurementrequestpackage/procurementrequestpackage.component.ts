@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import {PageComponentParent} from "../../PageComponentParent";
+import {PageComponentParentComponent} from "../../page-component-parent.component";
 import {Router} from '@angular/router';
 import {RESTAPIService} from '../../services/REST-API.service';
 import { SlickCarouselComponent } from 'ngx-slick-carousel';
@@ -11,7 +11,7 @@ import { AppConstants } from 'src/app/AppConstants';
   selector: 'app-procurementrequestpackage',
   templateUrl: './procurementrequestpackage.component.html'
 })
-export class ProcurementRequestPackageComponent extends PageComponentParent {
+export class ProcurementRequestPackageComponent extends PageComponentParentComponent {
   @ViewChild('videoPlayer') videoplayer: ElementRef;
   @ViewChild('videoPlayer1') videoplayer1: ElementRef;
   @ViewChild('templateSlickModal') slickTemplateModal: SlickCarouselComponent;

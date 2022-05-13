@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MainPageComponentParent } from './PageComponentParent';
+import { MainPageComponentParentComponent } from './page-component-parent.component';
 
 @Component({
   selector: 'app-test-component',
@@ -85,7 +85,7 @@ import { MainPageComponentParent } from './PageComponentParent';
     </div>
   `
 })
-export class TestComponent extends MainPageComponentParent{
+export class TestComponent extends MainPageComponentParentComponent{
   steps = [];
   workflowObj: any = {
     content: 'Analyze existing understanding of technical and marketplace knowledge need/mission gap areas are sufficient.',

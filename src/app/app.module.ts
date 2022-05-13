@@ -48,9 +48,9 @@ import {MainPageComponent} from './components/pages/main-page.component';
 import {ProjectListingComponent} from './components/pages/project-main-page/project-listing/project-listing.component';
 import {ProjectDetailComponent} from './components/pages/project-main-page/project-detail/project-detail.component';
 import {FundProgressComponent} from './components/fund-progress/fund-progress.component';
-import {FooterComponent} from './components/footer/footer.component.js';
+import {FooterComponent} from './components/footer/footer.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TableV1Component, TableV2Component, TableV3Component, TableV4Component} from './components/tables/table.component';
+import {TableV1Component, TableV2Component, TableV3Component, TableV4Component, TableComponent} from './components/tables/table.component';
 import {CommonService} from './services/common.service';
 import { EditUserProfileComponent } from './components/user-profile/edit-profile/edit-user-profile/edit-user-profile.component';
 import { BarChartComponent } from './components/bar-chart.component';
@@ -139,6 +139,7 @@ import {UploadDocumentsComponent} from './components/document-server/upload-docu
 import {ShareDocumentDialogComponent} from './components/document-server/share-document-dialog/share-document-dialog.component';
 import {DocumentSharingStatusComponent} from './components/document-sharing-status/document-sharing-status.component';
 import {AttachDocumentProjectActivitiesComponent} from './components/document-server/attach-documents-project-activities/attach-documents-project-activities.component';
+import {MainPageComponentParentComponent, PageComponentParentComponent} from './page-component-parent.component';
 
 @NgModule({
   declarations: [
@@ -226,7 +227,10 @@ import {AttachDocumentProjectActivitiesComponent} from './components/document-se
     NotesComponent,
     ShareDocumentDialogComponent,
     DocumentSharingStatusComponent,
-    AttachDocumentProjectActivitiesComponent
+    AttachDocumentProjectActivitiesComponent,
+    MainPageComponentParentComponent,
+    PageComponentParentComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,

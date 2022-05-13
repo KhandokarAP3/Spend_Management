@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ChangeDetectorRef} from '@angular/core';
-import {MainPageComponentParent} from '../../PageComponentParent';
+import {MainPageComponentParentComponent} from '../../page-component-parent.component';
 import {RESTAPIService} from '../../services/REST-API.service';
 import { NgForm} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
@@ -13,7 +13,7 @@ declare var $;
   selector: 'app-email-template',
   templateUrl: './email-template.component.html'
 })
-export class EmailTemplateComponent extends MainPageComponentParent implements AfterViewInit{
+export class EmailTemplateComponent extends MainPageComponentParentComponent implements AfterViewInit{
   tinyMCEUrl = environment.assetsBaseUrl + 'tinymce';
   emailTemplate: any =  {};
   defaultRecipient = false;
@@ -47,12 +47,12 @@ export class EmailTemplateComponent extends MainPageComponentParent implements A
           }else{
             console.log('Could not find an email template with that ID in the SP list.');
           }
-        });       
+        });
       }
 
-      /*** Decided not to allow folks to create their own emails outside of creating a notification type. 
+      /*** Decided not to allow folks to create their own emails outside of creating a notification type.
        *   Since we are not using the create email page any longer there is no need to populate the current list of notification types from the SP backend */
-      
+
       // restAPIService.getNotificationTypes().subscribe(res => {
       //   if (this.restAPIService.isSuccessResponse(res) && res.data) {
       //     for(var counter:number = 1; counter< res.data.length; counter++){
@@ -61,7 +61,7 @@ export class EmailTemplateComponent extends MainPageComponentParent implements A
       //   } else {
       //     console.log('The getNotificationTypes call errored out and was not able to return any data.');
       //   }
-      // });   
+      // });
     });
 
     this.route.queryParams.subscribe(params => {

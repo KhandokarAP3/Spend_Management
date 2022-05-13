@@ -2,7 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExportToCsv } from 'export-to-csv';
 import { Pagination, SortAndFilterTopLevelObjects } from '../../pipes/pipes';
-import { PageComponentParent } from '../../PageComponentParent';
+import { PageComponentParentComponent } from '../../page-component-parent.component';
 import { RESTAPIService } from '../../services/REST-API.service';
 import { AppConstants } from '../../AppConstants';
 import { forkJoin } from 'rxjs';
@@ -17,7 +17,7 @@ declare const _spPageContextInfo;
   templateUrl: './document-approval.component.html'
 })
 
-export class DocumentApprovalComponent extends PageComponentParent implements AfterViewInit {
+export class DocumentApprovalComponent extends PageComponentParentComponent implements AfterViewInit {
   filterValue = '';
   // Holds the granular approver level 'received' records
   documentApproverArray: any[] = [];

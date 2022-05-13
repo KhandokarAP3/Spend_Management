@@ -1,18 +1,17 @@
-import { Component,ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import {SendEmailComponent} from '../send-email/send-email.component';
-import {PageComponentParent} from '../../../PageComponentParent';
+import {PageComponentParentComponent} from '../../../page-component-parent.component';
 import {RESTAPIService} from '../../../services/REST-API.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RequestTicketComponent} from '../request-ticket/request-ticket.component';
 import {AskExpertsComponent} from '../ask-experts/ask-experts.component';
 import {AppConstants} from '../../../AppConstants';
-import {OwlCarousel} from 'ngx-owl-carousel';
 
 @Component({
   selector: 'app-help-desk-dashboard',
   templateUrl: './help-desk-dashboard.component.html'
 })
-export class HelpDeskDashboardComponent extends PageComponentParent {
+export class HelpDeskDashboardComponent extends PageComponentParentComponent {
   webAbsoluteUrl = AppConstants.spPageContextInfo.webAbsoluteUrl;
   filterValue = '';
   sortBy = '';

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MainPageComponentParent } from '../../../PageComponentParent';
+import { MainPageComponentParentComponent } from '../../../page-component-parent.component';
 import { AppConstants } from '../../../AppConstants';
 import { CommonService } from '../../../services/common.service';
 import {RESTAPIService} from "../../../services/REST-API.service";
@@ -9,7 +9,7 @@ import {RESTAPIService} from "../../../services/REST-API.service";
   selector: 'app-home',
   templateUrl: './home.component.html'
 })
-export class HomeComponent extends MainPageComponentParent{
+export class HomeComponent extends MainPageComponentParentComponent{
   public readonly widgetNames = AppConstants.WidgetNames;
   widgetsControl = {};
 

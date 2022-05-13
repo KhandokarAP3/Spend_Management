@@ -1,11 +1,11 @@
-<div class="table_header" [ngClass]="type == 'projects' ? 'table_project_header' : ''" *ngIf="data.headers.length>0">
-  <div class="table_header_item" *ngFor="let header of data.headers">
+<div class="table_header" [ngClass]="tableType == 'projects' ? 'table_project_header' : ''" *ngIf="tableData.headers.length>0">
+  <div class="table_header_item" *ngFor="let header of tableData.headers">
     <p>{{header.text}}</p>
   </div>
 </div>
 <div class="table_data_wrap" appNiceScroll>
-  <div class="tabel_data" [ngClass]="type == 'projects' ? 'tableLinkedList' : ''" *ngFor="let row of data.rows">
-    <div class="table_data_item" [routerLink]="type === 'projects' ? ['/projects/', row[0].value] : null" [queryParams]="type === 'projects' ? { mode: 'view' } : null" *ngFor="let cellData of row">
+  <div class="tabel_data" [ngClass]="tableType == 'projects' ? 'tableLinkedList' : ''" *ngFor="let row of tableData.rows">
+    <div class="table_data_item" [routerLink]="tableType === 'projects' ? ['/projects/', row[0].value] : null" [queryParams]="tableType === 'projects' ? { mode: 'view' } : null" *ngFor="let cellData of row">
       <p *ngIf="!cellData.isProgress" [ngClass]="{link: cellData.clickHandler}" (click)="goToLink(cellData)">{{cellData.value}}</p>
       <div *ngIf="cellData.isProgress" class="progress-tooltip" [ngClass]="cellData.class">
         <span class="progress-tooltip-info" [ngStyle]="{left: cellData.value+'%'}">{{cellData.text}}</span>

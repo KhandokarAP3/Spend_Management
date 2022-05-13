@@ -1,5 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, Input, NgZone, OnInit} from '@angular/core';
-import {ColorHelper} from '@swimlane/ngx-charts';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, Input, NgZone} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
@@ -46,18 +45,10 @@ export class PieChartComponent implements AfterViewInit {
   view: any[] = [520 - this.legendWidth, 190];
 
   legendData = [];
-  colors: any = [];
   @HostListener('window:resize', ['$event.target'])
   onResize(event) {
     setTimeout(() => {
       this.ngZone.run(() => {
-        // if(window.outerWidth < 450){
-        //   // @HostBinding('class.left-bar') leftBarClass = true;
-        //   // this.showLegends = false;
-        // }else{
-        //   this.showLegends = true;
-        // }
-
         this.view = [this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight];
         this.cdr.detectChanges();
       });
@@ -69,7 +60,6 @@ export class PieChartComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.view = [this.elementRef.nativeElement.offsetWidth, this.elementRef.nativeElement.offsetHeight];
     this.legendData = this.data.map(d => d.name);
-    this.colors = new ColorHelper(this.colorScheme, 'ordinal', this.legendData, this.colorScheme);
     this.cdr.detectChanges();
   }
 

@@ -1,23 +1,25 @@
 import {Component, HostBinding, Input} from '@angular/core';
 import {Router} from '@angular/router';
 
-
-class TableComponent {
+@Component({
+  template: ''
+})
+export class TableComponent {
   constructor(private router: Router){}
   @HostBinding() style = {display: 'block'};
   @Input() additionalClass = '';
-  @Input() data: any = {
+  @Input() tableData: any = {
     headers: [],
     rows: []
   };
-  @Input() type: any = '';
+  @Input() tableType: any = '';
 
   goToLink(cellData) {
     if (cellData.hasOwnProperty('queryParams')){
       this.router.navigate(['action-item'], cellData.queryParams);
     }else{
-      if (this.data.clickHandler) {
-        this.data.clickHandler(cellData);
+      if (this.tableData.clickHandler) {
+        this.tableData.clickHandler(cellData);
       }
     }
   }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PageComponentParent } from '../../PageComponentParent';
+import { PageComponentParentComponent } from '../../page-component-parent.component';
 import { CommonService } from '../../services/common.service';
 import * as moment from 'moment';
 import { NgForm } from '@angular/forms';
@@ -17,7 +17,7 @@ declare const _spPageContextInfo: any;
   selector: 'app-action-item-dashboard',
   templateUrl: './action-item-dashboard.component.html'
 })
-export class ActionItemDashboardComponent extends PageComponentParent {
+export class ActionItemDashboardComponent extends PageComponentParentComponent {
   tempDate: any;
   navigation: any;
   mode: any;

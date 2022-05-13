@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostBinding} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import { PageComponentParent } from '../../../../PageComponentParent';
+import { PageComponentParentComponent } from '../../../../page-component-parent.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RESTAPIService } from '../../../../services/REST-API.service';
 import { ToastrService } from 'ngx-toastr';
@@ -20,7 +20,7 @@ declare const _spPageContextInfo: any;
   selector: 'app-projects',
   templateUrl: './project-listing.component.html'
 })
-export class ProjectListingComponent extends PageComponentParent implements AfterViewInit {
+export class ProjectListingComponent extends PageComponentParentComponent implements AfterViewInit {
   active = 1;
   @HostBinding('style.minHeight') height = `auto`;
   readonly csvOptions = {
@@ -86,7 +86,7 @@ export class ProjectListingComponent extends PageComponentParent implements Afte
       this.paginationParams = {...this.paginationParams, currentPage};
     });
   }
-  
+
   updateItemsPerPage(itemsPerPage) {
     setTimeout(() => {
       this.paginationParams = {...this.paginationParams, itemsPerPage};

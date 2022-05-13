@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import {PageComponentParent} from '../../../PageComponentParent';
+import {PageComponentParentComponent} from '../../../page-component-parent.component';
 import {Router} from '@angular/router';
 import {RESTAPIService} from '../../../services/REST-API.service';
 import {forkJoin} from 'rxjs';
@@ -16,7 +16,7 @@ declare const _spPageContextInfo;
   selector: 'app-repository-dashboard',
   templateUrl: './repository-dashboard.component.html'
 })
-export class RepositoryDashboardComponent extends PageComponentParent {
+export class RepositoryDashboardComponent extends PageComponentParentComponent {
   active = 1;
   repoDeliverable: any;
   repos: any;

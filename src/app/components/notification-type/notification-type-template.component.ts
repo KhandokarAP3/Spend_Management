@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { MainPageComponentParent } from '../../PageComponentParent';
+import { MainPageComponentParentComponent } from '../../page-component-parent.component';
 import { RESTAPIService } from '../../services/REST-API.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
   selector: 'app-notification-type-template',
   templateUrl: './notification-type-template.component.html'
 })
-export class NotificationTypeTemplateComponent extends MainPageComponentParent {
+export class NotificationTypeTemplateComponent extends MainPageComponentParentComponent {
   tinyMCEUrl = environment.assetsBaseUrl + 'tinymce';
   disableAllFields = false;
   notificationTypesForDisableFields = {

@@ -79,7 +79,7 @@ export class ExpandToggleButtonDirective {
   @Input() notifier: Subject<any> = new Subject<any>();
   @HostListener('click', ['$event']) onClick(event) {
     this.showChild = !this.showChild;
-    this.notifier.next();
+    this.notifier.next('');
   }
 }
 

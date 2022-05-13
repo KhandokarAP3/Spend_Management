@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PageComponentParent } from '../../PageComponentParent';
+import { PageComponentParentComponent } from '../../page-component-parent.component';
 import { RESTAPIService } from '../../services/REST-API.service';
 import { NotificationConfiguration } from '../../models/notification.model';
 import { Pagination, SortAndFilterTopLevelObjects } from "../../pipes/pipes";
@@ -15,7 +15,7 @@ declare const _spPageContextInfo: any;
   selector: 'app-notifications',
   templateUrl: './notifications.component.html'
 })
-export class NotificationsComponent extends PageComponentParent {
+export class NotificationsComponent extends PageComponentParentComponent {
   public readonly tabs = ['Current', 'UpComing', 'Previous'];
   notifications = {
     Current: [],
