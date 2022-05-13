@@ -33,27 +33,8 @@ export class HeaderComponent {
   firstName: any;
   menuItems: any[] = [
     {
-      name: 'Planning Overview',
-      url: '/acquisitions-overview',
-      children: []
-    },
-    {
-      name: 'Work Categories',
-      children: [
-        {name: 'Requirements Development', url: '/requirementsdevelopment'},
-        {name: 'Market Research', url: '/marketresearch'},
-        {name: 'Develop Acquisition Plan', url: '/developacquisitionsplan'},
-        {name: 'Procurement Request Package', url: '/procurementrequestpackage'}
-      ]
-    },
-    {
-      name: 'Tutorials',
-      url: '/tutorialspage',
-      children: []
-    },
-    {
-      name: 'Templates',
-      url: '/templatesspage',
+      name: 'Budget Allocation',
+      url: '/budget-allocation',
       children: []
     }
   ];

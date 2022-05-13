@@ -1,5 +1,5 @@
 import {Component, HostBinding} from '@angular/core';
-import {CommonService} from "../../services/common.service";
+import {CommonService} from '../../services/common.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,8 +10,7 @@ export class  SidebarComponent {
   menuItems: any[] =   [
     { name: 'Dashboard', iconURL: 'images/reports_white.png' },
     { name: 'Projects', iconURL: 'images/projects_white.png' },
-    { name: 'Activities', iconURL: 'images/activities_white.png' },
-    { name: 'Repository', iconURL: 'images/repository_white.png' },
+    { name: 'Expenses', iconURL: 'images/activities_white.png' },
     { name: 'Support', iconURL: 'images/support_white.png' }
   ];
   constructor(private commonService: CommonService) {
@@ -28,6 +27,6 @@ export class  SidebarComponent {
           delete this.menuItems[0].isDisabled;
         }
       }
-    })
+    });
   }
 }

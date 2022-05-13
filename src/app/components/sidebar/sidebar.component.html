@@ -3,8 +3,5 @@
     <a *ngIf="!menuItem.isDisabled" routerLinkActive="active" [routerLink]="menuItem.link">
       <img [src]="menuItem.iconURL | updateImageURL" alt="Image">{{menuItem.name}}
     </a>
-<!--    <a *ngIf="menuItem.isDisabled" href="javascript:void(0);">-->
-<!--      <img [src]="menuItem.iconURL | updateImageURL" alt="Image">{{menuItem.name}}-->
-<!--    </a>-->
   </li>
 </ul>

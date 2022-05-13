@@ -8,7 +8,6 @@ import * as moment from 'moment';
 declare var _spPageContextInfo;
 @Injectable()
 export class CommonService {
-  public hideDashboardLink: EventEmitter<any> = new EventEmitter();
 
   constructor(private http: HttpClient, private searchFilter: MyFilterPipe, private objectFilterPipe: ObjectFilterPipe, private injector: Injector) {
     this.roleBasedActivityPrivilege = this.roleBasedProjectPrivilege;
@@ -29,6 +28,7 @@ export class CommonService {
     }
   }
   public static injectorInstance: Injector;
+  public hideDashboardLink: EventEmitter<any> = new EventEmitter();
   public isSomethingUnsaved = false;
   public preventNavigation = false;
   private currentUserEditables: any = null;
@@ -262,19 +262,6 @@ export class CommonService {
     return new Observable((observer) => {
       observer.next(this.sidebarLinks);
       observer.complete();
-      /*if (this.sidebarLinks !== null) {
-        observer.next(this.sidebarLinks);
-        observer.complete();
-      } else {
-        this.http.get('/assets/sidebar-links.json').subscribe((response: any) => {
-          this.sidebarLinks = response;
-          observer.next(this.sidebarLinks);
-          observer.complete();
-        }, error => {
-          observer.next({});
-          observer.complete();
-        });
-      }*/
     });
   }
 
@@ -631,7 +618,7 @@ export class CommonService {
   }
 
   public isNotUndefinedNullOrEmpty(object) {
-    var isUndefinedOrNull = false;
+    let isUndefinedOrNull = false;
     if (object !== '') {
       if (object !== null) {
         if (object !== undefined) {
@@ -643,7 +630,7 @@ export class CommonService {
   }
 
   public isNotUndefinedOrNull(object) {
-    var isUndefinedOrNull = false;
+    let isUndefinedOrNull = false;
     if (object !== null) {
       if (object !== undefined) {
         isUndefinedOrNull = true;

@@ -12,20 +12,13 @@ import {ProjectListingComponent} from './components/pages/project-main-page/proj
 import {ProjectDetailComponent} from './components/pages/project-main-page/project-detail/project-detail.component';
 import {ActivityDashboardComponent} from './components/activity/activity-dashboard.component';
 import {CreateActivityComponent} from './components/activity/create-activity.component';
-import {MarketResearchComponent } from './components/market-research/market-research.component';
-import {RequirementsDevelopmentComponent } from './components/requirementsdevelopment/requirementsdevelopment.component';
-import {ProcurementRequestPackageComponent} from './components/procurementrequestpackage/procurementrequestpackage.component';
-import {DevelopAcquisitionsPlanComponent} from './components/developacquisitionsplan/developacquisitionsplan.component';
 import {DocumentServerComponent} from './components/document-server/document-server.component';
-import {TemplatePageDashboardComponent } from './components/templates-page/template-page-dashboard/template-page-dashboard.component';
-import {TutorialsPageDashboardComponent } from './components/tutorials-page/tutorials-page-dashboard/tutorials-page-dashboard.component';
 import {HelpDeskDashboardComponent } from './components/help-desk/help-desk-dashboard/help-desk-dashboard.component';
 import {EmailTemplateComponent} from './components/email-template/email-template.component';
 import {NotificationTypeTemplateComponent} from './components/notification-type/notification-type-template.component';
 import {RepositoryDashboardComponent} from './components/repository/repository-dashboard/repository-dashboard.component';
 import {UserProfileComponent} from './components/user-profile/user-profile.component';
 import {DocumentApprovalComponent} from './components/document-approval/document-approval.component';
-import {AcquisitionsOverviewComponent} from './components/acquisitions-overview/acquisitions-overview.component';
 import {NotificationsComponent} from './components/notification/notifications.component';
 import {EditUserProfileComponent} from './components/user-profile/edit-profile/edit-user-profile/edit-user-profile.component';
 import {ActionItemDashboardComponent} from './components/action-item-dashboard/action-item-dashboard.component';
@@ -95,66 +88,6 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'marketresearch',
-    canActivate: [BackButtonEventtGuard, AppRouteGuard],
-    component: MainPageComponent,
-    children: [
-      {
-        path: '',
-        canActivate: [BackButtonEventtGuard],
-        component: MarketResearchComponent
-      }
-    ]
-  },
-  {
-    path: 'requirementsdevelopment',
-    canActivate: [BackButtonEventtGuard, AppRouteGuard],
-    component: MainPageComponent,
-    children: [
-      {
-        path: '',
-        canActivate: [BackButtonEventtGuard],
-        component: RequirementsDevelopmentComponent
-      }
-    ]
-  },
-  {
-    path: 'procurementrequestpackage',
-    canActivate: [BackButtonEventtGuard, AppRouteGuard],
-    component: MainPageComponent,
-    children: [
-      {
-        path: '',
-        canActivate: [BackButtonEventtGuard],
-        component: ProcurementRequestPackageComponent
-      }
-    ]
-  },
-  {
-    path: 'developacquisitionsplan',
-    canActivate: [BackButtonEventtGuard, AppRouteGuard],
-    component: MainPageComponent,
-    children: [
-      {
-        path: '',
-        canActivate: [BackButtonEventtGuard],
-        component: DevelopAcquisitionsPlanComponent
-      }
-    ]
-  },
-  {
-    path: 'acquisitions-overview',
-    canActivate: [BackButtonEventtGuard, AppRouteGuard],
-    component: MainPageComponent,
-    children: [
-      {
-        path: '',
-        canActivate: [BackButtonEventtGuard],
-        component: AcquisitionsOverviewComponent
-      }
-    ]
-  },
-  {
     path: 'documents',
     canActivate: [BackButtonEventtGuard, AppRouteGuard],
     component: MainPageComponent,
@@ -163,30 +96,6 @@ const routes: Routes = [
         path: '',
         canActivate: [BackButtonEventtGuard],
         component: DocumentServerComponent
-      }
-    ]
-  },
-  {
-    path: 'templatesspage',
-    canActivate: [BackButtonEventtGuard, AppRouteGuard],
-    component: MainPageComponent,
-    children: [
-      {
-        path: '',
-        canActivate: [BackButtonEventtGuard],
-        component: TemplatePageDashboardComponent
-      }
-    ]
-  },
-  {
-    path: 'tutorialspage',
-    canActivate: [BackButtonEventtGuard, AppRouteGuard],
-    component: MainPageComponent,
-    children: [
-      {
-        path: '',
-        canActivate: [BackButtonEventtGuard],
-        component: TutorialsPageDashboardComponent
       }
     ]
   },

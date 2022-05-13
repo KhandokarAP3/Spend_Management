@@ -52,7 +52,6 @@ import {FooterComponent} from './components/footer/footer.component.js';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TableV1Component, TableV2Component, TableV3Component, TableV4Component} from './components/tables/table.component';
 import {CommonService} from './services/common.service';
-import { TutorialsPageDashboardComponent } from './components/tutorials-page/tutorials-page-dashboard/tutorials-page-dashboard.component';
 import { EditUserProfileComponent } from './components/user-profile/edit-profile/edit-user-profile/edit-user-profile.component';
 import { BarChartComponent } from './components/bar-chart.component';
 import { AverageTimeToCompletionBarChartComponent } from './components/avg-time-to-complete-metric/avg-time-to-complete-metric.component';
@@ -98,11 +97,6 @@ import {TeamComponent} from './components/team/team.component';
 import {TeamsModalComponent} from './components/team/teams-modal/teams-modal.component';
 import {ActivityDashboardComponent} from './components/activity/activity-dashboard.component';
 import {CreateActivityComponent} from './components/activity/create-activity.component';
-import { MarketResearchComponent } from './components/market-research/market-research.component';
-import { RequirementsDevelopmentComponent } from './components/requirementsdevelopment/requirementsdevelopment.component';
-import {ProcurementRequestPackageComponent} from './components/procurementrequestpackage/procurementrequestpackage.component';
-import {AcquisitionsOverviewComponent} from './components/acquisitions-overview/acquisitions-overview.component';
-import {DevelopAcquisitionsPlanComponent} from './components/developacquisitionsplan/developacquisitionsplan.component';
 import { TrackingItemDetailComponent } from './components/tracking-item/tracking-item-detail.component';
 import {DocumentServerComponent} from './components/document-server/document-server.component';
 import {DocumentApprovalComponent} from './components/document-approval/document-approval.component';
@@ -110,7 +104,6 @@ import {CometChatComponent} from './components/comet-chat/comet-chat.component';
 import { AttachDocumentsComponent } from './components/attach-documents/attach-documents.component';
 import { SubmitForApprovalModalComponent } from './components/submit-for-approval-modal/submit-for-approval-modal.component';
 import {ViewAttachmentsModalComponent} from './components/pages/project-main-page/project-detail/viewattachments-modal/viewattachments-modal.component';
-import { TemplatePageDashboardComponent } from './components/templates-page/template-page-dashboard/template-page-dashboard.component';
 import { HelpDeskDashboardComponent } from './components/help-desk/help-desk-dashboard/help-desk-dashboard.component';
 import { SendEmailComponent } from './components/help-desk/send-email/send-email.component';
 import { RequestTicketComponent } from './components/help-desk/request-ticket/request-ticket.component';
@@ -186,11 +179,6 @@ import {AttachDocumentProjectActivitiesComponent} from './components/document-se
     CreateActivityComponent,
     PaginationComponent,
     CurrencyInputComponent,
-    MarketResearchComponent,
-    RequirementsDevelopmentComponent,
-    ProcurementRequestPackageComponent,
-    AcquisitionsOverviewComponent,
-    DevelopAcquisitionsPlanComponent,
     TrackingItemDetailComponent,
     DocumentServerComponent,
     CometChatComponent,
@@ -199,8 +187,6 @@ import {AttachDocumentProjectActivitiesComponent} from './components/document-se
     UploadDocumentsComponent,
     SubmitForApprovalModalComponent,
     ViewAttachmentsModalComponent,
-    TemplatePageDashboardComponent,
-    TutorialsPageDashboardComponent,
     HelpDeskDashboardComponent,
     SendEmailComponent,
     RequestTicketComponent,
